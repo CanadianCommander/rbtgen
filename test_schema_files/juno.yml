@@ -1,0 +1,536 @@
+---
+models:
+  casemgmt_cpp:
+    fields:
+      id:
+        type: integer
+        key: primary
+      demographic_no:
+        type: string
+      provider_no:
+        type: string
+      socialHistory:
+        type: string
+      familyHistory:
+        type: string
+      medicalHistory:
+        type: string
+      ongoingConcerns:
+        type: string
+      reminders:
+        type: string
+      update_date:
+        type: date_time
+      primaryPhysician:
+        type: string
+      primaryCounsellor:
+        type: string
+      otherFileNumber:
+        type: string
+      otherSupportSystems:
+        type: string
+      pastMedications:
+        type: string
+  casemgmt_note:
+    fields:
+      note_id:
+        type: integer
+        key: primary
+      update_date:
+        type: date
+      observation_date:
+        type: date
+      demographic_no:
+        type: integer
+      provider_no:
+        type: string
+      note:
+        type: string
+      signed:
+        type: integer
+      include_issue_innote:
+        type: integer
+      signing_provider_no:
+        type: string
+      encounter_type:
+        type: string
+      billing_code:
+        type: string
+      program_no:
+        type: string
+      reporter_caisi_role:
+        type: string
+      reporter_program_team:
+        type: string
+      history:
+        type: string
+      password:
+        type: string
+      locked:
+        type: string
+      archived:
+        type: integer
+      position:
+        type: integer
+      uuid:
+        type: string
+      appointmentNo:
+        type: integer
+      hourOfEncounterTime:
+        type: integer
+      minuteOfEncounterTime:
+        type: integer
+      hourOfEncTransportationTime:
+        type: integer
+      minuteOfEncTransportationTime:
+        type: integer
+  casemgmt_note_ext:
+    fields:
+      id:
+        type: integer
+        key: primary
+      note_id:
+        type: integer
+      key_val:
+        type: string
+      value:
+        type: string
+      date_value:
+        type: date
+  ctl_document:
+    fields:
+      module:
+        type: string
+        key: primary
+      module_id:
+        type: integer
+        key: primary
+      document_no:
+        type: integer
+        key: primary
+      status:
+        type: string
+  demographic:
+    relations:
+      demographic_provider:
+        from: demographic
+        to: provider
+        type: left
+        condition: demographic.provider_no = provider.provider_no
+
+    fields:
+      demographic_no:
+        type: integer
+        key: primary
+      title:
+        type: string
+      last_name:
+        type: string
+      first_name:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      province:
+        type: string
+      postal:
+        type: string
+      phone:
+        type: string
+      phone2:
+        type: string
+      email:
+        type: string
+      myOscarUserName:
+        type: string
+      year_of_birth:
+        type: string
+      month_of_birth:
+        type: string
+      date_of_birth:
+        type: string
+      hin:
+        type: string
+      ver:
+        type: string
+      roster_status:
+        type: string
+      roster_date:
+        type: date
+      roster_termination_date:
+        type: date
+      roster_termination_reason:
+        type: string
+      patient_status:
+        type: string
+      patient_status_date:
+        type: date
+      date_joined:
+        type: date
+      chart_no:
+        type: string
+      official_lang:
+        type: string
+      spoken_lang:
+        type: string
+      provider_no:
+        type: string
+      sex:
+        type: string
+      end_date:
+        type: date
+      eff_date:
+        type: date
+      pcn_indicator:
+        type: string
+      hc_type:
+        type: string
+      hc_renew_date:
+        type: date
+      family_doctor:
+        type: string
+      alias:
+        type: string
+      previousAddress:
+        type: string
+      children:
+        type: string
+      sourceOfIncome:
+        type: string
+      citizenship:
+        type: string
+      sin:
+        type: string
+      country_of_origin:
+        type: string
+      newsletter:
+        type: string
+      anonymous:
+        type: string
+      lastUpdateUser:
+        type: string
+      lastUpdateDate:
+        type: date
+      veteran_no:
+        type: string
+      family_doctor_2:
+        type: string
+      name_of_mother:
+        type: string
+      name_of_father:
+        type: string
+  document:
+    fields:
+      document_no:
+        type: integer
+        key: primary
+      doctype:
+        type: string
+      docClass:
+        type: string
+      docSubClass:
+        type: string
+      docdesc:
+        type: string
+      docxml:
+        type: string
+      docfilename:
+        type: string
+      doccreator:
+        type: string
+      responsible:
+        type: string
+      source:
+        type: string
+      sourceFacility:
+        type: string
+      program_id:
+        type: integer
+      updatedatetime:
+        type: date
+      status:
+        type: string
+      contenttype:
+        type: string
+      contentdatetime:
+        type: date
+      public1:
+        type: integer
+      observationdate:
+        type: date
+      reviewer:
+        type: string
+      reviewdatetime:
+        type: date
+      number_of_pages:
+        type: integer
+      appointment_no:
+        type: integer
+      restrictToProgram:
+        type: integer
+      encoding_error:
+        type: integer
+  drugs:
+    fields:
+      drugid:
+        type: integer
+        key: primary
+      provider_no:
+        type: string
+      demographic_no:
+        type: integer
+      rx_date:
+        type: date
+      end_date:
+        type: date
+      written_date:
+        type: date
+      pickup_datetime:
+        type: date
+      BN:
+        type: string
+      GCN_SEQNO:
+        type: float
+      customName:
+        type: string
+      takemin:
+        type: float
+      takemax:
+        type: float
+      freqcode:
+        type: string
+      duration:
+        type: string
+      durunit:
+        type: string
+      quantity:
+        type: string
+      repeat:
+        type: integer
+      last_refill_date:
+        type: date
+      nosubs:
+        type: integer
+      prn:
+        type: integer
+      special:
+        type: string
+      special_instruction:
+        type: string
+      archived:
+        type: integer
+      GN:
+        type: string
+      ATC:
+        type: string
+      script_no:
+        type: integer
+      regional_identifier:
+        type: string
+      unit:
+        type: string
+      method:
+        type: string
+      route:
+        type: string
+      drug_form:
+        type: string
+      create_date:
+        type: date
+      dosage:
+        type: string
+      custom_instructions:
+        type: integer
+      unitName:
+        type: string
+      custom_note:
+        type: integer
+      long_term:
+        type: integer
+      non_authoritative:
+        type: integer
+      past_med:
+        type: integer
+      patient_compliance:
+        type: integer
+      outside_provider_name:
+        type: string
+      outside_provider_ohip:
+        type: string
+      archived_reason:
+        type: string
+      archived_date:
+        type: date
+      hide_from_drug_profile:
+        type: integer
+      eTreatmentType:
+        type: string
+      rxStatus:
+        type: string
+      dispense_interval:
+        type: integer
+      refill_duration:
+        type: integer
+      refill_quantity:
+        type: integer
+      hide_cpp:
+        type: integer
+      position:
+        type: integer
+      comment:
+        type: string
+      start_date_unknown:
+        type: integer
+      lastUpdateDate:
+        type: date
+      dispenseInternal:
+        type: integer
+  eform:
+    fields:
+      fid:
+        type: integer
+        key: primary
+      form_name:
+        type: string
+      file_name:
+        type: string
+      subject:
+        type: string
+      form_date:
+        type: date
+      form_time:
+        type: time
+      form_creator:
+        type: string
+      status:
+        type: integer
+      form_html:
+        type: string
+      showLatestFormOnly:
+        type: integer
+      patient_independent:
+        type: integer
+      roleType:
+        type: string
+      programNo:
+        type: integer
+      restrictToProgram:
+        type: integer
+      instanced:
+        type: integer
+  eform_data:
+    fields:
+      fdid:
+        type: integer
+        key: primary
+      fid:
+        type: integer
+      form_name:
+        type: string
+      subject:
+        type: string
+      demographic_no:
+        type: integer
+      status:
+        type: integer
+      form_date:
+        type: date
+      form_time:
+        type: time
+      form_provider:
+        type: string
+      form_data:
+        type: string
+      showLatestFormOnly:
+        type: integer
+      patient_independent:
+        type: integer
+      roleType:
+        type: string
+      eform_instance_id:
+        type: integer
+  eform_values:
+    fields:
+      id:
+        type: integer
+        key: primary
+      fdid:
+        type: integer
+      fid:
+        type: integer
+      demographic_no:
+        type: integer
+      var_name:
+        type: string
+      var_value:
+        type: string
+  provider:
+    fields:
+      provider_no:
+        type: string
+        key: primary
+      last_name:
+        type: string
+      first_name:
+        type: string
+      provider_type:
+        type: string
+      specialty:
+        type: string
+      team:
+        type: string
+      sex:
+        type: string
+      dob:
+        type: date
+      address:
+        type: string
+      phone:
+        type: string
+      work_phone:
+        type: string
+      ohip_no:
+        type: string
+      rma_no:
+        type: string
+      billing_no:
+        type: string
+      hso_no:
+        type: string
+      status:
+        type: string
+      comments:
+        type: string
+      provider_activity:
+        type: string
+      practitionerNo:
+        type: string
+      init:
+        type: string
+      job_title:
+        type: string
+      email:
+        type: string
+      title:
+        type: string
+      lastUpdateUser:
+        type: string
+      lastUpdateDate:
+        type: date
+      signed_confidentiality:
+        type: date
+      supervisor:
+        type: string
+      alberta_tak_no:
+        type: string
+      alberta_e_delivery_ids:
+        type: string
+      super_admin:
+        type: integer
+      alberta_connect_care_id:
+        type: string
+      ontario_lifelabs_id:
+        type: string
+      provider_billing_id:
+        type: integer

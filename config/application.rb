@@ -33,5 +33,11 @@ module RbtGen
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # logger
+    config.logger = Logger.new(STDOUT)
+
+    # auto load paths
+    config.autoload_paths << Rails.root.join("lib")
   end
 end
