@@ -26,7 +26,7 @@ module Schema::Mapping
       @name = name
       @from_table = from_table
       @to_table = to_table
-      @join_type = join_type
+      @join_type = join_type.to_sym
       @join_condition = join_condition
     end
 
@@ -36,7 +36,6 @@ module Schema::Mapping
       @from_model = models.find {|model| model.table_name == @from_table}
       @to_model = models.find {|model| model.table_name == @to_table}
     end
-
 
   end
 end

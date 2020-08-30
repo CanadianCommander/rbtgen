@@ -11,6 +11,7 @@ module Schema
       def initialize
         @columns = []
         @relations = []
+        @filters = []
       end
 
       # get a column by name
@@ -35,6 +36,24 @@ module Schema
         end
 
         return relation
+      end
+
+      # get a filter by name
+      # @param [String] name - the name of the filter
+      # @return [::Schema::Mapping::Filter] the filter
+      def get_filter(name)
+        filter = get_filters.find {|filter| filter.name == name}
+        if filter.nil?
+          raise ActiveRecord::RecordNotFound.new("No filter with name [#{name}]")
+        end
+
+        return filter
+      end
+
+      # get all filters defined on this table. including generated filters
+      # @return [Array<::Schema::Mapping::Filter>] the filters
+      def get_filters
+        return @filters + get_generated_filters
       end
 
       # populate the model from hash
@@ -73,6 +92,26 @@ module Schema
         {
           fields: field_hash
         }
+      end
+
+      # ----------------------------------------------------------
+      # Private Methods
+      # ----------------------------------------------------------
+      private
+
+      # get generated files. These are basic filters generated of the columns in the model
+      # @return [Array<::Schema::Mapping::Filter>] the generated filters
+      def get_generated_filters
+        filters = []
+        @columns.each do |column|
+          filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_eql",
+                                                   "#{@table_name}.#{column.name} = #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
+          filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_lt",
+                                                   "#{@table_name}.#{column.name} < #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
+          filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_gt",
+                                                   "#{@table_name}.#{column.name} > #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
+        end
+        return filters
       end
 
     end

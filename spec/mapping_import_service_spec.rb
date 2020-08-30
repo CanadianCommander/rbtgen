@@ -30,7 +30,7 @@ RSpec.describe ::Schema::MappingImportService do
     demo_provider_rel = demographic_model.get_relation("demographic_provider")
     expect(demo_provider_rel.from_model).to eq demographic_model
     expect(demo_provider_rel.to_model).to eq provider_model
-    expect(demo_provider_rel.join_type).to eq :left.to_s
+    expect(demo_provider_rel.join_type).to eq ::Schema::Mapping::Relation::JOIN_TYPE::LEFT
     expect(demo_provider_rel.join_condition).to eq "demographic.provider_no = provider.provider_no"
 
   end

@@ -2,7 +2,7 @@ module Schema
   module Mapping
     class DatabaseMap
 
-      attr_accessor :models, :relations, :filters
+      attr_accessor :models, :filters
 
       # ----------------------------------------------------------
       # Public Methods
