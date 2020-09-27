@@ -2,7 +2,7 @@ module Rbt::QueryTree
   class Node
 
     attr_reader :id
-    attr_accessor :model, :emit_fields, :connections, :filter_composition
+    attr_accessor :model, :fields, :connections, :filter_composition
 
     # ----------------------------------------------------------
     # Public Methods
@@ -14,15 +14,22 @@ module Rbt::QueryTree
       @model = model
       @connections = []
       @filters = []
-      @emit_fields = []
+      @fields = []
       @filter_composition = ::Rbt::QueryTree::FilterComposition.new
     end
 
     # add a new field to the emit field list
-    # @param [String] new_field
-    def add_field!(new_field)
-      @emit_fields << new_field
+    # @param [::Rbt::QueryTree::Field] field
+    def add_field!(field)
+      @fields << field
     end
+
+    # add a new field to the emit field list
+    # @param [String] name
+    def add_field_by_name!(name)
+      @fields << ::Rbt::QueryTree::Field.new(self, @model.get_column(name))
+    end
+
 
     # add a filter to this node.
     # @param [::Rbt::QueryTree::Filter | ::Rbt::QueryTree::FilterComposition] filter - the new filter
@@ -37,12 +44,6 @@ module Rbt::QueryTree
       return @filter_composition.get_filter_sql
     end
 
-    # get the list of fields emitted by this node prefixed with this nodes id
-    # @return [Array<String>] the list of fields
-    def get_prefixed_fields
-      return @emit_fields.map {|field| "#{@id}.#{field}"}
-    end
-
     # get a connection by its name
     # @param [String] name - the connection name
     # @return [Rbt::QueryTree::Connection] the connection
@@ -55,6 +56,10 @@ module Rbt::QueryTree
     # @param [::Schema::Mapping::Relation] relation - the relation that connects the two nodes
     def connect_to_node!(other_node, relation)
       @connections << ::Rbt::QueryTree::Connection.new(self, other_node, relation)
+    end
+
+    def has_filters?
+      return !@filter_composition.empty?
     end
   end
 end

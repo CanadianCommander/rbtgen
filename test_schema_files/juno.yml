@@ -1,5 +1,87 @@
 ---
 models:
+  appointment:
+    fields:
+      appointment_no:
+        type: integer
+        key: primary
+      provider_no:
+        type: string
+      appointment_date:
+        type: date
+      start_time:
+        type: time
+      end_time:
+        type: time
+      name:
+        type: string
+      demographic_no:
+        type: integer
+      program_id:
+        type: integer
+      notes:
+        type: string
+      reasonCode:
+        type: integer
+      reason:
+        type: string
+      location:
+        type: string
+      resources:
+        type: string
+      type:
+        type: string
+      style:
+        type: string
+      billing:
+        type: string
+      status:
+        type: string
+      imported_status:
+        type: string
+      createdatetime:
+        type: date
+      updatedatetime:
+        type: date
+      creator:
+        type: string
+      lastupdateuser:
+        type: string
+      remarks:
+        type: string
+      urgency:
+        type: string
+      isVirtual:
+        type: integer
+      creatorSecurityId:
+        type: integer
+      bookingSource:
+        type: string
+      is_one_time_telehealth:
+        type: integer
+  measurements:
+    fields:
+      id:
+        type: integer
+        key: primary
+      type:
+        type: string
+      demographicNo:
+        type: integer
+      providerNo:
+        type: string
+      dataField:
+        type: string
+      measuringInstruction:
+        type: string
+      comments:
+        type: string
+      dateObserved:
+        type: date
+      dateEntered:
+        type: date
+      appointmentNo:
+        type: integer
   casemgmt_cpp:
     fields:
       id:
@@ -116,7 +198,12 @@ models:
         from: demographic
         to: provider
         type: left
-        condition: demographic.provider_no = provider.provider_no
+        condition: "{{demographic.provider_no}} = {{provider.provider_no}}"
+      demographic_measurements:
+        from: demographic
+        to: measurements
+        type: left
+        condition: "{{demographic.demographic_no}} = {{measurements.demographicNo}}"
 
     fields:
       demographic_no:
@@ -220,6 +307,10 @@ models:
         type: string
       name_of_father:
         type: string
+      # custom
+      display_name:
+        type: custom
+        sql: "CONCAT_WS(',', {{first_name}}, {{last_name}})"
   document:
     fields:
       document_no:

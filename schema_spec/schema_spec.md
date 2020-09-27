@@ -10,8 +10,9 @@ and [] indicates an optional field.
 <table name>:
     fields:
         <column name>: 
-            type: (string | integer | float | date | date_time | time | binary | enum)
+            type: (string | integer | float | date | date_time | time | binary | enum | custom)
             [key: pri] 
+            [sql: <sql>] # If of field is custom 
     relations:
         <relation name>:
             from: <from table name>

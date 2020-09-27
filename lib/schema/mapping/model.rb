@@ -66,7 +66,7 @@ module Schema
         # fields
         hash[:fields].each do |field_name, field_hash|
           ::Schema::Util::Validation.require_keys(self.class.name, field_hash, :type)
-          @columns << ::Schema::Mapping::Column.new(field_name.to_s, field_hash[:type], field_hash[:key])
+          @columns << ::Schema::Mapping::Column.new(field_name.to_s, field_hash[:type].to_sym, field_hash[:key], field_hash[:sql])
         end
 
         # relations
@@ -105,11 +105,11 @@ module Schema
         filters = []
         @columns.each do |column|
           filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_eql",
-                                                   "#{@table_name}.#{column.name} = #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
+                                                   "{{#{@table_name}.#{column.name}}} = #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
           filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_lt",
-                                                   "#{@table_name}.#{column.name} < #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
+                                                   "{{#{@table_name}.#{column.name}}} < #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
           filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_gt",
-                                                   "#{@table_name}.#{column.name} > #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
+                                                   "{{#{@table_name}.#{column.name}}} > #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
         end
         return filters
       end

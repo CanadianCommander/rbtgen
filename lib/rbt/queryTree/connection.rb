@@ -34,8 +34,8 @@ module Rbt::QueryTree
     # @return [String] join condition sql
     def get_join_condition_sql
       join_sql = through_relation.join_condition
-      join_sql.gsub!(/(#{@from_node.model.table_name})(\.)/, @from_node.id + '\2' )
-      join_sql.gsub!(/(#{@to_node.model.table_name})(\.)/, @to_node.id + '\2')
+      join_sql = ::Rbt::Util::Template.replace_table_name_with_id(join_sql, @from_node.model.table_name, @from_node.id)
+      join_sql = ::Rbt::Util::Template.replace_table_name_with_id(join_sql, @to_node.model.table_name, @to_node.id)
       return join_sql
     end
 

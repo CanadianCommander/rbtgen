@@ -6,8 +6,8 @@ module Schema
 
       module TYPE
         FILE_PARSE_ERROR = "file_parse_error".freeze
-
         NO_MODEL_DEFINITIONS = "no_model_definitions".freeze
+        CUSTOM_FIELD_NO_SQL = "custom_field_no_sql".freeze
       end
 
       # ----------------------------------------------------------

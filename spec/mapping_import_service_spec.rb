@@ -31,7 +31,7 @@ RSpec.describe ::Schema::MappingImportService do
     expect(demo_provider_rel.from_model).to eq demographic_model
     expect(demo_provider_rel.to_model).to eq provider_model
     expect(demo_provider_rel.join_type).to eq ::Schema::Mapping::Relation::JOIN_TYPE::LEFT
-    expect(demo_provider_rel.join_condition).to eq "demographic.provider_no = provider.provider_no"
+    expect(demo_provider_rel.join_condition).to eq "{{demographic.provider_no}} = {{provider.provider_no}}"
 
   end
 

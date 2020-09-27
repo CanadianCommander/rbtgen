@@ -31,6 +31,10 @@ module Rbt::QueryTree
       return filter_sql
     end
 
+    def empty?
+      return @root_filter.nil?
+    end
+
     # ----------------------------------------------------------
     # Private Methods
     # ----------------------------------------------------------

@@ -36,23 +36,29 @@ module Rbt
       traverse_nodes(root_node) do |node, con, leaving_subtree|
         if con.nil?
           if leaving_subtree
-            query += "WHERE #{replace_sql_table_names_with_id(node, node.get_filter_sql)};"
+            if node.has_filters?
+              query += "WHERE #{replace_sql_table_names_with_id(node, node.get_filter_sql)};"
+            else
+              query += ";"
+            end
           else
-            select_fields += node.get_prefixed_fields
+            select_fields += node.fields
             query += "#{node.model.table_name} AS #{node.id} "
           end
         else
           if leaving_subtree
-            query += "WHERE #{replace_sql_table_names_with_id(node, node.get_filter_sql)} "
+            if node.has_filters?
+              query += "WHERE #{replace_sql_table_names_with_id(node, node.get_filter_sql)} "
+            end
             query += ") AS #{node.id} ON #{con.get_join_condition_sql} "
           else
-            select_fields += node.get_prefixed_fields
+            select_fields += node.fields
             query += "#{con.get_join_sql_mariadb} (SELECT * FROM #{node.model.table_name} AS #{node.id} "
           end
         end
       end
 
-      return "SELECT #{select_fields.join(", ")} #{query}"
+      return "SELECT #{select_fields.map(&:to_sql).join(", ")} #{query}"
     end
 
     # replace table_names found in sql with id's found in the subtree described by root node
@@ -63,7 +69,7 @@ module Rbt
       out_sql = sql
       traverse_nodes(root_node) do |node, con, leaving|
         unless leaving
-          out_sql.gsub!(/(#{node.model.table_name})(\.)/, node.id + '\2' )
+          out_sql = ::Rbt::Util::Template.replace_table_name_with_id(out_sql, node.model.table_name, node.id)
         end
       end
       return out_sql
@@ -72,14 +78,18 @@ module Rbt
     # traverse nodes. yielding for each (DFS)
     # @param [Rbt::QueryTree::Node] node - the start node
     # @param [Rbt::QueryTree::Connection] src_connection - the connection that was traversed to get to the current node.
+    # @param [Array<Rbt::QueryTree::Node>] visited_nodes - used internally to prevent getting stuck in loops.
     # @yield a block provided with the current node that is being traversed. and the connection that was used to get there.
     # this block will be called a second time when leaving the nodes subtree, indicated by a value of true in the third parameter
-    def traverse_nodes(node, src_connection = nil, &block)
+    def traverse_nodes(node, src_connection = nil, visited_nodes = [], &block)
 
       yield(node, src_connection, false)
 
       node.connections.each do |connection|
-        traverse_nodes(connection.to_node, connection, &block)
+        unless visited_nodes.include?(connection.to_node)
+          visited_nodes << connection.to_node
+          traverse_nodes(connection.to_node, connection, visited_nodes, &block)
+        end
       end
 
       yield(node, src_connection, true)

@@ -1,7 +1,7 @@
 module Schema::Mapping
   class Column
 
-    attr_reader :name, :type, :key
+    attr_reader :name, :type, :key, :custom_sql
 
     module TYPE
       UNKNOWN = :unknown.freeze
@@ -13,6 +13,7 @@ module Schema::Mapping
       TIME = :time.freeze
       BINARY = :binary.freeze
       ENUM = :enum.freeze
+      CUSTOM = :custom.freeze
     end
 
     module KEY
@@ -93,10 +94,16 @@ module Schema::Mapping
     # @param [String] name - column name.
     # @param [Symbol] type - the column type.
     # @param [Symbol] key - the column key type.
-    def initialize(name, type, key=KEY::NONE)
+    # @param [String] custom_sql - custom sql (only valid for custom type)
+    def initialize(name, type, key=KEY::NONE, custom_sql = "")
       @name = name
       @type = type
       @key = key
+      @custom_sql = custom_sql
+
+      if @key == TYPE::CUSTOM && @custom_sql.blank?
+        raise ::Schema::Error::MappingFormatError.new(::Schema::Error::MappingFormatError::TYPE::CUSTOM_FIELD_NO_SQL)
+      end
     end
 
     def to_hash
