@@ -2,7 +2,7 @@ module Schema
   module Mapping
     class Filter
 
-      VARIABLE_REPLACE_STRING = "?".freeze
+      VARIABLE_REPLACE_STRING = "{{?variable}}".freeze
 
       attr_reader :name, :filter_sql, :required_tables
 
@@ -13,7 +13,7 @@ module Schema
       # @param [String] name - filter name
       # @param [String] filter_sql - sql filter
       # @param [Array<String>] required_tables - tables that must be present in the join in order for this filter to function
-      def initialize(name, filter_sql, required_tables)
+      def initialize(name, filter_sql, required_tables=nil)
         @name = name
         @filter_sql = filter_sql
         @required_tables = required_tables

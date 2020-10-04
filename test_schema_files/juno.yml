@@ -82,6 +82,16 @@ models:
         type: date
       appointmentNo:
         type: integer
+
+    filters:
+      most_recent_by_type_and_demographic:
+        sql: >
+          NOT EXISTS (
+            SELECT dateObserved FROM measurements
+            WHERE measurements.dateEntered > {{dateEntered}} AND
+            measurements.demographicNo = {{demographicNo}} AND
+            measurements.type = {{type}}
+          )
   casemgmt_cpp:
     fields:
       id:

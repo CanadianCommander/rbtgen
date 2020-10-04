@@ -25,6 +25,18 @@ module Schema
 
         return column
       end
+      
+      # get the primary column of this model 
+      # @return [::Schema::Mapping::Column] the primary column
+      def get_primary_column
+        primary_column = @columns.find {|col| col.key == ::Schema::Mapping::Column::KEY::PRIMARY}
+
+        if primary_column.nil?
+          raise ::Schema::Error::MappingFormatError.new(::Schema::Error::MappingFormatError::TYPE::NO_MODEL_PRIMARY_KEY)
+        end
+
+        return primary_column
+      end
 
       # get a relation by name
       # @param [String] relation_name - relation name
@@ -66,7 +78,7 @@ module Schema
         # fields
         hash[:fields].each do |field_name, field_hash|
           ::Schema::Util::Validation.require_keys(self.class.name, field_hash, :type)
-          @columns << ::Schema::Mapping::Column.new(field_name.to_s, field_hash[:type].to_sym, field_hash[:key], field_hash[:sql])
+          @columns << ::Schema::Mapping::Column.new(field_name.to_s, field_hash[:type].to_sym, field_hash[:key]&.to_sym, field_hash[:sql])
         end
 
         # relations
@@ -76,6 +88,13 @@ module Schema
             @relations << ::Schema::Mapping::Relation.new(relation_name.to_s, relation_hash[:from], relation_hash[:to],
                                                           relation_hash[:type] || ::Schema::Mapping::Relation::JOIN_TYPE::FULL,
                                                           relation_hash[:condition] || "")
+          end
+        end
+
+        # filters
+        unless hash[:filters].nil?
+          hash[:filters].each do |name, filter_hash|
+            @filters << Filter.new(name.to_s, filter_hash[:sql], filter_hash[:required_tables])
           end
         end
 
@@ -111,6 +130,12 @@ module Schema
           filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_gt",
                                                    "{{#{@table_name}.#{column.name}}} > #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
         end
+        
+        @relations.each do |relation|
+          filters << ::Schema::Mapping::Filter.new("#{relation.name}_exists",
+                                                   "{{#{relation.to_table}.#{relation.to_model.get_primary_column.name}}} IS NOT NULL")
+        end
+        
         return filters
       end
 

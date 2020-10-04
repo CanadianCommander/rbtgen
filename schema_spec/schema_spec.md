@@ -19,6 +19,10 @@ and [] indicates an optional field.
             to: <to table name>
             [type: (left | full)]
             [condition: <join condition sql>] 
+    filters:
+        <filter name>:
+            sql: <filter sql>
+            [required_tables: <yaml list of table names required for this filter to function>]
 
 ... more table defintions ....
 ```

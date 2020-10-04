@@ -40,8 +40,7 @@ describe ::Rbt::QueryBuilderService do
 
     it 'should produce sql filters' do
       sql = query_builder.build_query(demographic_node)
-
-      expect(sql.match?(/.*WHERE.*provider_no = \?.*WHERE\s*\(.*first_name = \? AND.*year_of_birth > \?\s*\);/)).to be_truthy
+      expect(sql.match?(/.*WHERE.*provider_no = {{\?variable}}.*WHERE\s*\(.*first_name = {{\?variable}} AND.*year_of_birth > {{\?variable}}\s*\);/)).to be_truthy
     end
 
     it "should produce EDC example query" do
@@ -63,11 +62,36 @@ describe ::Rbt::QueryBuilderService do
                                     ::Rbt::QueryTree::Filter::CONDITION::NONE)
       measurements_node.add_filter!(::Rbt::QueryTree::Filter.new(measurements_model.get_filter("dataField_gen_filter_lt")),
                                     ::Rbt::QueryTree::Filter::CONDITION::AND)
-      measurements_node.add_filter!(::Rbt::QueryTree::Filter.new(measurements_model.get_filter("type_gen_filter_eq")),
+      measurements_node.add_filter!(::Rbt::QueryTree::Filter.new(measurements_model.get_filter("type_gen_filter_eql")),
                                     ::Rbt::QueryTree::Filter::CONDITION::AND)
 
-      puts query_builder.build_query(demo_node)
-      expect(true).to be_truthy
+      sql = query_builder.build_query(demo_node)
+      expect(sql.match?(/SELECT.*Patient Name.*FROM demographic.* LEFT JOIN.* measurements/)).to be_truthy
+    end
+
+    it "should produce most recent measurement query" do
+      demo_node = ::Rbt::QueryTree::Node.new(demographic_model)
+      measurements_node = ::Rbt::QueryTree::Node.new(measurements_model)
+
+      # show patient name
+      display_name_field = ::Rbt::QueryTree::Field.new(demo_node, demographic_model.get_column("display_name"))
+      display_name_field.as_name = "Patient Name"
+      demo_node.add_field!(display_name_field)
+
+      # filter by most recent
+      measurements_node.add_filter!(::Rbt::QueryTree::Filter.new(measurements_model.get_filter("most_recent_by_type_and_demographic")),
+                                    ::Rbt::QueryTree::Filter::CONDITION::NONE)
+      measurements_node.add_field!(::Rbt::QueryTree::Field.new(measurements_node, measurements_model.get_column("type")))
+      measurements_node.add_field!(::Rbt::QueryTree::Field.new(measurements_node, measurements_model.get_column("dataField")))
+      measurements_node.add_field!(::Rbt::QueryTree::Field.new(measurements_node, measurements_model.get_column("dateEntered")))
+
+      # limit results to demos who actually have measurements
+      demo_node.add_filter!(::Rbt::QueryTree::Filter.new(demographic_model.get_filter("demographic_measurements_exists")),
+                           ::Rbt::QueryTree::Filter::CONDITION::NONE)
+
+      demo_node.connect_to_node!(measurements_node, demographic_model.get_relation("demographic_measurements"))
+      sql = query_builder.build_query(demo_node)
+      expect(sql.match?(/SELECT.*Patient Name.*NOT EXISTS \(\n.*SELECT dateObserved FROM measurements[\s\n\d\w\W()=]*id IS NOT NULL/)).to be_truthy
     end
   end
 end

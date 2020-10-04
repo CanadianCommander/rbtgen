@@ -37,7 +37,7 @@ module Rbt
         if con.nil?
           if leaving_subtree
             if node.has_filters?
-              query += "WHERE #{replace_sql_table_names_with_id(node, node.get_filter_sql)};"
+              query += "WHERE #{process_filter_sql(node, node.get_filter_sql)};"
             else
               query += ";"
             end
@@ -48,7 +48,7 @@ module Rbt
         else
           if leaving_subtree
             if node.has_filters?
-              query += "WHERE #{replace_sql_table_names_with_id(node, node.get_filter_sql)} "
+              query += "WHERE #{process_filter_sql(node, node.get_filter_sql)} "
             end
             query += ") AS #{node.id} ON #{con.get_join_condition_sql} "
           else
@@ -59,6 +59,15 @@ module Rbt
       end
 
       return "SELECT #{select_fields.map(&:to_sql).join(", ")} #{query}"
+    end
+
+    # process the filter sql template performing replacements where necessary
+    # @param [::Rbt::QueryTree::Node] node - node on which the filter is being applied
+    # @param [String] filter_sql - the filter sql
+    def process_filter_sql(node, filter_sql)
+      sql = replace_sql_table_names_with_id(node, filter_sql)
+      sql = ::Rbt::Util::Template.prepend_id_to_fields(sql, node.id)
+      return sql
     end
 
     # replace table_names found in sql with id's found in the subtree described by root node
