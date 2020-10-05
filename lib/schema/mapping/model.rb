@@ -125,6 +125,8 @@ module Schema
         @columns.each do |column|
           filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_eql",
                                                    "{{#{@table_name}.#{column.name}}} = #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
+          filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_like",
+                                                   "{{#{@table_name}.#{column.name}}} LIKE #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
           filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_lt",
                                                    "{{#{@table_name}.#{column.name}}} < #{::Schema::Mapping::Filter::VARIABLE_REPLACE_STRING}", self.table_name)
           filters << ::Schema::Mapping::Filter.new("#{column.name}_gen_filter_gt",
