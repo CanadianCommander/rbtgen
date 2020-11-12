@@ -6,8 +6,8 @@ const accountRoutes: Array<RouteConfig> = [
     path: "/",
     alias: "/login",
     name: "FIGURE_OUT_SYSTEM",
-    component: LoginPage
-  }
+    component: LoginPage,
+  },
 ];
 
 export default accountRoutes;

@@ -1,12 +1,16 @@
 <template>
-  <h1>Login page or some thing???</h1>
+  <div class="login-page">
+    <h1>Login page or some thing?</h1>
+    <Button></Button>
+  </div>
 </template>
 
 <script lang="ts">
   import Vue from "vue";
   import { Component } from "vue-property-decorator";
+  import Button from "@/components/controls/Button.vue";
 
-  @Component({})
+  @Component({ components: { Button } })
   export default class LoginPage extends Vue {
 
   }
