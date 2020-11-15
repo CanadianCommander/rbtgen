@@ -5,8 +5,11 @@ const accountRoutes: Array<RouteConfig> = [
   {
     path: "/",
     alias: "/login",
-    name: "FIGURE_OUT_SYSTEM",
+    name: "login",
     component: LoginPage,
+    meta: {
+      nextRoute: "editor",
+    },
   },
 ];
 

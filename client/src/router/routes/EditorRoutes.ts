@@ -4,7 +4,7 @@ import Editor from "@/views/Editor.vue";
 const editorRoutes: Array<RouteConfig> = [
   {
     path: "/editor/edit",
-    name: "SYSTEM",
+    name: "editor",
     component: Editor,
   },
 ];
