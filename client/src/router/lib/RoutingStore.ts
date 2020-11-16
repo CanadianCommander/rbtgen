@@ -11,6 +11,7 @@ class RoutingStore extends VuexModule {
   @Action({ rawError: true })
   public async buildRoutesFromRouterList(routerList: RouteConfig[]): Promise<void> {
     const routeNodes: RouteNode[] = [];
+    routerList = await this.collectRoutes(routerList);
 
     // add all routes
     for (const route of routerList) {
@@ -59,6 +60,10 @@ class RoutingStore extends VuexModule {
     return this._routes;
   }
 
+  get hasRoutes(): boolean {
+    return this._routes.length > 0;
+  }
+
   get currentRoute(): RouteNode {
     return this._currentRoute;
   }
@@ -75,6 +80,22 @@ class RoutingStore extends VuexModule {
       return this.currentRoute.lastRoutes[0];
     }
     return null;
+  }
+
+  // collect routes to a single list. moving all nested
+  // routes out to the top level.
+  @Action
+  private async collectRoutes(routeList: RouteConfig[]): Promise<RouteConfig[]> {
+    let routes: RouteConfig[] = [];
+
+    for (const route of routeList) {
+      routes.push(route);
+
+      if (route.children) {
+        routes = routes.concat(await this.collectRoutes(route.children));
+      }
+    }
+    return routes;
   }
 }
 

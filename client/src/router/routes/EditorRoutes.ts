@@ -1,11 +1,21 @@
 import { RouteConfig } from "vue-router";
 import Editor from "@/views/Editor.vue";
+import StandardLayout from "@/layouts/StandardLayout.vue";
 
 const editorRoutes: Array<RouteConfig> = [
   {
-    path: "/editor/edit",
-    name: "editor",
-    component: Editor,
+    path: "",
+    component: StandardLayout,
+    children: [
+      {
+        path: "/editor/edit",
+        name: "Editor",
+        component: Editor,
+        meta: {
+          lastRoute: "Home",
+        },
+      },
+    ],
   },
 ];
 

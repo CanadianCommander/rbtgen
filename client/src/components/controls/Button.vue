@@ -1,5 +1,5 @@
 <template>
-  <button ref="button" class="foo-button mdc-button" :class="buttonClasses" @click="$emit('click')">
+  <button ref="button" class="mdc-button" :class="buttonClasses" @click="$emit('click')">
     <div class="mdc-button__ripple"></div>
     <span class="mdc-button__label">
       <slot></slot>

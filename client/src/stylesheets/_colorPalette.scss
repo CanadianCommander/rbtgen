@@ -1,5 +1,15 @@
+// color variables
+$primaryColor: #43A047;
+$primaryColorLight: #66BB6A;
+$secondaryColor: #0097A7;
+$backgroundColor: #212121;
+$surfaceColor: #1e1c1c;
+
 .default-theme {
-  --mdc-theme-primary: #43A047;
-  --mdc-theme-secondary: #0097A7;
-  --mdc-theme-background: #212121;
+  --mdc-theme-primary: #{$primaryColor};
+  --mdc-theme-secondary: #{$secondaryColor};
+  --mdc-theme-background: #{$backgroundColor};
+  --mdc-theme-surface: #{$surfaceColor};
+
+  --mdc-theme-text-primary-on-background: #{$primaryColorLight};
 }

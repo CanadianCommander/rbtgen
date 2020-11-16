@@ -11,6 +11,7 @@
     "@material/ripple": "^8.0.0",
     "core-js": "^3.6.5",
     "material-components-web": "^8.0.0",
+    "material-design-icons": "^3.0.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
@@ -66,11 +67,16 @@
         "warn",
         "never"
       ],
+      "object-curly-spacing": [
+        "off"
+      ],
       "comma-dangle": [
         "error",
         "always-multiline"
       ],
+      "@typescript-eslint/no-explicit-any": ["off"],
       "padded-blocks": ["off"],
+      "no-trailing-spaces": ["off"],
       "vue/script-indent": [
         "error",
         2,

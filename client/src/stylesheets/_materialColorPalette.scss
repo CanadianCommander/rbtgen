@@ -1,0 +1,13 @@
+@use "colorPalette";
+
+// Some material components do not work with CSS properties. Instead they required Sass
+// definitions. In such cases import this file before pulling in any material scss.
+@use "~@material/theme/index" with (
+    $background: colorPalette.$backgroundColor,
+    $surface: colorPalette.$surfaceColor,
+    $primary: colorPalette.$primaryColor,
+    $secondary: colorPalette.$secondaryColor,
+    $on-primary: white,
+    $on-secondary: white,
+    $on-surface: colorPalette.$primaryColorLight,
+);

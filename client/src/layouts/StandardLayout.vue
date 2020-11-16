@@ -1,9 +1,9 @@
 <template>
-  <div id="app" class="default-theme">
+  <div>
+    <NavBar></NavBar>
     <router-view/>
   </div>
 </template>
-
 <script lang="ts">
   import Vue from "vue";
   import { Component } from "vue-property-decorator";
@@ -12,17 +12,10 @@
   @Component({
     components: {NavBar},
   })
-  export default class App extends Vue {
+  export default class StandardLayout extends Vue {
+
   }
 </script>
-
-<style lang="scss">
-#app {
-  position: absolute;
-  top: 0;
-  min-width: 100vw;
-  min-height: 100vh;
-  background-color: var(--mdc-theme-background);
-}
+<style lang="scss" scoped>
 
 </style>

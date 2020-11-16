@@ -1,5 +1,6 @@
 <template>
-  <h1> This is the editor!</h1>
+  <div class="editor">
+  </div>
 </template>
 <script lang="ts">
 
@@ -14,5 +15,7 @@
 </script>
 
 <style scoped lang="scss">
-
+  .editor {
+    color: var(--mdc-theme-text-primary-on-dark);
+  }
 </style>
