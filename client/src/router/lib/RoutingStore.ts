@@ -10,6 +10,10 @@ class RoutingStore extends VuexModule {
   private _routes: RouteNode[] = [];
   private _currentRoute: RouteNode = null;
 
+  /**
+   * build routing nodes from RouteConfig list
+   * @param routerList route configuration list.
+    */
   @Action({ rawError: true })
   public async buildRoutesFromRouterList(routerList: RouteConfig[]): Promise<void> {
     const routeNodes: RouteNode[] = [];
@@ -37,6 +41,10 @@ class RoutingStore extends VuexModule {
     }
   }
 
+  /**
+   * set the current RouteNode from the provided Route
+   * @param route - the current vue Route
+   */
   @Action
   public async setCurrentRouteFromRoute(route: Route): Promise<void> {
     this.setCurrentRoute(await this.getRoute(route.name));
