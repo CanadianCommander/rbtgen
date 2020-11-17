@@ -54,7 +54,7 @@ class RoutingStore extends VuexModule {
    */
   @Action({rawError: true})
   public toRoute(name: NamedRoute): Promise<Route> {
-    return appRouter.goTo(name);
+    return appRouter.push({name});
   }
 
   @Mutation
