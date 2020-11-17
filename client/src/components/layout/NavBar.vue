@@ -37,11 +37,12 @@
 </template>
 <script lang="ts">
   import Vue from "vue";
-  import { Component } from "vue-property-decorator";
+  import {Component} from "vue-property-decorator";
   import RoutingStore from "@/router/lib/RoutingStore";
   import Button from "@/components/controls/Button.vue";
   import Menu from "@/components/controls/Menu.vue";
   import ListItem from "@/components/lib/ListItem";
+  import {AccountRoutes} from "@/router/routes/AccountRoutes";
 
   enum NAV_OPTIONS {
     GO_HOME,
@@ -55,7 +56,17 @@
     public navOpen = false;
 
     public onNavSelect(navOption: NAV_OPTIONS) {
-      console.log(navOption);
+      switch (navOption) {
+        case NAV_OPTIONS.LOGOUT: {
+          // TODO logout the user.
+          RoutingStore.toRoute(AccountRoutes.LOGIN);
+          break;
+        }
+        case NAV_OPTIONS.GO_HOME: {
+          RoutingStore.toRoute(AccountRoutes.HOME);
+          break;
+        }
+      }
     }
 
     get lastRouteName(): string {

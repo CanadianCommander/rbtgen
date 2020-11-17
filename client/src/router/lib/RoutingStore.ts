@@ -2,6 +2,8 @@ import { getModule, Module, Mutation, Action, VuexModule } from "vuex-module-dec
 import RouteNode from "@/router/lib/RouteNode";
 import { Route, RouteConfig } from "vue-router";
 import store from "@/store";
+import {NamedRoute} from "@/router/lib/CustomRouter";
+import {appRouter} from "@/router/appRouter";
 
 @Module({ dynamic: true, store, name: "RoutingStore", namespaced: true })
 class RoutingStore extends VuexModule {
@@ -40,6 +42,21 @@ class RoutingStore extends VuexModule {
     this.setCurrentRoute(await this.getRoute(route.name));
   }
 
+  // get route by name
+  @Action
+  public getRoute(name: string): RouteNode {
+    return this.routes.find((route) => route.routeName === name);
+  }
+
+  /**
+   * go to named route
+   * @param name - the named route to go to.
+   */
+  @Action({rawError: true})
+  public toRoute(name: NamedRoute): Promise<Route> {
+    return appRouter.goTo(name);
+  }
+
   @Mutation
   public setCurrentRoute(route: RouteNode) {
     this._currentRoute = route;
@@ -48,12 +65,6 @@ class RoutingStore extends VuexModule {
   @Mutation
   public setRoutes(routes: RouteNode[]): void {
     this._routes = routes;
-  }
-
-  // get route by name
-  @Action
-  public getRoute(name: string): RouteNode {
-    return this.routes.find((route) => route.routeName === name);
   }
 
   get routes(): RouteNode[] {

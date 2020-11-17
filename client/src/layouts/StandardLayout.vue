@@ -8,10 +8,9 @@
   import Vue from "vue";
   import { Component } from "vue-property-decorator";
   import NavBar from "@/components/layout/NavBar.vue";
+  import Button from "@/components/controls/Button.vue";
 
-  @Component({
-    components: {NavBar},
-  })
+  @Component({components: {Button, NavBar}})
   export default class StandardLayout extends Vue {
 
   }

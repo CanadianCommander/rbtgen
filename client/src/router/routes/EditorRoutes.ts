@@ -1,22 +1,5 @@
-import { RouteConfig } from "vue-router";
-import Editor from "@/views/Editor.vue";
-import StandardLayout from "@/layouts/StandardLayout.vue";
+// must live in different module then the definitions to avoid circular import.
 
-const editorRoutes: Array<RouteConfig> = [
-  {
-    path: "",
-    component: StandardLayout,
-    children: [
-      {
-        path: "/editor/edit",
-        name: "Editor",
-        component: Editor,
-        meta: {
-          lastRoute: "Home",
-        },
-      },
-    ],
-  },
-];
-
-export default editorRoutes;
+export enum EditorRoutes {
+  EDITOR = "Editor"
+}

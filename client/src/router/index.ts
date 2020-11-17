@@ -1,22 +1,21 @@
 import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
-import accountRoutes from "@/router/routes/AccountRoutes";
-import editorRoutes from "@/router/routes/EditorRoutes";
+import { RouteConfig } from "vue-router";
+import { accountRouteDefinitions } from "@/router/routes/AccountRouteDefinitions";
+import {editorRouteDefinitions} from "@/router/routes/EditorRouteDefinitions";
 import RoutingStore from "@/router/lib/RoutingStore";
+import {appRouter} from "@/router/appRouter";
 import CustomRouter from "@/router/lib/CustomRouter";
 
-Vue.use(VueRouter);
+Vue.use(CustomRouter);
 
 const routes: Array<RouteConfig> = [
-  ...accountRoutes,
-  ...editorRoutes,
+  ...accountRouteDefinitions,
+  ...editorRouteDefinitions,
 ];
 
-const router = new CustomRouter({
-  routes,
-});
+appRouter.addRoutes(routes);
 
-router.beforeEach(async(to, from, next) => {
+appRouter.beforeEach(async(to, from, next) => {
   // If routes not loaded load them.
   if (!RoutingStore.hasRoutes) {
     await RoutingStore.buildRoutesFromRouterList(routes);
@@ -26,4 +25,4 @@ router.beforeEach(async(to, from, next) => {
   next();
 });
 
-export default router;
+export default {};
