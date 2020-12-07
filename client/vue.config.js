@@ -1,6 +1,13 @@
 const path = require("path");
 
 module.exports = {
+  devServer: {
+    headers: {
+      'Access-Control-allow-Origin': '*',
+    }
+  },
+  publicPath: "http://localhost:8080/app/",
+
   configureWebpack: {
     resolve: {
       alias: {

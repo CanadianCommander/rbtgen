@@ -1,5 +1,0 @@
-services:
-  rbtgen_db:
-    image: postgres:12
-    volumes:
-      - ~/.docker/.rbtgen/db:/var/lib/pgsql
