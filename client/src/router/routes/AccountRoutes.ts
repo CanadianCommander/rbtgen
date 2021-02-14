@@ -3,4 +3,5 @@
 export enum AccountRoutes {
   HOME = "Home",
   LOGIN = "Login",
+  SIGNUP = "Signup",
 }

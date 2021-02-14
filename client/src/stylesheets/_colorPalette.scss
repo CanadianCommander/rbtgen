@@ -1,15 +1,35 @@
 // color variables
 $primaryColor: #43A047;
 $primaryColorLight: #66BB6A;
-$secondaryColor: #0097A7;
+$secondaryColor: #e74c3c;
 $backgroundColor: #212121;
 $surfaceColor: #1e1c1c;
+$colorText: #ffffff;
 
-.default-theme {
+.dracula-theme {
   --mdc-theme-primary: #{$primaryColor};
   --mdc-theme-secondary: #{$secondaryColor};
   --mdc-theme-background: #{$backgroundColor};
   --mdc-theme-surface: #{$surfaceColor};
 
   --mdc-theme-text-primary-on-background: #{$primaryColorLight};
+
+  // text
+  --color-text: #{$colorText};
+  --color-text-primary: var(--mdc-theme-primary);
+  --color-text-secondary: var(--mdc-theme-secondary);
+}
+
+.cp-theme {
+  --mdc-theme-primary: #4d73bf;
+  --mdc-theme-secondary: #3d4b66;
+  --mdc-theme-background: #f2f4f7;
+  --mdc-theme-surface: #ffffff;
+
+  --mdc-theme-text-primary-on-background: #4d73bf;
+
+  // text
+  --color-text: #45474d;
+  --color-text-primary: var(--mdc-theme-primary);
+  --color-text-secondary: var(--mdc-theme-secondary);
 }

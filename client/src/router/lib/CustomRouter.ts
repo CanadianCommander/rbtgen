@@ -16,4 +16,9 @@ export default class CustomRouter extends VueRouter {
   public toLastRoute(): Promise<Route> {
     return this.push({ name: RoutingStore.lastRoute?.routeName });
   }
+
+  // go to named route
+  public toRoute(route: NamedRoute): Promise<Route> {
+    return RoutingStore.toRoute(route);
+  }
 }

@@ -3,6 +3,7 @@ import LoginPage from "@/views/LoginPage.vue";
 import StandardLayout from "@/layouts/StandardLayout.vue";
 import Home from "@/views/Home.vue";
 import {AccountRoutes} from "@/router/routes/AccountRoutes";
+import Signup from "@/views/Signup.vue";
 
 export const accountRouteDefinitions: Array<RouteConfig> = [
   {
@@ -12,6 +13,15 @@ export const accountRouteDefinitions: Array<RouteConfig> = [
     component: LoginPage,
     meta: {
       nextRoute: AccountRoutes.HOME,
+    },
+  },
+  {
+    path: "/signup",
+    name: AccountRoutes.SIGNUP,
+    component: Signup,
+    meta: {
+      nextRoute: AccountRoutes.HOME,
+      lastRoute: AccountRoutes.LOGIN,
     },
   },
 

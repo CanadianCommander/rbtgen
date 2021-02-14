@@ -1,6 +1,13 @@
-// import material icons
-@import "~material-design-icons/iconfont/material-icons.css";
-
-body {
+#app {
   font-family: "Roboto", sans-serif;
+
+  // default text color
+  color: var(--color-text);
+  // text color classes
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
 }

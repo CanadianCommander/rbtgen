@@ -13,7 +13,7 @@
 
   @Component({})
   export default class Button extends Vue {
-    @Prop({ type: String }) public mdcButtonClass: string;
+    @Prop({type: Boolean, default: false}) public filled: boolean;
 
     public ripple: MDCRipple | null = null;
 
@@ -27,16 +27,11 @@
 
     get buttonClasses(): string[] {
       return [
-        this.mdcButtonClass,
+        this.filled ? "mdc-button--raised" : "mdc-button--outlined",
       ];
     }
   }
 </script>
 <style lang="scss" scoped>
-  @use "~@material/button/mdc-button";
-  @use "~@material/button";
-
-  .button {
-    @include button.core-styles;
-  }
+  @use "~@material/button/styles";
 </style>

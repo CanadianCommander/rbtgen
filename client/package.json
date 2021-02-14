@@ -9,9 +9,10 @@
   },
   "dependencies": {
     "@material/ripple": "^8.0.0",
+    "@types/js-cookie": "^2.2.6",
     "core-js": "^3.6.5",
-    "material-components-web": "^8.0.0",
-    "material-design-icons": "^3.0.1",
+    "js-cookie": "^2.2.1",
+    "material-components-web": "10.0.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
@@ -74,9 +75,15 @@
         "error",
         "always-multiline"
       ],
-      "@typescript-eslint/no-explicit-any": ["off"],
-      "padded-blocks": ["off"],
-      "no-trailing-spaces": ["off"],
+      "@typescript-eslint/no-explicit-any": [
+        "off"
+      ],
+      "padded-blocks": [
+        "off"
+      ],
+      "no-trailing-spaces": [
+        "off"
+      ],
       "vue/script-indent": [
         "error",
         2,
