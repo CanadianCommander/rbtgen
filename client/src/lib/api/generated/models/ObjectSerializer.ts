@@ -1,10 +1,12 @@
 export * from './ApiError';
-export * from './AuthToken';
 export * from './LoginCredentials';
+export * from './LoginInfo';
+export * from './SignupInfo';
 
 import { ApiError   , ApiErrorErrorCodeEnum   } from './ApiError';
-import { AuthToken } from './AuthToken';
 import { LoginCredentials } from './LoginCredentials';
+import { LoginInfo } from './LoginInfo';
+import { SignupInfo } from './SignupInfo';
 
 /* tslint:disable:no-unused-variable */
 let primitives = [
@@ -30,8 +32,9 @@ let enumsMap: Set<string> = new Set<string>([
 
 let typeMap: {[index: string]: any} = {
     "ApiError": ApiError,
-    "AuthToken": AuthToken,
     "LoginCredentials": LoginCredentials,
+    "LoginInfo": LoginInfo,
+    "SignupInfo": SignupInfo,
 }
 
 export class ObjectSerializer {

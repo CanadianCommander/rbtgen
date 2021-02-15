@@ -1,3 +1,4 @@
 export * from './ApiError'
-export * from './AuthToken'
 export * from './LoginCredentials'
+export * from './LoginInfo'
+export * from './SignupInfo'

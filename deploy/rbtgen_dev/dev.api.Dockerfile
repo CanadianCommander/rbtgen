@@ -16,4 +16,4 @@ RUN yarn install
 # install gems
 RUN bundle install
 
-CMD rm ./tmp/pids/server.pid; bundle exec rails s -b 0.0.0.0
+CMD rm ./tmp/pids/server.pid; bundle exec rake db:migrate; bundle exec rails s -b 0.0.0.0

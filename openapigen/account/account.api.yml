@@ -13,11 +13,11 @@ login:
             $ref: "account.model.yml#/login_credentials"
     responses:
       200:
-        description: a login token
+        description: a login user info
         content:
           application/json:
             schema:
-              $ref: "account.model.yml#/auth_token"
+              $ref: "account.model.yml#/login_info"
       400:
         description: a login error
         content:
@@ -25,26 +25,25 @@ login:
             schema:
               $ref: "../common/error.model.yml#/api_error"
 
-
-#/clinic_user/login.json:
-#  post:
-#    summary: Clinic user login
-#    operationId: clinicLogin
-#    tags:
-#      - login
-#    requestBody:
-#      description: Authentication info
-#      required: true
-#      content:
-#        application/json:
-#          schema:
-#            $ref: "#/components/schemas/AuthInfo"
-#    responses:
-#      '200':
-#        description: A myhealthaccess login token
-#        content:
-#          application/json:
-#            schema:
-#              $ref: "#/components/schemas/ClinicUserLoginResponse"
-#      default:
-#        $ref: "#/components/responses/ErrorResponse"
+signup:
+  post:
+    summary: Signup for an RBTgen account
+    operationId: signup
+    tags:
+      - public
+    requestBody:
+      description: Signup Info
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "account.model.yml#/signup_info"
+    responses:
+      204:
+        description: successful signup
+      400:
+        description: signup error
+        content:
+          application/json:
+            schema:
+              $ref: "../common/error.model.yml#/api_error"

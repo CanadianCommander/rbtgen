@@ -11,7 +11,8 @@
   import Button from "@/components/controls/Button.vue";
 
   @Component({components: {Button, NavBar}})
-  export default class StandardLayout extends Vue {
+  export default class StandardLayout extends Vue
+  {
 
   }
 </script>

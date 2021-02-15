@@ -3,8 +3,9 @@ import * as models from '../models/all';
 import { Configuration} from '../configuration'
 
 import { ApiError } from '../models/ApiError';
-import { AuthToken } from '../models/AuthToken';
 import { LoginCredentials } from '../models/LoginCredentials';
+import { LoginInfo } from '../models/LoginInfo';
+import { SignupInfo } from '../models/SignupInfo';
 import { ObservablePublicApi } from './ObservableAPI';
 
 
@@ -21,10 +22,19 @@ export class PromisePublicApi {
     }
 
     /**
+     * Signup for an RBTgen account
+     * @param signupInfo Signup Info
+     */
+    public signup(signupInfo: SignupInfo, options?: Configuration): Promise<void> {
+    	const result = this.api.signup(signupInfo, options);
+        return result.toPromise();
+    }
+	
+    /**
      * Login to the RBTgen
      * @param loginCredentials Login Credentials
      */
-    public userLogin(loginCredentials: LoginCredentials, options?: Configuration): Promise<AuthToken> {
+    public userLogin(loginCredentials: LoginCredentials, options?: Configuration): Promise<LoginInfo> {
     	const result = this.api.userLogin(loginCredentials, options);
         return result.toPromise();
     }

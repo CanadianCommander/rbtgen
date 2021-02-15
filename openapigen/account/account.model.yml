@@ -2,17 +2,34 @@ openapi: 3.0.1
 
 login_credentials:
   required:
-    - user_name
+    - email
     - password
   properties:
-    user_name:
+    email:
       type: string
     password:
       type: string
 
-auth_token:
+login_info:
   required:
+    - id
+    - email
     - token
   properties:
+    id:
+      type: string
+    email:
+      type: string
     token:
+      type: string
+
+signup_info:
+  required:
+    - email
+    - password
+  properties:
+    email:
+      type: string
+      format: email
+    password:
       type: string

@@ -11,9 +11,10 @@ http/isomorphic-fetch.ts
 index.ts
 middleware.ts
 models/ApiError.ts
-models/AuthToken.ts
 models/LoginCredentials.ts
+models/LoginInfo.ts
 models/ObjectSerializer.ts
+models/SignupInfo.ts
 models/all.ts
 package.json
 rxjsStub.ts

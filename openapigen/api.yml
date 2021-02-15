@@ -8,5 +8,7 @@ servers:
   - url: /rest/v1/
 
 paths:
-  /login:
+  /public/account/login:
     $ref: "account/account.api.yml#/login"
+  /public/account/signup:
+    $ref: "account/account.api.yml#/signup"

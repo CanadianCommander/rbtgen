@@ -18,3 +18,4 @@ api_error:
       type: string
       enum:
         - generic
+        - validation_error

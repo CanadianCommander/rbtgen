@@ -12,20 +12,24 @@
   import { MDCRipple } from "@material/ripple/index";
 
   @Component({})
-  export default class Button extends Vue {
+  export default class Button extends Vue
+  {
     @Prop({type: Boolean, default: false}) public filled: boolean;
 
     public ripple: MDCRipple | null = null;
 
-    public mounted() {
+    public mounted()
+    {
       this.ripple = new MDCRipple(this.$refs.button as Element);
     }
 
-    public destroyed() {
+    public destroyed()
+    {
       this.ripple.deactivate();
     }
 
-    get buttonClasses(): string[] {
+    get buttonClasses(): string[]
+    {
       return [
         this.filled ? "mdc-button--raised" : "mdc-button--outlined",
       ];

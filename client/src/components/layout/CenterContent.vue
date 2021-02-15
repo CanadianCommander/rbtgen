@@ -10,14 +10,16 @@
   import {Component, Prop} from "vue-property-decorator";
 
   @Component({})
-  export default class CenterContent extends Vue {
+  export default class CenterContent extends Vue
+  {
     @Prop({type: Boolean, default: true}) public standardWidth: boolean;
 
     // ==========================================================
     // Getters
     // ==========================================================
 
-    get containerStyle(): {[key: string]: string} {
+    get containerStyle(): {[key: string]: string}
+    {
       return {
         width: this.standardWidth ? "512px" : "auto",
       };

@@ -17,30 +17,36 @@
   import ListItem from "@/components/lib/ListItem";
 
   @Component({})
-  export default class Menu extends Vue {
+  export default class Menu extends Vue
+  {
     @Prop({type: Array}) menuItems: ListItem[];
     @Prop({type: Boolean, default: false}) open: boolean;
 
     private menu: MDCMenu;
 
-    public mounted(): void {
+    public mounted(): void
+    {
       this.menu = new MDCMenu(this.$refs.mdcMenu as Element);
     }
 
-    public destroyed() {
+    public destroyed()
+    {
       this.menu.destroy();
     }
 
-    public onClose(): void {
+    public onClose(): void
+    {
       this.$emit("update:open", false);
     }
 
-    public itemSelected(value: any): void {
+    public itemSelected(value: any): void
+    {
       this.$emit("select", value);
     }
 
     @Watch("open")
-    public onOpenChange() {
+    public onOpenChange()
+    {
       this.menu.open = this.open;
     }
 

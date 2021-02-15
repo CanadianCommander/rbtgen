@@ -24,11 +24,13 @@
 
   import ToggleSwitch from "@/components/controls/ToggleSwitch.vue";
   import Cookies from "js-cookie";
+  import AuthStore from "@/store/AuthStore";
 
   @Component({
     components: {ToggleSwitch, NavBar},
   })
-  export default class App extends Vue {
+  export default class App extends Vue
+  {
     public darkMode = true;
 
     protected readonly THEME_COOKIE_NAME = "dark-mode";
@@ -37,10 +39,18 @@
     // Vue life cycle hooks
     // ==========================================================
 
-    public created(): void {
-      if (Cookies.get(this.THEME_COOKIE_NAME) === undefined) {
+    public created(): void
+    {
+      // load auth data in cookies
+      AuthStore.loadFromAuthCookies();
+
+      // load theme
+      if (Cookies.get(this.THEME_COOKIE_NAME) === undefined)
+      {
         this.darkMode = true;
-      } else {
+      }
+      else
+      {
         this.darkMode = Cookies.get(this.THEME_COOKIE_NAME) === "true";
       }
     }
@@ -49,7 +59,8 @@
     // Public Methods
     // ==========================================================
 
-    public onToggleTheme(toggleState: boolean): void {
+    public onToggleTheme(toggleState: boolean): void
+    {
       this.darkMode = toggleState;
       Cookies.set(this.THEME_COOKIE_NAME, this.darkMode.toString());
     }
@@ -58,7 +69,8 @@
     // Getters
     // ==========================================================
 
-    get appClasses(): string[] {
+    get appClasses(): string[]
+    {
       return [
         this.darkMode ? "dracula-theme" : "cp-theme",
       ];

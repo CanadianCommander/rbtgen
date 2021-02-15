@@ -16,7 +16,8 @@
   import {MDCTextField} from "@material/textfield";
 
   @Component({})
-  export default class TextField extends Vue {
+  export default class TextField extends Vue
+  {
     @Prop({type: Boolean, default: false}) filled: boolean;
     @Prop({type: Boolean, default: false}) password: boolean;
     @Prop({type: String, default: ""}) labelText: string;
@@ -28,7 +29,8 @@
     // Vue life cycle hooks
     // ==========================================================
 
-    public mounted(): void {
+    public mounted(): void
+    {
       this.textField = new MDCTextField(this.$refs.textField as HTMLElement);
     }
 
@@ -36,7 +38,8 @@
     // Public Methods
     // ==========================================================
 
-    public onInput(event: any): void {
+    public onInput(event: any): void
+    {
       this.$emit("input", event.target.value);
     }
 
@@ -44,16 +47,21 @@
     // Getters
     // ==========================================================
 
-    get textFieldClasses(): string[] {
+    get textFieldClasses(): string[]
+    {
       return [
         this.filled ? "mdc-text-field--filled" : "mdc-text-field--outlined",
       ];
     }
 
-    get inputType(): string {
-      if (this.password) {
+    get inputType(): string
+    {
+      if (this.password)
+      {
         return "password";
-      } else {
+      }
+      else
+      {
         return "text";
       }
     }

@@ -15,9 +15,11 @@ const routes: Array<RouteConfig> = [
 
 appRouter.addRoutes(routes);
 
-appRouter.beforeEach(async(to, from, next) => {
+appRouter.beforeEach(async(to, from, next) =>
+{
   // If routes not loaded load them.
-  if (!RoutingStore.hasRoutes) {
+  if (!RoutingStore.hasRoutes)
+  {
     await RoutingStore.buildRoutesFromRouterList(routes);
   }
 

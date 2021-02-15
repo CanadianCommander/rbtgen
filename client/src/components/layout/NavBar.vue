@@ -52,32 +52,40 @@
   @Component({
     components: {Button, Menu},
   })
-  export default class NavBar extends Vue {
+  export default class NavBar extends Vue
+  {
     public navOpen = false;
 
-    public onNavSelect(navOption: NAV_OPTIONS) {
-      switch (navOption) {
-        case NAV_OPTIONS.LOGOUT: {
+    public onNavSelect(navOption: NAV_OPTIONS)
+    {
+      switch (navOption)
+      {
+        case NAV_OPTIONS.LOGOUT:
+        {
           // TODO logout the user.
           RoutingStore.toRoute(AccountRoutes.LOGIN);
           break;
         }
-        case NAV_OPTIONS.GO_HOME: {
+        case NAV_OPTIONS.GO_HOME:
+        {
           RoutingStore.toRoute(AccountRoutes.HOME);
           break;
         }
       }
     }
 
-    get lastRouteName(): string {
+    get lastRouteName(): string
+    {
       return RoutingStore.lastRoute?.routeName;
     }
 
-    get currentRouteName(): string {
+    get currentRouteName(): string
+    {
       return RoutingStore.currentRoute?.routeName;
     }
 
-    get navOptions(): ListItem[] {
+    get navOptions(): ListItem[]
+    {
       return [
         {
           label: "Home",

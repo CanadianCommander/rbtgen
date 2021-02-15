@@ -10,3 +10,5 @@ Vue.prototype.$routes = {
   AccountRoutes,
   EditorRoutes,
 };
+
+Vue.prototype.$appRouter = appRouter;

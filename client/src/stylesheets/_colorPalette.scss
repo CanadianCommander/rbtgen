@@ -6,13 +6,20 @@ $backgroundColor: #212121;
 $surfaceColor: #1e1c1c;
 $colorText: #ffffff;
 
-.dracula-theme {
-  --mdc-theme-primary: #{$primaryColor};
-  --mdc-theme-secondary: #{$secondaryColor};
-  --mdc-theme-background: #{$backgroundColor};
-  --mdc-theme-surface: #{$surfaceColor};
+// material styling
+#app {
+  --mdc-theme-primary: var(--color-primary);
+  --mdc-theme-secondary: var(--color-secondary);
+  --mdc-theme-background: var(--color-background);
+  --mdc-theme-surface: var(--color-surface);
+}
 
-  --mdc-theme-text-primary-on-background: #{$primaryColorLight};
+// themes
+.dracula-theme {
+  --color-primary: #{$primaryColor};
+  --color-secondary: #{$secondaryColor};
+  --color-background: #{$backgroundColor};
+  --color-surface: #{$surfaceColor};
 
   // text
   --color-text: #{$colorText};
@@ -21,12 +28,10 @@ $colorText: #ffffff;
 }
 
 .cp-theme {
-  --mdc-theme-primary: #4d73bf;
-  --mdc-theme-secondary: #3d4b66;
-  --mdc-theme-background: #f2f4f7;
-  --mdc-theme-surface: #ffffff;
-
-  --mdc-theme-text-primary-on-background: #4d73bf;
+  --color-primary: #4d73bf;
+  --color-secondary: #3d4b66;
+  --color-background: #f2f4f7;
+  --color-surface: #ffffff;
 
   // text
   --color-text: #45474d;

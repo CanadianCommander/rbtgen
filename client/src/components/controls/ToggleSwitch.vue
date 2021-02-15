@@ -21,7 +21,8 @@
   import {MDCSwitch} from "@material/switch";
 
   @Component({})
-  export default class ToggleSwitch extends Vue {
+  export default class ToggleSwitch extends Vue
+  {
     @Prop({type: Boolean}) public value: boolean;
     protected mdcSwitch: MDCSwitch;
 
@@ -29,7 +30,8 @@
     // Vue life cycle hooks
     // ==========================================================
 
-    public mounted(): void {
+    public mounted(): void
+    {
       this.mdcSwitch = new MDCSwitch(this.$refs.switch as HTMLElement);
       this.mdcSwitch.checked = this.value;
     }
@@ -39,7 +41,8 @@
     // ==========================================================
 
     @Watch("value")
-    public onValueChange(newValue: boolean): void {
+    public onValueChange(newValue: boolean): void
+    {
       this.mdcSwitch.checked = newValue;
     }
 
@@ -47,7 +50,8 @@
     // Public methods
     // ==========================================================
 
-    public onClick(): void {
+    public onClick(): void
+    {
       this.$emit("input", this.mdcSwitch.checked);
     }
   }
