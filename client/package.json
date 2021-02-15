@@ -11,6 +11,7 @@
     "@material/ripple": "^8.0.0",
     "@types/js-cookie": "^2.2.6",
     "core-js": "^3.6.5",
+    "isomorphic-fetch": "^3.0.0",
     "js-cookie": "^2.2.1",
     "material-components-web": "10.0.0",
     "vue": "^2.6.11",

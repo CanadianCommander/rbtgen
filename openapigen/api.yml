@@ -1,0 +1,12 @@
+openapi: 3.0.1
+
+info:
+  title: RBTgen API
+  version: 1.0.0
+
+servers:
+  - url: /rest/v1/
+
+paths:
+  /login:
+    $ref: "account/account.api.yml#/login"

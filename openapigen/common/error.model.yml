@@ -1,0 +1,20 @@
+openapi: 3.0.1
+
+api_error:
+  type: object
+  required:
+    - error_message
+    - error_code
+    - user_message
+    - data
+  properties:
+    error_message:
+      type: string
+    user_message:
+      type: string
+    data:
+      type: object
+    error_code:
+      type: string
+      enum:
+        - generic

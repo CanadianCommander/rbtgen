@@ -1,0 +1,50 @@
+login:
+  post:
+    summary: Login to the RBTgen
+    operationId: userLogin
+    tags:
+      - public
+    requestBody:
+      description: Login Credentials
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "account.model.yml#/login_credentials"
+    responses:
+      200:
+        description: a login token
+        content:
+          application/json:
+            schema:
+              $ref: "account.model.yml#/auth_token"
+      400:
+        description: a login error
+        content:
+          application/json:
+            schema:
+              $ref: "../common/error.model.yml#/api_error"
+
+
+#/clinic_user/login.json:
+#  post:
+#    summary: Clinic user login
+#    operationId: clinicLogin
+#    tags:
+#      - login
+#    requestBody:
+#      description: Authentication info
+#      required: true
+#      content:
+#        application/json:
+#          schema:
+#            $ref: "#/components/schemas/AuthInfo"
+#    responses:
+#      '200':
+#        description: A myhealthaccess login token
+#        content:
+#          application/json:
+#            schema:
+#              $ref: "#/components/schemas/ClinicUserLoginResponse"
+#      default:
+#        $ref: "#/components/responses/ErrorResponse"
