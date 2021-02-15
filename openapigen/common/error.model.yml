@@ -19,3 +19,4 @@ api_error:
       enum:
         - generic
         - validation_error
+        - bad_auth

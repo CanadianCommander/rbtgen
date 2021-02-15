@@ -4,6 +4,7 @@ import { accountRouteDefinitions } from "@/router/routes/AccountRouteDefinitions
 import {editorRouteDefinitions} from "@/router/routes/EditorRouteDefinitions";
 import RoutingStore from "@/router/lib/RoutingStore";
 import {appRouter} from "@/router/appRouter";
+import "@/router/guards/AuthGuard";
 import CustomRouter from "@/router/lib/CustomRouter";
 
 Vue.use(CustomRouter);

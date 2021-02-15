@@ -55,5 +55,5 @@ export class ApiError {
 }
 
 
-export type ApiErrorErrorCodeEnum = "generic" | "validation_error" ;
+export type ApiErrorErrorCodeEnum = "generic" | "validation_error" | "bad_auth" ;
 

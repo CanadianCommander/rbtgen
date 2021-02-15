@@ -1,12 +1,14 @@
 <template>
   <div class="login-page">
     <center-content>
-      <h1 class="text-secondary m-b-64 text-center">RBTGen Login</h1>
-      <TextField v-model="email" label-text="Email" class="m-b-16"></TextField>
-      <TextField v-model="password" label-text="Password" password class="m-b-64"></TextField>
-      <Button filled class="m-b-16" @click="login">
-        Login
-      </Button>
+      <form @submit="login($event)" class="d-flex flex-col">
+        <h1 class="text-secondary m-b-64 text-center">RBTGen Login</h1>
+        <TextField v-model="email" label-text="Email" class="m-b-16"></TextField>
+        <TextField v-model="password" label-text="Password" password class="m-b-64"></TextField>
+        <Button filled class="m-b-16">
+          Login
+        </Button>
+      </form>
       <Button @click="$router.toRoute($routes.AccountRoutes.SIGNUP)">
         Signup
       </Button>
@@ -34,8 +36,11 @@
     // Public Methods
     // ==========================================================
 
-    public async login(): Promise<void>
+    public async login(event: Event): Promise<void>
     {
+      // prevent form submit
+      event.preventDefault();
+
       try
       {
         const loginInfo: LoginInfo = await publicApi.userLogin({email: this.email, password: this.password});
@@ -45,7 +50,7 @@
       }
       catch (error)
       {
-        console.log(error);
+        // TODO alert
       }
     }
   }

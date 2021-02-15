@@ -17,7 +17,7 @@ module ::Rbt::Auth
       if challenge_password == user.password
         return self.generate_login_token(user)
       else
-        raise ::Rbt::Error::AuthError.new("Login failed for user [#{user.id}]")
+        raise ::Rbt::Error::AuthError.new("Login failed")
       end
     end
 

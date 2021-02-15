@@ -6,6 +6,7 @@ module ::Transfer::Error
     module ERROR_CODE
       GENERIC = "generic".freeze
       VALIDATION_ERROR = "validation_error".freeze
+      BAD_AUTH = "bad_auth  ".freeze
     end
 
     # ==========================================================

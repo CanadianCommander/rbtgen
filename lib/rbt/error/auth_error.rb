@@ -1,4 +1,4 @@
 module ::Rbt::Error
-  class AuthError < StandardError
+  class AuthError < BaseError
   end
 end

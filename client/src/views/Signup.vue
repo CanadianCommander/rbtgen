@@ -1,14 +1,17 @@
 <template>
   <center-content>
-    <h1 class="text-secondary text-center m-b-8">🚀 Signup! 🚀</h1>
-    <p class="text-secondary text-center m-b-64">Signup now to revolutionize your reporting workflow!</p>
+    <form @submit="signup($event)" class="d-flex flex-col">
+      <h1 class="text-secondary text-center m-b-8">🚀 Signup! 🚀</h1>
+      <p class="text-secondary text-center m-b-64">Signup now to revolutionize your reporting workflow!</p>
 
-    <text-field filled label-text="Email" class="m-b-16" v-model="email"></text-field>
-    <text-field filled password label-text="Password" class="m-b-16" v-model="password"></text-field>
-    <text-field filled password label-text="Confirm Password" class="m-b-64" v-model="confirmPassword"></text-field>
-    <p v-if="!passwordsMatch"></p>
+      <text-field filled label-text="Email" class="m-b-16" v-model="email"></text-field>
+      <text-field filled password label-text="Password" class="m-b-16" v-model="password"></text-field>
+      <text-field filled password label-text="Confirm Password" v-model="confirmPassword"></text-field>
+      <p v-if="!passwordsMatch" class="text-secondary">Passwords must match</p>
 
-    <Button filled class="m-b-16" @click="signup()"> Create Account </Button>
+      <Button filled class="m-b-16 m-t-64"> Create Account </Button>
+    </form>
+
     <Button @click="$router.toLastRoute()"> Back To Login </Button>
   </center-content>
 </template>
@@ -34,8 +37,11 @@
     // Public Methods
     // ==========================================================
 
-    public async signup(): Promise<void>
+    public async signup(event: Event): Promise<void>
     {
+      // prevent form submit
+      event.preventDefault();
+
       if (this.signupFormValid)
       {
         try

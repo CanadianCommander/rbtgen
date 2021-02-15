@@ -11,24 +11,9 @@ class AuthStore extends VuexModule
   protected readonly COOKIE_TOKEN = "auth_cookie_token"
   protected readonly COOKIE_USER = "auth_cookie_user"
 
-  protected _loginToken = "";
+  protected _loginToken: string = null;
   protected _loggedInUser: User = null;
-
-  // ==========================================================
-  // Mutations
-  // ==========================================================
-
-  @Mutation
-  public setLoginToken(loginToken: string): void
-  {
-    this._loginToken = loginToken;
-  }
-
-  @Mutation
-  public setLoggedInUser(user: User): void
-  {
-    this._loggedInUser = user;
-  }
+  protected _initialized = false;
 
   // ==========================================================
   // Actions
@@ -51,11 +36,32 @@ class AuthStore extends VuexModule
     Cookies.set(this.COOKIE_USER, this._loggedInUser);
   }
 
-  @Action
+  @Action({rawError: true})
   public loadFromAuthCookies(): void
   {
-    this.setLoginToken(Cookies.get(this.COOKIE_TOKEN) as string);
-    this.setLoggedInUser(JSON.parse(Cookies.get(this.COOKIE_USER)) as User);
+    if (Cookies.get(this.COOKIE_USER) && Cookies.get(this.COOKIE_TOKEN))
+    {
+      this.setLoginToken(Cookies.get(this.COOKIE_TOKEN) as string);
+      this.setLoggedInUser(JSON.parse(Cookies.get(this.COOKIE_USER)) as User);
+    }
+  }
+
+  // ==========================================================
+  // Mutations
+  // ==========================================================
+
+  @Mutation
+  public setLoginToken(loginToken: string): void
+  {
+    this._loginToken = loginToken;
+    this._initialized = true;
+  }
+
+  @Mutation
+  public setLoggedInUser(user: User): void
+  {
+    this._loggedInUser = user;
+    this._initialized = true;
   }
 
   // ==========================================================
@@ -65,6 +71,11 @@ class AuthStore extends VuexModule
   get loggedInUser(): User
   {
     return this._loggedInUser;
+  }
+
+  get isInitialized(): boolean
+  {
+    return this._initialized;
   }
 
   get isLoggedIn(): boolean
