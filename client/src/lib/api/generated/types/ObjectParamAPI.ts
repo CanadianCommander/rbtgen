@@ -3,6 +3,7 @@ import * as models from '../models/all';
 import { Configuration} from '../configuration'
 
 import { ApiError } from '../models/ApiError';
+import { Document } from '../models/Document';
 import { LoginCredentials } from '../models/LoginCredentials';
 import { LoginInfo } from '../models/LoginInfo';
 import { SignupInfo } from '../models/SignupInfo';
@@ -50,6 +51,40 @@ export class ObjectPublicApi {
      */
     public userLogin(param: PublicApiUserLoginRequest, options?: Configuration): Promise<LoginInfo> {
         return this.api.userLogin(param.loginCredentials,  options).toPromise();
+    }
+	
+
+}
+
+
+
+
+import { ObservableUserApi } from "./ObservableAPI";
+import { UserApiRequestFactory, UserApiResponseProcessor} from "../apis/UserApi";
+
+export interface UserApiAddSchemaDocumentRequest {
+    /**
+     * schema document upload
+     * @type Document
+     * @memberof UserApiaddSchemaDocument
+     */
+    document: Document
+}
+
+
+export class ObjectUserApi {
+    private api: ObservableUserApi
+
+    public constructor(configuration: Configuration, requestFactory?: UserApiRequestFactory, responseProcessor?: UserApiResponseProcessor) {
+        this.api = new ObservableUserApi(configuration, requestFactory, responseProcessor);
+	}
+
+    /**
+     * Add schema document
+     * @param param the request object
+     */
+    public addSchemaDocument(param: UserApiAddSchemaDocumentRequest, options?: Configuration): Promise<Document> {
+        return this.api.addSchemaDocument(param.document,  options).toPromise();
     }
 	
 

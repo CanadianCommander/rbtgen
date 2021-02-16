@@ -34,6 +34,9 @@ module RbtGen
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # turn cookies on
+    config.middleware.use ActionDispatch::Cookies
+
     # logger
     config.logger = Logger.new(STDOUT)
 

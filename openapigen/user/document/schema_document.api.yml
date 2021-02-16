@@ -1,0 +1,26 @@
+addSchemaDocument:
+  post:
+    summary: Add schema document
+    operationId: addSchemaDocument
+    tags:
+      - user
+    requestBody:
+      description: schema document upload
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "document.model.yml#/document"
+    responses:
+      200:
+        description: the uploaded document. Note, file_data will be nil.
+        content:
+          application/json:
+            schema:
+              $ref: "document.model.yml#/document"
+      400:
+        description: upload eror
+        content:
+          application/json:
+            schema:
+              $ref: "../../common/error.model.yml#/api_error"

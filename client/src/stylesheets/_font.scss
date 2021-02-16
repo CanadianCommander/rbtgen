@@ -4,6 +4,9 @@
   // default text color
   color: var(--color-text);
   // text color classes
+  .text-default {
+    color: var(--color-text);
+  }
   .text-primary {
     color: var(--color-text-primary);
   }

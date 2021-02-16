@@ -5,6 +5,7 @@ import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
 
 import { ApiError } from '../models/ApiError';
+import { Document } from '../models/Document';
 import { LoginCredentials } from '../models/LoginCredentials';
 import { LoginInfo } from '../models/LoginInfo';
 import { SignupInfo } from '../models/SignupInfo';
@@ -68,6 +69,51 @@ export class ObservablePublicApi {
 	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
 	    		}
 	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.userLogin(rsp)));
+	    	}));
+    }
+	
+
+}
+
+
+
+
+import { UserApiRequestFactory, UserApiResponseProcessor} from "../apis/UserApi";
+export class ObservableUserApi {
+    private requestFactory: UserApiRequestFactory;
+    private responseProcessor: UserApiResponseProcessor;
+    private configuration: Configuration;
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: UserApiRequestFactory,
+        responseProcessor?: UserApiResponseProcessor
+    ) {
+        this.configuration = configuration;
+        this.requestFactory = requestFactory || new UserApiRequestFactory(configuration);
+        this.responseProcessor = responseProcessor || new UserApiResponseProcessor();
+    }
+
+    /**
+     * Add schema document
+     * @param document schema document upload
+     */
+    public addSchemaDocument(document: Document, options?: Configuration): Observable<Document> {
+    	const requestContextPromise = this.requestFactory.addSchemaDocument(document, options);
+
+		// build promise chain
+    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+    	for (let middleware of this.configuration.middleware) {
+    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+    	}
+
+    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+	    	pipe(mergeMap((response: ResponseContext) => {
+	    		let middlewarePostObservable = of(response);
+	    		for (let middleware of this.configuration.middleware) {
+	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+	    		}
+	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.addSchemaDocument(rsp)));
 	    	}));
     }
 	

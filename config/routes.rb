@@ -6,6 +6,10 @@ Rails.application.routes.draw do
       # public api.
       draw(:public)
 
+      # authenticated ap
+      namespace :authenticated do
+        draw(:user)
+      end
     end
   end
 end

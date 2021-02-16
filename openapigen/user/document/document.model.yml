@@ -1,0 +1,19 @@
+document:
+  required:
+    - file_name
+    - file_type
+    - file_usage_type
+  properties:
+    id:
+      type: string
+      format: uuid
+    file_name:
+      type: string
+    file_data:
+      type: string
+      format: byte
+    file_type:
+      type: string
+      enum:
+        - db_schema
+        - rbt

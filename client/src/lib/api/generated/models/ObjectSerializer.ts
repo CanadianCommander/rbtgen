@@ -1,9 +1,11 @@
 export * from './ApiError';
+export * from './Document';
 export * from './LoginCredentials';
 export * from './LoginInfo';
 export * from './SignupInfo';
 
 import { ApiError   , ApiErrorErrorCodeEnum   } from './ApiError';
+import { Document   , DocumentFileTypeEnum   } from './Document';
 import { LoginCredentials } from './LoginCredentials';
 import { LoginInfo } from './LoginInfo';
 import { SignupInfo } from './SignupInfo';
@@ -28,10 +30,12 @@ const supportedMediaTypes: { [mediaType: string]: number } = {
                  
 let enumsMap: Set<string> = new Set<string>([
     "ApiErrorErrorCodeEnum",
+    "DocumentFileTypeEnum",
 ]);
 
 let typeMap: {[index: string]: any} = {
     "ApiError": ApiError,
+    "Document": Document,
     "LoginCredentials": LoginCredentials,
     "LoginInfo": LoginInfo,
     "SignupInfo": SignupInfo,

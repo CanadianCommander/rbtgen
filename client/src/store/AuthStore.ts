@@ -8,8 +8,8 @@ import {LoginInfo} from "@/lib/api/generated";
 @Module({ dynamic: true, store, name: "AuthStore", namespaced: true })
 class AuthStore extends VuexModule
 {
-  protected readonly COOKIE_TOKEN = "auth_cookie_token"
-  protected readonly COOKIE_USER = "auth_cookie_user"
+  protected readonly COOKIE_TOKEN = "auth_token"
+  protected readonly COOKIE_USER = "auth_user"
 
   protected _loginToken: string = null;
   protected _loggedInUser: User = null;

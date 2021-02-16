@@ -1,3 +1,2 @@
 module ::Transfer::Error
-
 end

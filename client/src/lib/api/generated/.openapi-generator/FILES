@@ -1,6 +1,7 @@
 .gitignore
 README.md
 apis/PublicApi.ts
+apis/UserApi.ts
 apis/baseapi.ts
 apis/exception.ts
 auth/auth.ts
@@ -11,6 +12,7 @@ http/isomorphic-fetch.ts
 index.ts
 middleware.ts
 models/ApiError.ts
+models/Document.ts
 models/LoginCredentials.ts
 models/LoginInfo.ts
 models/ObjectSerializer.ts

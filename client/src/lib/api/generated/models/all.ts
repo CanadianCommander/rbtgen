@@ -1,4 +1,5 @@
 export * from './ApiError'
+export * from './Document'
 export * from './LoginCredentials'
 export * from './LoginInfo'
 export * from './SignupInfo'

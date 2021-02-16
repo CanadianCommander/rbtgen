@@ -12,3 +12,7 @@ paths:
     $ref: "account/account.api.yml#/login"
   /public/account/signup:
     $ref: "account/account.api.yml#/signup"
+
+  /authenticated/user/document/schema/:
+    $ref: "user/document/schema_document.api.yml#/addSchemaDocument"
+

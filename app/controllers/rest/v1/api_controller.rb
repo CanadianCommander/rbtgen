@@ -1,5 +1,6 @@
 module ::Rest::V1
   class ApiController < ApplicationController
+    include ::ActionController::Cookies
 
     # ==========================================================
     # Hooks

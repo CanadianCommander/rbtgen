@@ -8,6 +8,9 @@ class CreateUserTable < ActiveRecord::Migration[6.0]
       table.string :password
       table.string :password_salt
 
+      table.timestamps
+      table.datetime :deleted_at
+
       table.index :email, unique: true
     end
   end

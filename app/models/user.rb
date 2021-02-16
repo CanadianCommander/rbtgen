@@ -1,10 +1,19 @@
 class User < ApplicationRecord
 
   # ==========================================================
+  # Associations
+  # ==========================================================
+
+  # database schema files
+  has_many_attached :schema_files
+  # report by template files
+  has_many_attached :report_blobs
+
+  # ==========================================================
   # Validations
   # ==========================================================
 
-  # email is formatted like mail address
+  # email is formatted like email address
   validates :email, format: {with: /[^@]+@[^.]+\.[^.]+/}
 
   # ==========================================================
@@ -24,6 +33,4 @@ class User < ApplicationRecord
         password_salt: salt,
       })
   end
-
-
 end
