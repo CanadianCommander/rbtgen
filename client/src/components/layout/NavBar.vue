@@ -1,7 +1,7 @@
 <template>
   <div class="nav-bar">
     <div class="left d-flex align-items-center justify-content-start">
-      <Button v-if="lastRouteName" @click="$router.toLastRoute();">
+      <Button text-button v-if="lastRouteName" @click="$router.toLastRoute();">
         <div class="d-flex align-items-center m-r-16">
           <span class="material-icons">
             keyboard_arrow_left
@@ -43,6 +43,7 @@
   import Menu from "@/components/controls/Menu.vue";
   import ListItem from "@/components/lib/ListItem";
   import {AccountRoutes} from "@/router/routes/AccountRoutes";
+  import AuthStore from "@/store/AuthStore";
 
   enum NAV_OPTIONS {
     GO_HOME,
@@ -62,7 +63,7 @@
       {
         case NAV_OPTIONS.LOGOUT:
         {
-          // TODO logout the user.
+          AuthStore.clearAuth();
           RoutingStore.toRoute(AccountRoutes.LOGIN);
           break;
         }
@@ -88,7 +89,7 @@
     {
       return [
         {
-          label: "Home",
+          label: "Library",
           value: NAV_OPTIONS.GO_HOME,
         },
         {

@@ -15,6 +15,7 @@
   export default class Button extends Vue
   {
     @Prop({type: Boolean, default: false}) public filled: boolean;
+    @Prop({type: Boolean, default: false}) public textButton: boolean;
 
     public ripple: MDCRipple | null = null;
 
@@ -30,8 +31,14 @@
 
     get buttonClasses(): string[]
     {
+      let buttonClass = "";
+      if (!this.textButton)
+      {
+        buttonClass = this.filled ? "mdc-button--raised" : "mdc-button--outlined";
+      }
+
       return [
-        this.filled ? "mdc-button--raised" : "mdc-button--outlined",
+        buttonClass,
       ];
     }
   }

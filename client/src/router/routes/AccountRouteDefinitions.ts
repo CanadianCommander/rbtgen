@@ -1,9 +1,9 @@
 import {RouteConfig} from "vue-router";
 import LoginPage from "@/views/LoginPage.vue";
 import StandardLayout from "@/layouts/StandardLayout.vue";
-import Home from "@/views/Home.vue";
 import {AccountRoutes} from "@/router/routes/AccountRoutes";
 import Signup from "@/views/Signup.vue";
+import Library from "@/views/Library.vue";
 
 export const accountRouteDefinitions: Array<RouteConfig> = [
   {
@@ -32,7 +32,7 @@ export const accountRouteDefinitions: Array<RouteConfig> = [
       {
         path: "/home",
         name: AccountRoutes.HOME,
-        component: Home,
+        component: Library,
       },
     ],
   },

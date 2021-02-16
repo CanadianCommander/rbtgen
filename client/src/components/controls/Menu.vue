@@ -53,11 +53,23 @@
   }
 </script>
 <style lang="scss" scoped>
-  @use "src/stylesheets/materialColorPalette";
   @use "~@material/list/mdc-list";
   @use "~@material/menu-surface/mdc-menu-surface";
   @use "~@material/menu/mdc-menu";
 
   .menu {
+    li {
+      .mdc-list-item__text {
+        color: var(--color-text);
+      }
+
+      &:hover {
+        background-color: var(--color-primary);
+        .mdc-list-item__text {
+          color: var(--color-text-on-primary);
+        }
+
+      }
+    }
   }
 </style>

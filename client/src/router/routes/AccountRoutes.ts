@@ -1,7 +1,7 @@
 // must live in different module then the definitions to avoid circular import.
 
 export enum AccountRoutes {
-  HOME = "Home",
+  HOME = "Library",
   LOGIN = "Login",
   SIGNUP = "Signup",
 }

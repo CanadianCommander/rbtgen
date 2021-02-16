@@ -13,6 +13,7 @@ export const editorRouteDefinitions: Array<RouteConfig> = [
         path: "/editor/edit",
         name: EditorRoutes.EDITOR,
         component: Editor,
+        props: true,
         meta: {
           lastRoute: AccountRoutes.HOME,
         },

@@ -46,6 +46,16 @@ class AuthStore extends VuexModule
     }
   }
 
+  // logout the user
+  @Action({rawError: true})
+  public clearAuth(): void
+  {
+    Cookies.remove(this.COOKIE_TOKEN);
+    Cookies.remove(this.COOKIE_USER);
+    this.setLoggedInUser(null);
+    this.setLoginToken(null);
+  }
+
   // ==========================================================
   // Mutations
   // ==========================================================

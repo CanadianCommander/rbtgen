@@ -1,11 +1,3 @@
-// color variables
-$primaryColor: #43A047;
-$primaryColorLight: #66BB6A;
-$secondaryColor: #e74c3c;
-$backgroundColor: #212121;
-$surfaceColor: #1e1c1c;
-$colorText: #ffffff;
-
 // material styling
 #app {
   --mdc-theme-primary: var(--color-primary);
@@ -16,15 +8,16 @@ $colorText: #ffffff;
 
 // themes
 .dracula-theme {
-  --color-primary: #{$primaryColor};
-  --color-secondary: #{$secondaryColor};
-  --color-background: #{$backgroundColor};
-  --color-surface: #{$surfaceColor};
+  --color-primary: #43A047;
+  --color-secondary:  #e74c3c;
+  --color-background: #212121;
+  --color-surface: #1e1c1c;
 
   // text
-  --color-text: #{$colorText};
-  --color-text-primary: var(--mdc-theme-primary);
-  --color-text-secondary: var(--mdc-theme-secondary);
+  --color-text: #ffffff;
+  --color-text-on-primary:#ffffff;
+  --color-text-primary: var(--color-primary);
+  --color-text-secondary: var(--color-secondary);
 }
 
 .cp-theme {
@@ -35,6 +28,7 @@ $colorText: #ffffff;
 
   // text
   --color-text: #45474d;
-  --color-text-primary: var(--mdc-theme-primary);
-  --color-text-secondary: var(--mdc-theme-secondary);
+  --color-text-on-primary:#ffffff;
+  --color-text-primary: var(--color-primary);
+  --color-text-secondary: var(--color-secondary);
 }
