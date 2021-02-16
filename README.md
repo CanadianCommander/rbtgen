@@ -17,4 +17,4 @@ At this point rails will be upset because the database doesn't exist. attach to 
 with, `docker exec -u postgres -it rbtgen_dev_db_1 psql` and create a new development database, 
 `CREATE DATABASE rbt_gen_development;`. Finally give the containers a restart with `^C` then run, `./dev.sh`.  
 
-🎉 You should now have working dev environment 🎉
+🎉 You should now have working dev environment on `localhost:8080` 🎉
