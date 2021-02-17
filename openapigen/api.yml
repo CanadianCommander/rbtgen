@@ -13,6 +13,9 @@ paths:
   /public/account/signup:
     $ref: "account/account.api.yml#/signup"
 
-  /authenticated/user/document/schema/:
-    $ref: "user/document/schema_document.api.yml#/addSchemaDocument"
-
+  /authenticated/user/self/documents/:
+    $ref: "user/document/schema_document.api.yml#/getDocuments"
+  /authenticated/user/self/document:
+    $ref: "user/document/schema_document.api.yml#/addDocument"
+  /authenticated/user/self/document/{document_id}:
+    $ref: "user/document/schema_document.api.yml#/Document"

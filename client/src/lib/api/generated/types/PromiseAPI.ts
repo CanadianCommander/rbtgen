@@ -64,8 +64,27 @@ export class PromiseUserApi {
      * Add schema document
      * @param document schema document upload
      */
-    public addSchemaDocument(document: Document, options?: Configuration): Promise<Document> {
-    	const result = this.api.addSchemaDocument(document, options);
+    public addDocument(document: Document, options?: Configuration): Promise<Document> {
+    	const result = this.api.addDocument(document, options);
+        return result.toPromise();
+    }
+	
+    /**
+     * Delete the specified document
+     * @param documentId The id of the document to delete
+     */
+    public deleteDocument(documentId: string, options?: Configuration): Promise<void> {
+    	const result = this.api.deleteDocument(documentId, options);
+        return result.toPromise();
+    }
+	
+    /**
+     * Get all the schema documents for a user.
+     * @param fileType the document type to fetch
+     * @param includeData if true returned files will contain data.
+     */
+    public getDocuments(fileType: string, includeData?: boolean, options?: Configuration): Promise<Array<Document>> {
+    	const result = this.api.getDocuments(fileType, includeData, options);
         return result.toPromise();
     }
 	

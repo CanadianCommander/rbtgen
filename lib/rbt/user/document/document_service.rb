@@ -6,7 +6,6 @@ module ::Rbt::User::Document
       RBT = "rbt".freeze
     end
 
-
     # ==========================================================
     # Public Methods
     # ==========================================================
@@ -30,6 +29,16 @@ module ::Rbt::User::Document
       end
     end
 
+    # delete the document identified by id
+    # @param [String] document_id - the document id t delete
+    def delete_document(document_id)
+      doc = @user.get_document_by_id(document_id)
+      if !doc.nil?
+        doc.purge
+      else
+        raise ::Rbt::User::Document::Error::NoSuchDocumentError.new("document with id [#{document_id}] does not exist on user [#{@user.id}]")
+      end
+    end
 
     # ==========================================================
     # Protected Methods

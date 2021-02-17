@@ -6,15 +6,25 @@ module ::Transfer::User
     # Class Methods
     # ==========================================================
 
+    # build a Document transfer from a blobs
+    # @param [Array<::ActiveStorage::Blob>] blobs - the blobs to build the transfer for.
+    # @param [String] type - the type of the blobs
+    # @param [Boolean] include_data - if true data will be included in transfer
+    # @return [Array<::Transfer::User::Document>]
+    def self.from_blobs(blobs, type, include_data = true)
+      return blobs.map {|blob| ::Transfer::User::Document.from_blob(blob, type, include_data)}
+    end
+
     # build a Document transfer from a blob
     # @param [::ActiveStorage::Blob] blob - the blob to build the transfer for.
     # @param [String] type - the type of the blob
+    # @param [Boolean] include_data - if true data will be included in transfer
     # @return [::Transfer::User::Document]
-    def self.from_blob(blob, type)
+    def self.from_blob(blob, type, include_data = true)
       return ::Transfer::User::Document.new(
         blob.signed_id,
         blob.filename,
-        blob.download,
+        include_data ? blob.download : nil,
         type
       )
     end

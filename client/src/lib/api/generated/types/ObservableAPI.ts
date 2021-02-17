@@ -98,8 +98,8 @@ export class ObservableUserApi {
      * Add schema document
      * @param document schema document upload
      */
-    public addSchemaDocument(document: Document, options?: Configuration): Observable<Document> {
-    	const requestContextPromise = this.requestFactory.addSchemaDocument(document, options);
+    public addDocument(document: Document, options?: Configuration): Observable<Document> {
+    	const requestContextPromise = this.requestFactory.addDocument(document, options);
 
 		// build promise chain
     let middlewarePreObservable = from<RequestContext>(requestContextPromise);
@@ -113,7 +113,54 @@ export class ObservableUserApi {
 	    		for (let middleware of this.configuration.middleware) {
 	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
 	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.addSchemaDocument(rsp)));
+	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.addDocument(rsp)));
+	    	}));
+    }
+	
+    /**
+     * Delete the specified document
+     * @param documentId The id of the document to delete
+     */
+    public deleteDocument(documentId: string, options?: Configuration): Observable<void> {
+    	const requestContextPromise = this.requestFactory.deleteDocument(documentId, options);
+
+		// build promise chain
+    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+    	for (let middleware of this.configuration.middleware) {
+    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+    	}
+
+    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+	    	pipe(mergeMap((response: ResponseContext) => {
+	    		let middlewarePostObservable = of(response);
+	    		for (let middleware of this.configuration.middleware) {
+	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+	    		}
+	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteDocument(rsp)));
+	    	}));
+    }
+	
+    /**
+     * Get all the schema documents for a user.
+     * @param fileType the document type to fetch
+     * @param includeData if true returned files will contain data.
+     */
+    public getDocuments(fileType: string, includeData?: boolean, options?: Configuration): Observable<Array<Document>> {
+    	const requestContextPromise = this.requestFactory.getDocuments(fileType, includeData, options);
+
+		// build promise chain
+    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+    	for (let middleware of this.configuration.middleware) {
+    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+    	}
+
+    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+	    	pipe(mergeMap((response: ResponseContext) => {
+	    		let middlewarePostObservable = of(response);
+	    		for (let middleware of this.configuration.middleware) {
+	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+	    		}
+	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDocuments(rsp)));
 	    	}));
     }
 	

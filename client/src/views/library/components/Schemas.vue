@@ -32,6 +32,9 @@
   import ItemCard from "@/components/controls/ItemCard.vue";
   import Button from "@/components/controls/Button.vue";
   import {userApi} from "@/lib/api/Api";
+  import SchemaLibraryItem from "@/model/library/SchemaLibraryItem";
+  import UserDocument from "@/lib/user/model/UserDocument";
+  import {UserDocumentTypes} from "@/lib/user/model/UserDocumentTypes";
 
   @Component({
     components: {Button, ItemCard},
@@ -53,9 +56,29 @@
     // Protected Methods
     // ==========================================================
 
-    protected loadSchemaItems(): void
+    protected async loadSchemaItems(): Promise<void>
     {
-      // TODO load schema items from server.
+      this.schemaItems = [];
+
+      try
+      {
+        const userDocs = await userApi.getDocuments("schema", false);
+        userDocs.forEach((doc: UserDocument) =>
+        {
+          this.schemaItems.push(new SchemaLibraryItem(
+            doc.id,
+            doc.fileName,
+            UserDocumentTypes.SCHEMA,
+            "Database schema file",
+            null,
+            () => this.loadSchemaItems()));
+        });
+      }
+      catch (error)
+      {
+        // TODO really need to figure out some modal options lol.
+        console.error(error);
+      }
 
       // Add, "New item", item.
       this.schemaItems.push(new VirtualLibraryItem(
@@ -82,11 +105,11 @@
           const file = fileInput.files[i];
           try
           {
-            await userApi.addSchemaDocument(
+            await userApi.addDocument(
               {
                 fileName: file.name,
                 fileData: btoa(await file.text()),
-                fileType: "db_schema",
+                fileType: UserDocumentTypes.SCHEMA,
               });
           }
           catch (error)
@@ -96,6 +119,9 @@
         }
 
         fileInput.value = "";
+
+        // reload display
+        await this.loadSchemaItems();
       };
     }
   }

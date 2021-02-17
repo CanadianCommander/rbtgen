@@ -1,8 +1,14 @@
 namespace :user do
-  namespace :document do
+  scope "/self" do
 
-    scope "/schema" do
-      post "/", to: "schema_document#add_schema_document"
+
+    # =============== Documents ================
+    scope "/documents" do
+      get "/", to: "document#get_documents"
+    end
+    scope "/document" do
+      post "/", to: "document#add_document"
+      delete "/:document_id", to: "document#delete_document"
     end
   end
 end

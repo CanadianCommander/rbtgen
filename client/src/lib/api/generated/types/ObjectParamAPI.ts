@@ -62,13 +62,37 @@ export class ObjectPublicApi {
 import { ObservableUserApi } from "./ObservableAPI";
 import { UserApiRequestFactory, UserApiResponseProcessor} from "../apis/UserApi";
 
-export interface UserApiAddSchemaDocumentRequest {
+export interface UserApiAddDocumentRequest {
     /**
      * schema document upload
      * @type Document
-     * @memberof UserApiaddSchemaDocument
+     * @memberof UserApiaddDocument
      */
     document: Document
+}
+
+export interface UserApiDeleteDocumentRequest {
+    /**
+     * The id of the document to delete
+     * @type string
+     * @memberof UserApideleteDocument
+     */
+    documentId: string
+}
+
+export interface UserApiGetDocumentsRequest {
+    /**
+     * the document type to fetch
+     * @type string
+     * @memberof UserApigetDocuments
+     */
+    fileType: string
+    /**
+     * if true returned files will contain data.
+     * @type boolean
+     * @memberof UserApigetDocuments
+     */
+    includeData?: boolean
 }
 
 
@@ -83,8 +107,24 @@ export class ObjectUserApi {
      * Add schema document
      * @param param the request object
      */
-    public addSchemaDocument(param: UserApiAddSchemaDocumentRequest, options?: Configuration): Promise<Document> {
-        return this.api.addSchemaDocument(param.document,  options).toPromise();
+    public addDocument(param: UserApiAddDocumentRequest, options?: Configuration): Promise<Document> {
+        return this.api.addDocument(param.document,  options).toPromise();
+    }
+	
+    /**
+     * Delete the specified document
+     * @param param the request object
+     */
+    public deleteDocument(param: UserApiDeleteDocumentRequest, options?: Configuration): Promise<void> {
+        return this.api.deleteDocument(param.documentId,  options).toPromise();
+    }
+	
+    /**
+     * Get all the schema documents for a user.
+     * @param param the request object
+     */
+    public getDocuments(param: UserApiGetDocumentsRequest, options?: Configuration): Promise<Array<Document>> {
+        return this.api.getDocuments(param.fileType, param.includeData,  options).toPromise();
     }
 	
 

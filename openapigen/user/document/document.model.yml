@@ -15,5 +15,5 @@ document:
     file_type:
       type: string
       enum:
-        - db_schema
+        - schema
         - rbt

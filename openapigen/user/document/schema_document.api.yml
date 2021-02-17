@@ -1,7 +1,7 @@
-addSchemaDocument:
+addDocument:
   post:
     summary: Add schema document
-    operationId: addSchemaDocument
+    operationId: addDocument
     tags:
       - user
     requestBody:
@@ -20,6 +20,62 @@ addSchemaDocument:
               $ref: "document.model.yml#/document"
       400:
         description: upload eror
+        content:
+          application/json:
+            schema:
+              $ref: "../../common/error.model.yml#/api_error"
+
+getDocuments:
+  get:
+    summary: Get all the schema documents for a user.
+    operationId: getDocuments
+    tags:
+      - user
+    parameters:
+      - in: query
+        required: true
+        description: the document type to fetch
+        name: file_type
+        schema:
+          type: string
+      - in: query
+        description: if true returned files will contain data.
+        name: include_data
+        schema:
+          type: boolean
+    responses:
+      200:
+        description: an array of schema files
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "document.model.yml#/document"
+      400:
+        description: document fetch error
+        content:
+          application/json:
+            schema:
+              $ref: "../../common/error.model.yml#/api_error"
+
+Document:
+  delete:
+    summary: Delete the specified document
+    operationId: deleteDocument
+    tags:
+      - user
+    parameters:
+      - in: path
+        name: document_id
+        description: The id of the document to delete
+        schema:
+          type: string
+    responses:
+      204:
+        description: delete success
+      400:
+        description: delete error
         content:
           application/json:
             schema:

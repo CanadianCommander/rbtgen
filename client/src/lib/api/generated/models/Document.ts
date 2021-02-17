@@ -55,5 +55,5 @@ export class Document {
 }
 
 
-export type DocumentFileTypeEnum = "db_schema" | "rbt" ;
+export type DocumentFileTypeEnum = "schema" | "rbt" ;
 
