@@ -25,6 +25,7 @@
   import {publicApi} from "@/lib/api/Api";
   import {LoginInfo} from "@/lib/api/generated";
   import AuthStore from "@/store/AuthStore";
+  import SnackBarAlertStore from "@/lib/alert/SnackBarAlertStore";
 
   @Component({ components: {CenterContent, TextField, Button } })
   export default class LoginPage extends Vue
@@ -50,7 +51,7 @@
       }
       catch (error)
       {
-        // TODO alert
+        SnackBarAlertStore.showAlert({text: "Login Failed", icon: "error_outline"});
       }
     }
   }

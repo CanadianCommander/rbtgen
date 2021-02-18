@@ -14,6 +14,9 @@
         dark_mode
       </span>
     </div>
+
+    <!-- Global snackbar alert -->
+    <SnackBar></SnackBar>
   </div>
 </template>
 
@@ -25,9 +28,10 @@
   import ToggleSwitch from "@/components/controls/ToggleSwitch.vue";
   import Cookies from "js-cookie";
   import AuthStore from "@/store/AuthStore";
+  import SnackBar from "@/layouts/SnackBar.vue";
 
   @Component({
-    components: {ToggleSwitch, NavBar},
+    components: {SnackBar, ToggleSwitch, NavBar},
   })
   export default class App extends Vue
   {

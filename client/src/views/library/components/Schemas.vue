@@ -35,6 +35,7 @@
   import SchemaLibraryItem from "@/model/library/SchemaLibraryItem";
   import UserDocument from "@/lib/user/model/UserDocument";
   import {UserDocumentTypes} from "@/lib/user/model/UserDocumentTypes";
+  import SnackBarAlertStore from "@/lib/alert/SnackBarAlertStore";
 
   @Component({
     components: {Button, ItemCard},
@@ -114,7 +115,7 @@
           }
           catch (error)
           {
-            // TODO tell user file upload failed.
+            SnackBarAlertStore.showAlert({text: "Failed to upload schema file", icon: "error_outline"});
           }
         }
 
