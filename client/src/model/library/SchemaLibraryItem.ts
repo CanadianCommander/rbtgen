@@ -2,6 +2,8 @@ import LibraryItem from "@/model/library/LibraryItem";
 import {LibraryItemType} from "@/model/library/LibraryItemType";
 import LibraryItemAction from "@/model/library/LibraryItemActions";
 import {userApi} from "@/lib/api/Api";
+import UserDocument from "@/lib/user/model/UserDocument";
+import {saveAs} from "file-saver";
 
 export default class SchemaLibraryItem implements LibraryItem
 {
@@ -11,7 +13,7 @@ export default class SchemaLibraryItem implements LibraryItem
   public meta: any;
   public name: string;
 
-  protected onDeletedCallback: () => void
+  protected onChange: () => void
 
   // ==========================================================
   // Public Methods
@@ -23,14 +25,14 @@ export default class SchemaLibraryItem implements LibraryItem
     icon: string,
     description = "",
     meta: any = null,
-    onDeletedCallback: () => void = null)
+    onChange: () => void = null)
   {
     this.id = id;
     this.name = name;
     this.icon = icon;
     this.description = description;
     this.meta = meta;
-    this.onDeletedCallback = onDeletedCallback;
+    this.onChange = onChange;
   }
 
   primaryAction(): void
@@ -61,7 +63,8 @@ export default class SchemaLibraryItem implements LibraryItem
 
   protected async downloadSchemaFile(): Promise<void>
   {
-    console.log("download");
+    const doc: UserDocument = await userApi.getDocument(this.id, true);
+    saveAs(new Blob([atob(doc.fileData)], {type: "text/yml;charset=utf-8"}), doc.fileName);
   }
 
   protected async deleteSchemaFile(): Promise<void>
@@ -72,9 +75,9 @@ export default class SchemaLibraryItem implements LibraryItem
     {
       await userApi.deleteDocument(this.id);
 
-      if (this.onDeletedCallback)
+      if (this.onChange)
       {
-        this.onDeletedCallback();
+        this.onChange();
       }
     }
     catch (error)

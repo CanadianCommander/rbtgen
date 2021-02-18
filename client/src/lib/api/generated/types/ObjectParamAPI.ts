@@ -80,6 +80,21 @@ export interface UserApiDeleteDocumentRequest {
     documentId: string
 }
 
+export interface UserApiGetDocumentRequest {
+    /**
+     * The id of the document to get
+     * @type string
+     * @memberof UserApigetDocument
+     */
+    documentId: string
+    /**
+     * if true returned file will contain data.
+     * @type boolean
+     * @memberof UserApigetDocument
+     */
+    includeData?: boolean
+}
+
 export interface UserApiGetDocumentsRequest {
     /**
      * the document type to fetch
@@ -117,6 +132,14 @@ export class ObjectUserApi {
      */
     public deleteDocument(param: UserApiDeleteDocumentRequest, options?: Configuration): Promise<void> {
         return this.api.deleteDocument(param.documentId,  options).toPromise();
+    }
+	
+    /**
+     * Get the specified document
+     * @param param the request object
+     */
+    public getDocument(param: UserApiGetDocumentRequest, options?: Configuration): Promise<Document> {
+        return this.api.getDocument(param.documentId, param.includeData,  options).toPromise();
     }
 	
     /**

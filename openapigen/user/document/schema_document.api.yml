@@ -60,6 +60,36 @@ getDocuments:
               $ref: "../../common/error.model.yml#/api_error"
 
 Document:
+  get:
+    summary: Get the specified document
+    operationId: getDocument
+    tags:
+      - user
+    parameters:
+      - in: path
+        name: document_id
+        description: The id of the document to get
+        schema:
+          type: string
+      - in: query
+        description: if true returned file will contain data.
+        name: include_data
+        schema:
+          type: boolean
+    responses:
+      200:
+        description: the fetched document
+        content:
+          application/json:
+            schema:
+              $ref: "document.model.yml#/document"
+      400:
+        description: get document error
+        content:
+          application/json:
+            schema:
+              $ref: "../../common/error.model.yml#/api_error"
+
   delete:
     summary: Delete the specified document
     operationId: deleteDocument

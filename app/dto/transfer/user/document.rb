@@ -11,8 +11,8 @@ module ::Transfer::User
     # @param [String] type - the type of the blobs
     # @param [Boolean] include_data - if true data will be included in transfer
     # @return [Array<::Transfer::User::Document>]
-    def self.from_blobs(blobs, type, include_data = true)
-      return blobs.map {|blob| ::Transfer::User::Document.from_blob(blob, type, include_data)}
+    def self.from_blobs(blobs, type: "", include_data: true)
+      return blobs.map {|blob| ::Transfer::User::Document.from_blob(blob, type: type, include_data: include_data)}
     end
 
     # build a Document transfer from a blob
@@ -20,11 +20,11 @@ module ::Transfer::User
     # @param [String] type - the type of the blob
     # @param [Boolean] include_data - if true data will be included in transfer
     # @return [::Transfer::User::Document]
-    def self.from_blob(blob, type, include_data = true)
+    def self.from_blob(blob, type: "", include_data: true)
       return ::Transfer::User::Document.new(
         blob.signed_id,
         blob.filename,
-        include_data ? blob.download : nil,
+        include_data ? Base64.encode64(blob.download) : nil,
         type
       )
     end

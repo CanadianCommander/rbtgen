@@ -72,7 +72,7 @@ class User < ApplicationRecord
     blob = self.schema_files.blobs.find_signed(document_id)
 
     unless blob.nil?
-      return self.schema_files.attachments.where({blob_id: blob.id})
+      return self.schema_files.attachments.where({blob_id: blob.id}).first
     end
     return nil
   end
@@ -84,7 +84,7 @@ class User < ApplicationRecord
     blob = self.report_files.blobs.find_signed(document_id)
 
     unless blob.nil?
-      return self.report_files.attachments.where({blob_id: blob.id})
+      return self.report_files.attachments.where({blob_id: blob.id}).first
     end
     return nil
   end

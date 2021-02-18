@@ -1,8 +1,6 @@
 document:
   required:
     - file_name
-    - file_type
-    - file_usage_type
   properties:
     id:
       type: string

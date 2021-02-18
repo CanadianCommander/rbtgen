@@ -15,8 +15,10 @@ module ::Rest::V1::Authenticated::User
       end
 
       render(
-        json: ::Transfer::User::Document.from_blobs(@logged_in_user.get_documents_by_type(params[:file_type].to_s).blobs,
-        ::Rbt::User::Document::DocumentService::DOCUMENT_TYPE::SCHEMA, include_data), status: @stats)
+        json: ::Transfer::User::Document.from_blobs(
+          @logged_in_user.get_documents_by_type(params[:file_type].to_s).blobs,
+          type: ::Rbt::User::Document::DocumentService::DOCUMENT_TYPE::SCHEMA,
+          include_data: include_data), status: @stats)
     end
 
     # ==========================================================
@@ -30,9 +32,22 @@ module ::Rest::V1::Authenticated::User
 
       new_blob = user_document_service.attach_document(
         params[:file_name].to_s,
-        params[:file_data].to_s,
+        Base64.decode64(params[:file_data].to_s),
         params[:file_type].to_s)
-      render json: ::Transfer::User::Document.from_blob(new_blob, params[:file_type].to_s), status: @stats
+      render json: ::Transfer::User::Document.from_blob(new_blob, type: params[:file_type].to_s), status: @stats
+    end
+
+    # GET /user/self/document/:id
+    def get_document
+      params.require([:document_id])
+
+      include_data = true
+      unless params[:include_data].nil?
+        include_data = ::ActiveModel::Type::Boolean.new.cast(params[:include_data]);
+      end
+
+      doc = @logged_in_user.get_document_by_id(params[:document_id].to_s)
+      render json: ::Transfer::User::Document.from_blob(doc, include_data: include_data), status: @stats
     end
 
     # DELETE /user/self/document/:id
@@ -42,5 +57,7 @@ module ::Rest::V1::Authenticated::User
 
       user_document_service.delete_document(params[:document_id].to_s)
     end
+
+
   end
 end

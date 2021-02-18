@@ -79,6 +79,16 @@ export class PromiseUserApi {
     }
 	
     /**
+     * Get the specified document
+     * @param documentId The id of the document to get
+     * @param includeData if true returned file will contain data.
+     */
+    public getDocument(documentId: string, includeData?: boolean, options?: Configuration): Promise<Document> {
+    	const result = this.api.getDocument(documentId, includeData, options);
+        return result.toPromise();
+    }
+	
+    /**
      * Get all the schema documents for a user.
      * @param fileType the document type to fetch
      * @param includeData if true returned files will contain data.

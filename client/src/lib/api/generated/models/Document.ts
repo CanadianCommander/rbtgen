@@ -16,7 +16,7 @@ export class Document {
     'id'?: string;
     'fileName': string;
     'fileData'?: string;
-    'fileType': DocumentFileTypeEnum;
+    'fileType'?: DocumentFileTypeEnum;
 
     static readonly discriminator: string | undefined = undefined;
 

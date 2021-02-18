@@ -141,6 +141,30 @@ export class ObservableUserApi {
     }
 	
     /**
+     * Get the specified document
+     * @param documentId The id of the document to get
+     * @param includeData if true returned file will contain data.
+     */
+    public getDocument(documentId: string, includeData?: boolean, options?: Configuration): Observable<Document> {
+    	const requestContextPromise = this.requestFactory.getDocument(documentId, includeData, options);
+
+		// build promise chain
+    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+    	for (let middleware of this.configuration.middleware) {
+    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+    	}
+
+    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+	    	pipe(mergeMap((response: ResponseContext) => {
+	    		let middlewarePostObservable = of(response);
+	    		for (let middleware of this.configuration.middleware) {
+	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+	    		}
+	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDocument(rsp)));
+	    	}));
+    }
+	
+    /**
      * Get all the schema documents for a user.
      * @param fileType the document type to fetch
      * @param includeData if true returned files will contain data.
