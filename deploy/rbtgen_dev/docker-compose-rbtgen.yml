@@ -5,6 +5,7 @@ services:
       - ../../.docker/dev/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD
+      - POSTGRES_DB=rbt_gen_development
 
   api:
     build:

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-col justify-content-center align-items-center h-100vh">
+  <div class="center-container d-flex flex-col justify-content-center align-items-center">
     <div class="d-flex flex-col justify-content-center m-b-64" :style="containerStyle">
       <slot></slot>
     </div>
@@ -27,5 +27,7 @@
   }
 </script>
 <style lang="scss" scoped>
-
+  .center-container {
+    min-height: 100vh
+  }
 </style>

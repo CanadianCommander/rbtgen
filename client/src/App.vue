@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="appClasses">
-    <div>
+    <div class="router h-100">
       <router-view/>
     </div>
 
@@ -84,14 +84,12 @@
 
 <style lang="scss">
   #app {
-    position: absolute;
-    top: 0;
-    min-width: 100vw;
-    min-height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
     background-color: var(--mdc-theme-background);
 
     .theme-toggle {
-      position: absolute;
+      position: fixed;
       left: 0;
       bottom: 0;
       width: 128px;
