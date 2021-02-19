@@ -30,3 +30,6 @@
 # idea
 .idea
 .generators
+
+# docker volumes
+.docker

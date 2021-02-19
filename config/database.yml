@@ -85,4 +85,3 @@ production:
   <<: *default
   database: rbt_gen_production
   username: rbt_gen
-  password: <%= ENV['RBT_GEN_DATABASE_PASSWORD'] %>

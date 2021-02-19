@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:12
     volumes:
-      - ~/.docker/.rbtgen/db:/var/lib/postgresql/
+      - ../../.docker/dev/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD
 

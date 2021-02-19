@@ -6,7 +6,7 @@ module.exports = {
       'Access-Control-allow-Origin': '*',
     }
   },
-  publicPath: "http://localhost:8080/app/",
+  publicPath: "/",
 
   configureWebpack: {
     resolve: {
