@@ -2,7 +2,9 @@
   <div class="item-card">
     <div class="mdc-card">
       <div class="mdc-card__primary-action p-r-16 p-l-16 p-t-8" @click="$emit('click')">
-        <slot name="title"></slot>
+        <div class="title">
+          <slot name="title"></slot>
+        </div>
         <div class="media w-100">
           <slot name="media"></slot>
         </div>
@@ -33,6 +35,11 @@
     .media {
       // prevent select box when media is an icon
       user-select: none;
+    }
+
+    .title {
+      // reserve space for two lines of text in the title.
+      min-height: 48px;
     }
   }
 </style>

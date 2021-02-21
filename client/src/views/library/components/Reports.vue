@@ -5,7 +5,7 @@
         <h3 class="m-0"> {{item.name}} </h3>
       </template>
       <template #media>
-            <span class="item-icon material-icons w-100 m-t-16 m-b-16">
+            <span class="item-icon material-icons w-100 m-b-16">
               {{item.icon}}
             </span>
       </template>
@@ -24,10 +24,11 @@
   import Vue from "vue";
   import {Component} from "vue-property-decorator";
   import VirtualLibraryItem from "@/model/library/VirtualLibraryItem";
-  import {EditorRoutes} from "@/router/routes/EditorRoutes";
   import LibraryItem from "@/model/library/LibraryItem";
   import ItemCard from "@/components/controls/ItemCard.vue";
   import Button from "@/components/controls/Button.vue";
+  import {openModal} from "@/lib/alert/Modal";
+  import SchemaSelectModal from "@/views/library/modals/SchemaSelectModal.vue";
 
   @Component({
     components: {Button, ItemCard},
@@ -63,9 +64,10 @@
       ));
     }
 
-    protected createNewRBT()
+    protected async createNewRBT(): Promise<void>
     {
-      this.$appRouter.toRoute(EditorRoutes.EDITOR);
+      await openModal(SchemaSelectModal);
+      // this.$appRouter.toRoute(EditorRoutes.EDITOR, {reportId: null});
     }
   }
 </script>

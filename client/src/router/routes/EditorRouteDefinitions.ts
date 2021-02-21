@@ -1,6 +1,6 @@
 import {RouteConfig} from "vue-router";
 import StandardLayout from "@/layouts/StandardLayout.vue";
-import Editor from "@/views/Editor.vue";
+import Editor from "@/views/editor/Editor.vue";
 import {AccountRoutes} from "@/router/routes/AccountRoutes";
 import {EditorRoutes} from "@/router/routes/EditorRoutes";
 
@@ -10,7 +10,7 @@ export const editorRouteDefinitions: Array<RouteConfig> = [
     component: StandardLayout,
     children: [
       {
-        path: "/editor/edit",
+        path: "/editor/edit/:reportId",
         name: EditorRoutes.EDITOR,
         component: Editor,
         props: true,

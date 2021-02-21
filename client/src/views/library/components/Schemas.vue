@@ -6,7 +6,7 @@
           <h3 class="m-0"> {{item.name}} </h3>
         </template>
         <template #media>
-              <span class="item-icon material-icons w-100 m-t-16 m-b-16">
+              <span class="item-icon material-icons w-100 m-b-16">
                 {{item.icon}}
               </span>
         </template>
