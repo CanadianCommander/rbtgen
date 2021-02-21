@@ -4,6 +4,7 @@ import User from "@/model/User";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import {LoginInfo} from "@/lib/api/generated";
+import {strDateToUnix} from "@/lib/util/DateUtil";
 
 @Module({ dynamic: true, store, name: "AuthStore", namespaced: true })
 class AuthStore extends VuexModule
@@ -32,8 +33,8 @@ class AuthStore extends VuexModule
   @Action
   public writeAuthToCookies(): void
   {
-    Cookies.set(this.COOKIE_TOKEN, this._loginToken);
-    Cookies.set(this.COOKIE_USER, this._loggedInUser);
+    Cookies.set(this.COOKIE_TOKEN, this._loginToken, {sameSite: "strict"});
+    Cookies.set(this.COOKIE_USER, this._loggedInUser, {sameSite: "strict"});
   }
 
   @Action({rawError: true})
@@ -93,7 +94,7 @@ class AuthStore extends VuexModule
     if (this._loginToken)
     {
       const decodedToken = jwtDecode(this._loginToken) as any;
-      const date = Date.parse(decodedToken.expire);
+      const date = strDateToUnix(decodedToken.expire);
       return date > Date.now();
     }
     return false;

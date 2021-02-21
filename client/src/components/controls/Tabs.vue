@@ -79,4 +79,9 @@
   @use "~@material/tab-indicator/mdc-tab-indicator";
   @use "~@material/tab/mdc-tab";
 
+  // fix scroll bar appearing under tabs on FireFox.
+  .mdc-tab-scroller__scroll-area {
+    overflow-x: auto;
+  }
+
 </style>
