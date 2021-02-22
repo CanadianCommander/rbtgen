@@ -69,7 +69,8 @@
             doc.fileName,
             "assessment",
             "Report By Template",
-            null));
+            null,
+            () => this.loadLibraryItems()));
         });
       }
       catch (error)
@@ -90,6 +91,7 @@
     protected async createNewRBT(): Promise<void>
     {
       await openModal(ReportCreateModal);
+      await this.loadLibraryItems();
       // this.$appRouter.toRoute(EditorRoutes.EDITOR, {reportId: null});
     }
   }

@@ -61,5 +61,10 @@ export default class ReportLibraryItem extends LibraryItem
     // TODO confirm, lol.
 
     await userApi.deleteDocument(this.id);
+
+    if (this.onChange)
+    {
+      this.onChange();
+    }
   }
 }
