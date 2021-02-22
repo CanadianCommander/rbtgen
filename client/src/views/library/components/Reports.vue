@@ -34,6 +34,7 @@
   import SnackBarAlertStore from "@/lib/alert/SnackBarAlertStore";
   import ReportCreateModal from "@/views/library/modals/ReportCreateModal.vue";
   import ReportLibraryItem from "@/model/library/ReportLibraryItem";
+  import {EditorRoutes} from "@/router/routes/EditorRoutes";
 
   @Component({
     components: {Button, ItemCard},
@@ -90,9 +91,13 @@
 
     protected async createNewRBT(): Promise<void>
     {
-      await openModal(ReportCreateModal);
+      const newReport = await openModal(ReportCreateModal);
       await this.loadLibraryItems();
-      // this.$appRouter.toRoute(EditorRoutes.EDITOR, {reportId: null});
+
+      if (newReport)
+      {
+        await this.$appRouter.toRoute(EditorRoutes.EDITOR, {reportId: newReport.reportDocument.id});
+      }
     }
   }
 </script>
