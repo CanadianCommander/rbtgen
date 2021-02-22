@@ -2,10 +2,10 @@ import LibraryItem from "@/model/library/LibraryItem";
 import {LibraryItemType} from "@/model/library/LibraryItemType";
 import LibraryItemAction from "@/model/library/LibraryItemActions";
 import {userApi} from "@/lib/api/Api";
-import UserDocument from "@/lib/user/model/UserDocument";
-import {saveAs} from "file-saver";
+import {appRouter} from "@/router/appRouter";
+import {EditorRoutes} from "@/router/routes/EditorRoutes";
 
-export default class SchemaLibraryItem extends LibraryItem
+export default class ReportLibraryItem extends LibraryItem
 {
   protected onChange: () => void
 
@@ -25,9 +25,9 @@ export default class SchemaLibraryItem extends LibraryItem
     this.onChange = onChange;
   }
 
-  primaryAction(): void
+  public primaryAction(): void
   {
-    // TODO what should we do when user clicks schema file? probably some sort of modal.
+    appRouter.toRoute(EditorRoutes.EDITOR, {reportId: this.id});
   }
 
   // ==========================================================
@@ -36,45 +36,30 @@ export default class SchemaLibraryItem extends LibraryItem
 
   get type(): LibraryItemType
   {
-    return LibraryItemType.SCHEMA;
+    return LibraryItemType.RBT;
   }
 
   get additionalActions(): LibraryItemAction[]
   {
     return [
-      {text: "Download", callback: this.downloadSchemaFile.bind(this)},
-      {text: "Delete", callback: this.deleteSchemaFile.bind(this)},
+      {text: "Download", callback: this.downloadReport.bind(this)},
+      {text: "Delete", callback: this.deleteReport.bind(this)},
     ];
   }
 
   // ==========================================================
-  // Protected Methods
+  // Protected methods
   // ==========================================================
 
-  protected async downloadSchemaFile(): Promise<void>
+  protected downloadReport(): void
   {
-    const doc: UserDocument = await userApi.getDocument(this.id, true);
-    saveAs(new Blob([atob(doc.fileData)], {type: "text/yml;charset=utf-8"}), doc.fileName);
+    // TODO this
   }
 
-  protected async deleteSchemaFile(): Promise<void>
+  protected async deleteReport(): Promise<void>
   {
-    // TODO confirmation dialog
+    // TODO confirm, lol.
 
-    try
-    {
-      await userApi.deleteDocument(this.id);
-
-      if (this.onChange)
-      {
-        this.onChange();
-      }
-    }
-    catch (error)
-    {
-      // TODO alert user
-      console.error(error);
-    }
+    await userApi.deleteDocument(this.id);
   }
-
 }

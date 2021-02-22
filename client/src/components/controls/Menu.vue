@@ -24,6 +24,10 @@
 
     private menu: MDCMenu;
 
+    // ==========================================================
+    // Vue life cycle
+    // ==========================================================
+
     public mounted(): void
     {
       this.menu = new MDCMenu(this.$refs.mdcMenu as Element);
@@ -33,6 +37,10 @@
     {
       this.menu.destroy();
     }
+
+    // ==========================================================
+    // Public methods
+    // ==========================================================
 
     public onClose(): void
     {

@@ -28,7 +28,12 @@
   import ItemCard from "@/components/controls/ItemCard.vue";
   import Button from "@/components/controls/Button.vue";
   import {openModal} from "@/lib/alert/Modal";
-  import SchemaSelectModal from "@/views/library/modals/SchemaSelectModal.vue";
+  import {userApi} from "@/lib/api/Api";
+  import UserDocument from "@/lib/user/model/UserDocument";
+  import {UserDocumentTypes} from "@/lib/user/model/UserDocumentTypes";
+  import SnackBarAlertStore from "@/lib/alert/SnackBarAlertStore";
+  import ReportCreateModal from "@/views/library/modals/ReportCreateModal.vue";
+  import ReportLibraryItem from "@/model/library/ReportLibraryItem";
 
   @Component({
     components: {Button, ItemCard},
@@ -50,9 +55,27 @@
     // Protected Methods
     // ==========================================================
 
-    protected loadLibraryItems(): void
+    protected async loadLibraryItems(): Promise<void>
     {
-      // TODO load library items from server.
+      this.libraryItems = [];
+
+      try
+      {
+        const userDocs = await userApi.getDocuments(UserDocumentTypes.RBT, false);
+        userDocs.forEach((doc: UserDocument) =>
+        {
+          this.libraryItems.push(new ReportLibraryItem(
+            doc.id,
+            doc.fileName,
+            "assessment",
+            "Report By Template",
+            null));
+        });
+      }
+      catch (error)
+      {
+        SnackBarAlertStore.showAlert({text: error.userMessage, icon: "error_outline"});
+      }
 
       // Add, "New item", item.
       this.libraryItems.push(new VirtualLibraryItem(
@@ -66,7 +89,7 @@
 
     protected async createNewRBT(): Promise<void>
     {
-      await openModal(SchemaSelectModal);
+      await openModal(ReportCreateModal);
       // this.$appRouter.toRoute(EditorRoutes.EDITOR, {reportId: null});
     }
   }

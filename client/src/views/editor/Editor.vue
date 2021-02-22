@@ -1,5 +1,6 @@
 <template>
   <div class="editor">
+    {{reportId}}
   </div>
 </template>
 <script lang="ts">
@@ -10,7 +11,6 @@
   export default class Editor extends Vue
   {
     @Prop({type: String}) reportId: string;
-
   }
 
 </script>

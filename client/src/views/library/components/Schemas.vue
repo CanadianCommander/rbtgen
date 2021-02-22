@@ -63,13 +63,13 @@
 
       try
       {
-        const userDocs = await userApi.getDocuments("schema", false);
+        const userDocs = await userApi.getDocuments(UserDocumentTypes.SCHEMA, false);
         userDocs.forEach((doc: UserDocument) =>
         {
           this.schemaItems.push(new SchemaLibraryItem(
             doc.id,
             doc.fileName,
-            UserDocumentTypes.SCHEMA,
+            "schema",
             "Database schema file",
             null,
             () => this.loadSchemaItems()));

@@ -1,9 +1,10 @@
 <template>
   <modal>
-    <h1 class="m-b-8">Select schema file to use.</h1>
-    <!-- TODO a search input to make finding schemas easier -->
+    <h1 class="m-b-16">Create new report!</h1>
+    <TextField v-model="reportName" label-text="Report Name" class="m-b-16" filled></TextField>
+    <TextField v-model="searchFilter" label-text="Search..." class="m-b-16" filled></TextField>
     <list class="schema-list m-b-32" v-model="selectedSchema" :options="listOptions"></list>
-    <Button @click="onSchemaSelect" filled>Create</Button>
+    <Button @click="onSchemaSelect" :disabled="!canSubmit" filled>Create</Button>
   </modal>
 </template>
 <script lang="ts">
@@ -16,14 +17,18 @@
   import {UserDocumentTypes} from "@/lib/user/model/UserDocumentTypes";
   import List from "@/components/controls/List.vue";
   import ListItem from "@/components/lib/ListItem";
+  import TextField from "@/components/controls/TextField.vue";
+  import ReportFactory from "@/lib/report/ReportFactory";
 
   @Component({
-    components: {List, Button, Modal},
+    components: {TextField, List, Button, Modal},
   })
-  export default class SchemaSelectModal extends Vue
+  export default class ReportCreateModal extends Vue
   {
     public schemaFiles: UserDocument[] = [];
     public selectedSchema: UserDocument = null;
+    public searchFilter = "";
+    public reportName = "";
 
     // ==========================================================
     // Vue life cycle
@@ -39,9 +44,10 @@
     // Public Methods
     // ==========================================================
 
-    public onSchemaSelect(): void
+    public async onSchemaSelect(): Promise<void>
     {
-      this.$emit("close", "TODO");
+      const newReport = await ReportFactory.newReport(this.reportName, this.selectedSchema);
+      this.$emit("close", newReport);
     }
 
     // ==========================================================
@@ -53,18 +59,18 @@
       return this.schemaFiles.map((schema) =>
       {
         return {label: schema.fileName, value: schema};
-      });
+      }).filter((option) => option.label.includes(this.searchFilter));
     }
 
-    get foobar(): string
+    get canSubmit(): boolean
     {
-      return this.selectedSchema?.fileName;
+      return Boolean(this.selectedSchema) && this.reportName.length > 0;
     }
   }
   </script>
 <style lang="scss" scoped>
   .schema-list {
-    max-height: 512px;
+    height: 360px;
     overflow-y: auto;
   }
 </style>
