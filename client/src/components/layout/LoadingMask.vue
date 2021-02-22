@@ -1,8 +1,8 @@
 <template>
-  <div v-if="loading">
+  <div v-if="loading" class="d-flex flex-col flex-item-grow">
     <loading-indicator></loading-indicator>
   </div>
-  <div v-else>
+  <div v-else class="d-flex flex-col flex-item-grow">
     <slot></slot>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100 flex-item-grow d-flex flex-col">
     <NavBar></NavBar>
     <router-view/>
   </div>

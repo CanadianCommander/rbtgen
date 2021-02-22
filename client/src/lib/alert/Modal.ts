@@ -37,11 +37,22 @@ function listenForModalClose(modalInstance: Vue): Promise<any>
 /**
  * open a modal dialog
  * @param componentClass - the vue component that comprises the modal.
+ * @param props - props to pass to the modal.
  */
-export function openModal(componentClass: any): Promise<any>
+export function openModal(componentClass: any, props: any = null): Promise<any>
 {
   const VueClassConstructor = Vue.extend(componentClass);
   const instance = new VueClassConstructor();
+
+  // bind properties if provided
+  if (props)
+  {
+    Object.entries(props).forEach((entry: any) =>
+    {
+      instance.$set(instance, entry[0], entry[1]);
+    });
+  }
+
   instance.$mount();
   document.getElementById("app").appendChild(instance.$el);
 

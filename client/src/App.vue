@@ -1,6 +1,6 @@
 <template>
-  <div id="app" :class="appClasses">
-    <div class="router h-100">
+  <div id="app" :class="appClasses" class="d-flex flex-col">
+    <div class="router h-100 flex-item-grow d-flex flex-col">
       <router-view/>
     </div>
 
