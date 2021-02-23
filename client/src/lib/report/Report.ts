@@ -1,5 +1,6 @@
 import UserDocument from "@/lib/user/model/UserDocument";
 import DatabaseModel from "@/lib/report/databaseModel/DatabaseModel";
+import ReportModel from "@/lib/report/reportModel/ReportModel";
 
 export default class Report
 {
@@ -44,6 +45,11 @@ export default class Report
   get databaseModel(): DatabaseModel
   {
     return this._databaseModel;
+  }
+
+  get reportModel(): ReportModel
+  {
+    return this._reportModel;
   }
 
   get reportDocumentId(): string

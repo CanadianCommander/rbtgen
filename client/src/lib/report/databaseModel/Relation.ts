@@ -22,4 +22,13 @@ export default class Relation
     this._joinConditionSql = joinConditionSql;
   }
 
+  // ==========================================================
+  // Getters
+  // ==========================================================
+
+  get to(): Entity
+  {
+    return this._to;
+  }
+
 }

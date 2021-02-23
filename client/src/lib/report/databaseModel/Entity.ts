@@ -27,6 +27,25 @@ export default class Entity
     return this._name;
   }
 
+  get relations(): Relation[]
+  {
+    return this._relations;
+  }
+
+  /**
+   * get all entities this entity is related to. only covers outgoing relations.
+   * @return list of related entities
+   */
+  get relatedEntities(): Entity[]
+  {
+    if (!this.relations)
+    {
+      return [];
+    }
+
+    return this.relations.map((relation) => relation.to);
+  }
+
   // ==========================================================
   // Setters
   // ==========================================================

@@ -1,6 +1,6 @@
 <template>
   <modal>
-    <h2 class="m-0 m-b-16">Select entity</h2>
+    <h2 class="m-0 m-b-16">{{title}}</h2>
     <text-field v-model="searchFilter" label-text="Search..." class="m-b-16" filled></text-field>
     <list class="entity-list m-b-32" @input="onSelect($event)" :options="listOptions"></list>
   </modal>
@@ -19,6 +19,7 @@
   })
   export default class EntitySelectModal extends Vue
   {
+    @Prop({type: String, default: ""}) public title: string;
     @Prop({type: Array}) public options: Entity[];
 
     public searchFilter = "";

@@ -83,6 +83,9 @@
       "@typescript-eslint/no-explicit-any": [
         "off"
       ],
+      "@typescript-eslint/adjacent-overload-signatures" : [
+        "off"
+      ],
       "padded-blocks": [
         "off"
       ],

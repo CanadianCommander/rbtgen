@@ -3,6 +3,7 @@ import Report from "@/lib/report/Report";
 import {userApi} from "@/lib/api/Api";
 import {UserDocumentTypes} from "@/lib/user/model/UserDocumentTypes";
 import DatabaseModelFactory from "@/lib/report/databaseModel/DatabaseModelFactory";
+import ReportModelFactory from "@/lib/report/reportModel/ReportModelFactory";
 
 export default class ReportFactory
 {
@@ -48,7 +49,7 @@ export default class ReportFactory
       schemaDocument,
       jsonData.version,
       DatabaseModelFactory.buildModelFromSchemaDocument(schemaDocument),
-      null);
+      ReportModelFactory.buildReportModelFromReportDocument(reportDocument));
   }
 
   /**
