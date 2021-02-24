@@ -70,7 +70,6 @@
         this.$emit("update:currentTab", this.tabList[event.detail.index].value);
       }
     }
-
   }
 </script>
 <style lang="scss" scoped>
@@ -83,5 +82,4 @@
   .mdc-tab-scroller__scroll-area {
     overflow-x: auto;
   }
-
 </style>

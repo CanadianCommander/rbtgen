@@ -32,6 +32,11 @@ export default class ReportNode
     this._childNodes.push(child);
   }
 
+  public pushOutputFields(newField: Field): void
+  {
+    this._outputFields.push(newField);
+  }
+
   // ==========================================================
   // Getters
   // ==========================================================
@@ -52,6 +57,26 @@ export default class ReportNode
   get childEntities(): Entity[]
   {
     return this._childNodes.map((node) => node.entity);
+  }
+
+  get outputFields(): Field[]
+  {
+    return this._outputFields;
+  }
+
+  /**
+   * get a list of possible output fields that could be added to this node
+   */
+  get possibleOutputFields(): Field[]
+  {
+    let fields = this._primaryEntity.fields;
+
+    if (this._childNodes)
+    {
+      fields = fields.concat(this._childNodes.map((node) => node.outputFields).flat());
+    }
+
+    return fields;
   }
 
   // ==========================================================

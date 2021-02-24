@@ -9,7 +9,6 @@
   import Vue from "vue";
   import {Component, Prop} from "vue-property-decorator";
   import Modal from "@/components/modals/Modal.vue";
-  import Entity from "@/lib/report/databaseModel/Entity";
   import TextField from "@/components/controls/TextField.vue";
   import List from "@/components/controls/List.vue";
   import ListItem from "@/components/lib/ListItem";
@@ -17,10 +16,10 @@
   @Component({
     components: {List, TextField, Modal},
   })
-  export default class EntitySelectModal extends Vue
+  export default class SelectModal extends Vue
   {
     @Prop({type: String, default: ""}) public title: string;
-    @Prop({type: Array}) public options: Entity[];
+    @Prop({type: Array}) public options: ListItem[];
 
     public searchFilter = "";
 
@@ -39,10 +38,7 @@
 
     get listOptions(): ListItem[]
     {
-      return this.options.map((entity) =>
-      {
-        return {label: entity.name, value: entity};
-      }).filter((option) => option.label.includes(this.searchFilter));
+      return this.options.filter((option) => option.label.includes(this.searchFilter));
     }
   }
 </script>

@@ -62,7 +62,7 @@
     }
 
     .entity-options {
-      flex: 0 0 360px;
+      flex: 0 0 480px;
     }
   }
 </style>

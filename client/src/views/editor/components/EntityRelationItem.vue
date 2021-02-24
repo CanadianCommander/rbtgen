@@ -1,15 +1,15 @@
 <template>
-  <div class="entity-relation-item">
-    <div v-if="!isSelected"
+  <div class="entity-relation-item" :class="{'selected': isCurrentlySelected}">
+    <div v-if="!hasSelection"
          class="d-flex flex-row justify-content-center align-items-center h-100 w-100"
-         @click="selectThisEntity"
+         @click="selectNewEntity"
          title="Add new entity">
       <span class="plus-icon material-icons">
         add
       </span>
     </div>
     <div v-else class="d-flex flex-row justify-content-space-between align-items-center w-100 h-100 m-16">
-      <div class="d-flex flex-row align-items-center h-100" title="Update this entity">
+      <div class="d-flex flex-row align-items-center flex-item-grow h-100" @click="selectEntity" title="Update this entity">
         {{currentSelection.entity.name}}
       </div>
 
@@ -26,10 +26,11 @@
   import {Component, Prop} from "vue-property-decorator";
   import Entity from "@/lib/report/databaseModel/Entity";
   import {openModal} from "@/lib/alert/Modal";
-  import EntitySelectModal from "@/views/editor/modal/EntitySelectModal.vue";
   import ReportNode from "@/lib/report/reportModel/ReportNode";
   import ReportBuilderService from "@/lib/report/ReportBuilderService";
   import Report from "@/lib/report/Report";
+  import ReportStore from "@/lib/report/ReportStore";
+  import SelectModal from "@/components/modals/SelectModal.vue";
 
   @Component({})
   export default class EntityRelationItem extends Vue
@@ -44,38 +45,49 @@
 
     public async selectEntityRelation(): Promise<void>
     {
-      const entity = await this.selectEntity("New entity relation", this.currentSelection.entity.relatedEntities);
+      const entity = await this.openSelectEntityModal("New entity relation", this.currentSelection.entity.relatedEntities);
 
       if (entity)
       {
         const reportBuilderService = new ReportBuilderService(this.report);
-        reportBuilderService.addNodeFromEntity(entity, this.currentSelection);
+        const newNode = reportBuilderService.addNodeFromEntity(entity, this.currentSelection);
+        ReportStore.setSelectedNode(newNode);
       }
     }
 
-    public async selectThisEntity(): Promise<void>
+    public async selectNewEntity(): Promise<void>
     {
-      const entity = await this.selectEntity("Select this entity", this.options);
+      const entity = await this.openSelectEntityModal("Select this entity", this.options);
       if (entity)
       {
         this.$emit("selected", entity);
       }
     }
 
+    public selectEntity(): void
+    {
+      ReportStore.setSelectedNode(this.currentSelection);
+    }
+
     // ==========================================================
     // Protected methods
     // ==========================================================
 
-    protected async selectEntity(title: string, options: Entity[]): Promise<Entity>
+    protected async openSelectEntityModal(title: string, entityOptions: Entity[]): Promise<Entity>
     {
-      return await openModal(EntitySelectModal, {title, options});
+      const options = entityOptions.map((entity) =>
+      {
+        return {label: entity.name, value: entity};
+      });
+
+      return await openModal(SelectModal, {title, options});
     }
 
     // ==========================================================
     // Getters
     // ==========================================================
 
-    get isSelected(): boolean
+    get hasSelection(): boolean
     {
       return Boolean(this.currentSelection);
     }
@@ -83,6 +95,11 @@
     get hasRelatedEntities(): boolean
     {
       return this.currentSelection.entity.relatedEntities.length > 0;
+    }
+
+    get isCurrentlySelected(): boolean
+    {
+      return this.currentSelection === ReportStore.selectedNode;
     }
   }
 </script>
@@ -102,6 +119,11 @@
 
     height: 56px;
     width: 180px;
+
+    &.selected {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px var(--color-primary);
+    }
 
     .plus-icon {
       font-size: 32px;

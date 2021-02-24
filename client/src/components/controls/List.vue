@@ -49,6 +49,8 @@
 
   .list {
     @include list.core-styles;
+    overflow-y: auto;
+
     .mdc-list {
       @include list.item-primary-text-ink-color(var(--color-text));
     }

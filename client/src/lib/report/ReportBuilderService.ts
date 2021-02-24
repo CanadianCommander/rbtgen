@@ -29,10 +29,13 @@ export default class ReportBuilderService
    * add a new node to the report graph built of the given entity
    * @param entity - the entity to use as the base of the new node
    * @param to - the node which is to be the parent of the new node.
+   * @return the new node that was added to the graph
    */
-  public addNodeFromEntity(entity: Entity, to: ReportNode): void
+  public addNodeFromEntity(entity: Entity, to: ReportNode): ReportNode
   {
-    return this.addNode(ReportNodeFactory.newReportNode(entity), to);
+    const newNode = ReportNodeFactory.newReportNode(entity);
+    this.addNode(newNode, to);
+    return newNode;
   }
 
   /**

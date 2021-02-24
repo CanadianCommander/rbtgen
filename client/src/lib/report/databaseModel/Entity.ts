@@ -32,6 +32,11 @@ export default class Entity
     return this._relations;
   }
 
+  get fields(): Field[]
+  {
+    return this._fields;
+  }
+
   /**
    * get all entities this entity is related to. only covers outgoing relations.
    * @return list of related entities
@@ -53,6 +58,7 @@ export default class Entity
   set fields(fields: Field[])
   {
     this._fields = fields;
+    this.linkFieldsToSelf(fields);
   }
 
   set relations(relations: Relation[])
@@ -64,4 +70,23 @@ export default class Entity
   {
     this._filters = filters;
   }
+
+  // ==========================================================
+  // Protected methods
+  // ==========================================================
+
+  /**
+   * link the list of fields to this entity
+   * @param fields - the fields to link
+   * @protected
+   */
+  protected linkFieldsToSelf(fields: Field[]): void
+  {
+    // link fields with this entity
+    fields.forEach((field) =>
+    {
+      field.entity = this;
+    });
+  }
+
 }

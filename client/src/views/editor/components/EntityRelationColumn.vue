@@ -24,6 +24,7 @@
   import ReportBuilderService from "@/lib/report/ReportBuilderService";
   import ReportNodeFactory from "@/lib/report/reportModel/ReportNodeFactory";
   import ReportNode from "@/lib/report/reportModel/ReportNode";
+  import ReportStore from "@/lib/report/ReportStore";
 
   @Component({
     components: {EntityRelationItem},
@@ -58,7 +59,9 @@
     {
       if (this.isRoot)
       {
-        this.reportBuilder.setRootNode(ReportNodeFactory.newReportNode(entity));
+        const newNode = ReportNodeFactory.newReportNode(entity);
+        this.reportBuilder.setRootNode(newNode);
+        ReportStore.setSelectedNode(newNode);
       }
       else
       {
