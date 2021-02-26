@@ -17,6 +17,7 @@ and [] indicates an optional field.
         <relation name>:
             from: <from table name>
             to: <to table name>
+            required_fields: <list of required fields from the "to" table>
             [type: (left | full)]
             [condition: <join condition sql>] 
     filters:

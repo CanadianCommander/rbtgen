@@ -18,6 +18,16 @@ export default class Entity
     this._name = name;
   }
 
+  /**
+   * find a field on this entity by name
+   * @param fieldName - the name of the field to get
+   * @return field or null if not found.
+   */
+  public getFieldByName(fieldName: string): Field
+  {
+    return this.fields.find((field) => field.name === fieldName);
+  }
+
   // ==========================================================
   // Getters
   // ==========================================================

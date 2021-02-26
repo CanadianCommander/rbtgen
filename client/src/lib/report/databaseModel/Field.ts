@@ -1,6 +1,5 @@
 import {FieldType} from "@/lib/report/databaseModel/FieldType";
 import Entity from "@/lib/report/databaseModel/Entity";
-import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 
 export default class Field
 {
@@ -12,13 +11,6 @@ export default class Field
   protected _primaryKey: boolean;
   protected _sql: string;
   protected _entity: Entity;
-
-  // ==========================================================
-  // Properties set dynamically in the editor
-  // ==========================================================
-  protected _alias: string = null;
-  protected _staticPrefix: string = null;
-  protected _staticSuffix: string = null;
 
   // ==========================================================
   // Public methods
@@ -47,29 +39,9 @@ export default class Field
     return this._entity;
   }
 
-  get alias(): string
+  get type(): FieldType
   {
-    return this._alias;
-  }
-
-  get staticPrefix(): string
-  {
-    return this._staticPrefix;
-  }
-
-  get staticSuffix(): string
-  {
-    return this._staticSuffix;
-  }
-
-  /**
-   * returns true / false indicating if this field supports suffix / prefix settings
-   */
-  get supportsSuffixPrefix(): boolean
-  {
-    return this._type === FieldType.STRING ||
-      this._type === FieldType.INTEGER ||
-      this._type === FieldType.FLOAT;
+    return this._type;
   }
 
   // ==========================================================
@@ -79,30 +51,5 @@ export default class Field
   set entity(entity: Entity)
   {
     this._entity = entity;
-  }
-
-  set alias(alias)
-  {
-    this._alias = alias;
-  }
-
-  set staticPrefix(prefix: string)
-  {
-    if (!this.supportsSuffixPrefix)
-    {
-      throw new ReportModelError("This field does not support prefix check supportsSuffixPrefix()");
-    }
-
-    this._staticPrefix = prefix;
-  }
-
-  set staticSuffix(suffix: string)
-  {
-    if (!this.supportsSuffixPrefix)
-    {
-      throw new ReportModelError("This field does not support suffix check supportsSuffixPrefix()");
-    }
-
-    this._staticSuffix = suffix;
   }
 }

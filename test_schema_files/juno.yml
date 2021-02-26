@@ -208,10 +208,14 @@ models:
         from: demographic
         to: provider
         type: left
+        required_fields:
+          - provider_no
         condition: "{{demographic.provider_no}} = {{provider.provider_no}}"
       demographic_measurements:
         from: demographic
         to: measurements
+        required_fields:
+          - demographicNo
         type: left
         condition: "{{demographic.demographic_no}} = {{measurements.demographicNo}}"
 

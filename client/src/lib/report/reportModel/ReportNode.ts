@@ -2,22 +2,35 @@ import Entity from "@/lib/report/databaseModel/Entity";
 import Field from "@/lib/report/databaseModel/Field";
 import Filter from "@/lib/report/databaseModel/Filter";
 import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
+import NodeOutput from "@/lib/report/reportModel/NodeOutput";
+import NodeOutputFactory from "@/lib/report/reportModel/NodeOutputFactory";
 
 export default class ReportNode
 {
+
+  // ==========================================================
+  // Report graph variables
+  // ==========================================================
   protected _primaryEntity: Entity;
-  protected _outputFields: Field[];
+  protected _nodeOutputs: NodeOutput[];
   protected _filters: Filter[];
   protected _childNodes: ReportNode[];
+
+  // ==========================================================
+  // Node settings
+  // ==========================================================
+
+  // if true "group by" is applied to outputs
+  protected _groupOutputs = false;
 
   // ==========================================================
   // Public methods
   // ==========================================================
 
-  constructor(primaryEntity: Entity, outputFields: Field[] = [], filters: Filter[] = [], childNodes: ReportNode[] = [])
+  constructor(primaryEntity: Entity, nodeOutputs: NodeOutput[] = [], filters: Filter[] = [], childNodes: ReportNode[] = [])
   {
     this._primaryEntity = primaryEntity;
-    this._outputFields = outputFields;
+    this._nodeOutputs = nodeOutputs;
     this._filters = filters;
     this._childNodes = childNodes;
   }
@@ -32,9 +45,14 @@ export default class ReportNode
     this._childNodes.push(child);
   }
 
-  public pushOutputFields(newField: Field): void
+  public pushNodeOutput(newOutput: NodeOutput): void
   {
-    this._outputFields.push(newField);
+    this._nodeOutputs.push(newOutput);
+  }
+
+  public addOutputFromField(newField: Field): void
+  {
+    this._nodeOutputs.push(NodeOutputFactory.buildNodeOutputFromField(newField));
   }
 
   // ==========================================================
@@ -54,29 +72,48 @@ export default class ReportNode
     return this._childNodes;
   }
 
+  get groupOutputs(): boolean
+  {
+    return this._groupOutputs;
+  }
+
   get childEntities(): Entity[]
   {
     return this._childNodes.map((node) => node.entity);
   }
 
+  get nodeOutputs(): NodeOutput[]
+  {
+    return this._nodeOutputs;
+  }
+
   get outputFields(): Field[]
   {
-    return this._outputFields;
+    return this._nodeOutputs.map((nodeOut) => nodeOut.field);
   }
 
   /**
    * get a list of possible output fields that could be added to this node
    */
-  get possibleOutputFields(): Field[]
+  get possibleOutputFields(): NodeOutput[]
   {
-    let fields = this._primaryEntity.fields;
+    let outputs = NodeOutputFactory.buildNodeOutputFromFields(this._primaryEntity.fields);
 
     if (this._childNodes)
     {
-      fields = fields.concat(this._childNodes.map((node) => node.outputFields).flat());
+      outputs = outputs.concat(this._childNodes.map((node) => node.nodeOutputs).flat());
     }
 
-    return fields;
+    return outputs;
+  }
+
+  // ==========================================================
+  // Setters
+  // ==========================================================
+
+  set groupOutputs(group: boolean)
+  {
+    this._groupOutputs = group;
   }
 
   // ==========================================================
