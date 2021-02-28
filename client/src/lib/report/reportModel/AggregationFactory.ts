@@ -1,6 +1,7 @@
 import {AggregationType} from "@/lib/report/reportModel/AggregationType";
 import Aggregation from "@/lib/report/reportModel/Aggregation";
 import {FieldType} from "@/lib/report/databaseModel/FieldType";
+import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 
 export default class AggregationFactory
 {
@@ -10,6 +11,11 @@ export default class AggregationFactory
 
   public static buildAggregation(type: AggregationType): Aggregation
   {
+    if (type === AggregationType.NONE)
+    {
+      throw new ReportModelError(`Aggregator cannot be built for type [${type}]`);
+    }
+
     return new Aggregation(type);
   }
 

@@ -29,6 +29,7 @@
           <TextField v-if="selectedOutput.supportsSuffixPrefix" class="m-t-16" v-model="selectedOutput.staticPrefix" label-text="Static prefix"></TextField>
           <TextField v-if="selectedOutput.supportsSuffixPrefix" class="m-t-16" v-model="selectedOutput.staticSuffix" label-text="Static suffix"></TextField>
           <div class="d-flex flex-row align-items-center m-t-16">
+            {{selectedOutput.aggregatorType}}
             <SelectMenu v-if="reportNode.groupOutputs"
                         v-model="selectedOutput.aggregator"
                         :custom-comparator="compareAggregatorListItem"

@@ -3,6 +3,8 @@ import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 import {FieldType} from "@/lib/report/databaseModel/FieldType";
 import Entity from "@/lib/report/databaseModel/Entity";
 import Aggregation from "@/lib/report/reportModel/Aggregation";
+import {AggregationType} from "@/lib/report/reportModel/AggregationType";
+import AggregationFactory from "@/lib/report/reportModel/AggregationFactory";
 
 export default class NodeOutput
 {
@@ -68,6 +70,15 @@ export default class NodeOutput
     return this._aggregator;
   }
 
+  get aggregatorType(): AggregationType
+  {
+    if (this._aggregator)
+    {
+      return this._aggregator.type;
+    }
+    return AggregationType.NONE;
+  }
+
   /**
    * returns true / false indicating if this field supports suffix / prefix settings
    */
@@ -110,5 +121,11 @@ export default class NodeOutput
   set aggregator(newAggregator: Aggregation)
   {
     this._aggregator = newAggregator;
+  }
+
+  set aggregatorType(newType: AggregationType)
+  {
+    console.log("FOOOOO");
+    this._aggregator = AggregationFactory.buildAggregation(newType);
   }
 }

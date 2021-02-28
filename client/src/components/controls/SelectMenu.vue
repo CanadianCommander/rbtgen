@@ -1,6 +1,7 @@
 <template>
   <div class="select">
-    <div class="mdc-select mdc-select--outlined demo-width-class" ref="mdcSelect" @MDCSelect:change="onSelect">
+    <div class="mdc-select mdc-select--outlined" ref="mdcSelect" @MDCSelect:change="onSelect">
+      <input v-model="value" type="hidden" name="demo-input">
       <div class="mdc-select__anchor" aria-labelledby="outlined-select-label">
       <span class="mdc-notched-outline">
         <span class="mdc-notched-outline__leading"></span>
@@ -11,19 +12,22 @@
         </span>
         <span class="mdc-notched-outline__trailing"></span>
       </span>
-          <span class="mdc-select__selected-text-container">
-        <span id="demo-selected-text" class="mdc-select__selected-text"></span>
+        <span class="mdc-select__selected-text-container">
+        <span class="mdc-select__selected-text">
+          {{selectedText}}
+        </span>
       </span>
-          <span class="mdc-select__dropdown-icon">
+        <span class="mdc-select__dropdown-icon">
           <span class="material-icons">
             expand_more
           </span>
       </span>
-    </div>
+      </div>
 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
         <ul class="mdc-list" role="listbox">
-          <li v-for="(option, index) of listOptions" :key="index" class="mdc-list-item" aria-selected="false" role="option">
+          <li v-for="(option, index) of listOptions" :key="index"
+              class="mdc-list-item" :data-value="option.value" role="option">
             <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__text">
             {{option.label}}
@@ -43,7 +47,7 @@
   @Component({})
   export default class SelectMenu extends Vue
   {
-    @Prop({type: Object}) value: any;
+    @Prop({}) value: any;
     @Prop({type: String, default: ""}) labelText: string;
     @Prop({type: Array, default: []}) options: ListItem[];
     // used to check the equality of the value === list item.
@@ -58,6 +62,7 @@
     public mounted(): void
     {
       this.selectMenu = new MDCSelect(this.$refs.mdcSelect as HTMLElement);
+      this.onValueChange(this.value);
     }
 
     // ==========================================================
@@ -69,19 +74,8 @@
     {
       if (this.options)
       {
-        let comparisonFunction = (opt: ListItem, val: any) => opt.value === val;
-        if (this.customComparator)
-        {
-          comparisonFunction = this.customComparator;
-        }
-
-        const option = this.listOptions.find((opt) => comparisonFunction(opt, newValue));
-        const index = this.listOptions.indexOf(option);
-
-        if (index !== this.selectMenu.selectedIndex)
-        {
-          this.selectMenu.selectedIndex = this.listOptions.indexOf(option);
-        }
+        const option = this.listOptions.find((opt) => this.comparator(opt, newValue));
+        this.selectMenu.selectedIndex = this.listOptions.indexOf(option);
       }
     }
 
@@ -101,6 +95,31 @@
     get listOptions(): ListItem[]
     {
       return this.options.concat([{label: "", value: null}]);
+    }
+
+    get comparator(): (opt: ListItem, val: any) => boolean
+    {
+      if (this.customComparator)
+      {
+        return this.customComparator;
+      }
+      else
+      {
+        return (opt: ListItem, val: any) => opt.value === val;
+      }
+    }
+
+    get selectedText(): string
+    {
+      if (this.options && this.value)
+      {
+        const option = this.listOptions.find((opt) => this.comparator(opt, this.value));
+        if (option)
+        {
+          return option.label;
+        }
+      }
+      return "";
     }
 
   }
