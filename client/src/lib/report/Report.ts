@@ -7,8 +7,8 @@ export default class Report
   protected _reportDocument: UserDocument = null;
   protected _schemaDocument: UserDocument = null;
   protected _version = "1.0.0";
-  protected _databaseModel: any = null;
-  protected _reportModel: any = null;
+  protected _databaseModel: DatabaseModel = null;
+  protected _reportModel: ReportModel = null;
 
   // ==========================================================
   // Public methods
@@ -19,7 +19,7 @@ export default class Report
     schemaDocument: UserDocument,
     version: string,
     databaseModel: DatabaseModel,
-    reportModel: any)
+    reportModel: ReportModel)
   {
     this._reportDocument = reportDocument;
     this._schemaDocument = schemaDocument;

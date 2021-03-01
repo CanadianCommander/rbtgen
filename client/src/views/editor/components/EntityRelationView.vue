@@ -31,8 +31,8 @@
 
     get nodeArrays(): (ReportNode[])[]
     {
-      const reportQueryService = new ReportQueryService(this.report);
-      const nodeBFS = reportQueryService.reportNodesAsBFSArrays();
+      const reportQueryService = new ReportQueryService();
+      const nodeBFS = reportQueryService.reportNodesAsBFSArrays(this.report.reportModel.rootNode);
       if (nodeBFS.length > 0)
       {
         return nodeBFS;

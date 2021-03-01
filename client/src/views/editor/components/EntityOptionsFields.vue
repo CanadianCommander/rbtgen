@@ -1,5 +1,5 @@
 <template>
-  <div class="entity-options-fields d-flex flex-row justify-content-center h-100">
+  <div class="flex-item-grow entity-options-fields d-flex flex-row justify-content-center align-items-stretch">
     <!-- global output options -->
     <div class="side-field flex-item-grow m-l-16 m-r-16">
       <h2 class="m-8 text-center">Output Options</h2>
@@ -14,7 +14,7 @@
     </div>
 
     <!-- Output list -->
-    <div class="field-list d-flex flex-col align-items-center h-100">
+    <div class="field-list d-flex flex-col align-items-center">
       <h2 class="m-8">Output Fields</h2>
       <List class="flex-item-grow bg-box" v-model="selectedOutput" :options="currentOutputFieldsList"></List>
       <Button @click="addOutput" class="w-100 m-t-16" filled>Add</Button>

@@ -1,17 +1,32 @@
-import Report from "@/lib/report/Report";
 import ReportNode from "@/lib/report/reportModel/ReportNode";
 
 export default class ReportQueryService
 {
-  protected _report: Report;
-
   // ==========================================================
   // Public methods
   // ==========================================================
 
-  constructor(report: Report)
+  /**
+   * find the closest report node (in terms of depth) by entity name.
+   * @param name - the entity name to search for
+   * @param startNode - the node at which to start the search
+   */
+  public getClosestNodeByName(name: string, startNode: ReportNode): ReportNode
   {
-    this._report = report;
+    const bfsArray = this.reportNodesAsBFSArrays(startNode);
+
+    for (const nodeArray of bfsArray)
+    {
+      for (const node of nodeArray)
+      {
+        if (node.entity.name === name)
+        {
+          return node;
+        }
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -21,18 +36,19 @@ export default class ReportQueryService
    * root <
    *        \ child2
    * would return as [[root], [child1, child2]]
+   * @parma startNode - the start report node to get the bfs array for
    * @return array of ReportNode arrays
    */
-  public reportNodesAsBFSArrays(): (ReportNode[])[]
+  public reportNodesAsBFSArrays(startNode: ReportNode): (ReportNode[])[]
   {
-    if (!this._report.reportModel.rootNode)
+    if (!startNode)
     {
       return [];
     }
 
     const result: (ReportNode[])[] = [];
 
-    this.bfsReportNodes(this._report.reportModel.rootNode, (nodes) =>
+    this.bfsReportNodes(startNode, (nodes) =>
     {
       result.push(nodes);
     });

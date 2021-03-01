@@ -12,6 +12,7 @@
     "@types/file-saver": "^2.0.1",
     "@types/js-cookie": "^2.2.6",
     "core-js": "^3.6.5",
+    "crypto-random-string": "^3.3.1",
     "file-saver": "^2.0.5",
     "isomorphic-fetch": "^3.0.0",
     "js-cookie": "^2.2.1",
@@ -83,7 +84,7 @@
       "@typescript-eslint/no-explicit-any": [
         "off"
       ],
-      "@typescript-eslint/adjacent-overload-signatures" : [
+      "@typescript-eslint/adjacent-overload-signatures": [
         "off"
       ],
       "padded-blocks": [

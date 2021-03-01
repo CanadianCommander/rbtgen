@@ -50,7 +50,7 @@ export default class NodeOutputFactory
       throw new ReportModelError(`Node output of entity, [${json.entity}] uses non existent field [${json.field}]`);
     }
 
-    return new NodeOutput(field, json.alias, json.staticPrefix, json.staticSuffix, AggregationFactory.buildAggregation(json.aggregatorType));
+    return new NodeOutput(field, json.alias, json.staticPrefix, json.staticSuffix, AggregationFactory.buildAggregation(json.aggregationType));
   }
 
   /**

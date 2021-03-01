@@ -13,10 +13,12 @@ export default class AggregationFactory
   {
     if (type === AggregationType.NONE)
     {
-      throw new ReportModelError(`Aggregator cannot be built for type [${type}]`);
+      return null;
     }
-
-    return new Aggregation(type);
+    else
+    {
+      return new Aggregation(type);
+    }
   }
 
   /**

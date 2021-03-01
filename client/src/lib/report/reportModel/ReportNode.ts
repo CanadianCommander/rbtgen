@@ -4,6 +4,7 @@ import Filter from "@/lib/report/databaseModel/Filter";
 import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 import NodeOutput from "@/lib/report/reportModel/NodeOutput";
 import NodeOutputFactory from "@/lib/report/reportModel/NodeOutputFactory";
+import cryptoRandomString from "crypto-random-string";
 
 export default class ReportNode
 {
@@ -11,6 +12,7 @@ export default class ReportNode
   // ==========================================================
   // Report graph variables
   // ==========================================================
+  protected _transientId: string = "r" + cryptoRandomString({length: 16, type: "alphanumeric"});
   protected _primaryEntity: Entity;
   protected _nodeOutputs: NodeOutput[];
   protected _filters: Filter[];
@@ -58,6 +60,11 @@ export default class ReportNode
   // ==========================================================
   // Getters
   // ==========================================================
+
+  get transientId(): string
+  {
+    return this._transientId;
+  }
 
   /**
    * get the primary entity of this node.

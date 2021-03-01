@@ -44,6 +44,11 @@ export default class Field
     return this._type;
   }
 
+  get customSql(): string
+  {
+    return this._sql;
+  }
+
   // ==========================================================
   // Setters
   // ==========================================================

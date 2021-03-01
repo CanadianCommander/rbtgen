@@ -7,7 +7,17 @@
       <h2 class="text-center m-0">{{report.name}}</h2>
     </div>
     <div class="header-section d-flex justify-content-end">
-      <Button @click="saveReport" text-button>
+      <Button @click="downloadRaw" title="Download raw report" text-button>
+        <span class="material-icons">
+          raw_on
+        </span>
+      </Button>
+      <Button @click="viewReport" title="View report template" text-button>
+        <span class="material-icons">
+          preview
+        </span>
+      </Button>
+      <Button @click="saveReport" title="Save report" text-button>
         <span class="material-icons">
           save
         </span>
@@ -25,6 +35,9 @@
   import {appRouter} from "@/router/appRouter";
   import {EditorRoutes} from "@/router/routes/EditorRoutes";
   import SnackBarAlertStore from "@/lib/alert/SnackBarAlertStore";
+  import {openModal} from "@/lib/alert/Modal";
+  import ReportResultsModal from "@/views/editor/modal/ReportResultsModal.vue";
+  import {saveAs} from "file-saver";
 
   @Component({
     components: {Button},
@@ -51,6 +64,19 @@
       {
         SnackBarAlertStore.showAlert({text: "Failed to save! OMG panic time!", icon: "error"});
       }
+    }
+
+    public async viewReport(): Promise<void>
+    {
+      await openModal(ReportResultsModal, {report: this.report});
+    }
+
+    public async downloadRaw(): Promise<void>
+    {
+      saveAs(new Blob(
+        [ReportSerializer.serializeJson(this.report)],
+        {type: "text/json;charset=utf-8"}),
+        `${this.report.name}.json`);
     }
   }
 </script>
