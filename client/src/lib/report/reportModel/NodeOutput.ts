@@ -18,12 +18,13 @@ export default class NodeOutput
   // Public methods
   // ==========================================================
 
-  constructor(field: Field, alias = "", staticPrefix = "", staticSuffix = "")
+  constructor(field: Field, alias = "", staticPrefix = "", staticSuffix = "", aggregator: Aggregation = null)
   {
     this._field = field;
     this._alias = alias;
     this._staticPrefix = staticPrefix;
     this._staticSuffix = staticSuffix;
+    this._aggregator = aggregator;
   }
 
   // ==========================================================

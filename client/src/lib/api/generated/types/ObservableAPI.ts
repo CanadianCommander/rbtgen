@@ -188,6 +188,30 @@ export class ObservableUserApi {
 	    	}));
     }
 	
+    /**
+     * update a document
+     * @param documentId The id of the document to get
+     * @param document document data to update with
+     */
+    public updateDocument(documentId: string, document: Document, options?: Configuration): Observable<Document> {
+    	const requestContextPromise = this.requestFactory.updateDocument(documentId, document, options);
+
+		// build promise chain
+    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+    	for (let middleware of this.configuration.middleware) {
+    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+    	}
+
+    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+	    	pipe(mergeMap((response: ResponseContext) => {
+	    		let middlewarePostObservable = of(response);
+	    		for (let middleware of this.configuration.middleware) {
+	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+	    		}
+	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateDocument(rsp)));
+	    	}));
+    }
+	
 
 }
 

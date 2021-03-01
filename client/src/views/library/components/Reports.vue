@@ -96,7 +96,7 @@
 
       if (newReport)
       {
-        await this.$appRouter.toRoute(EditorRoutes.EDITOR, {reportId: newReport.reportDocument.id});
+        await this.$appRouter.toRoute(EditorRoutes.EDITOR, {reportId: newReport.reportDocumentId});
       }
     }
   }

@@ -11,6 +11,7 @@ namespace :user do
 
       scope "/:document_id" do
         get "/", to: "document#get_document"
+        put "/", to: "document#update_document"
         delete "/", to: "document#delete_document"
       end
     end

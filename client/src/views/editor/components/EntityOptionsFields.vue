@@ -5,7 +5,7 @@
       <h2 class="m-8 text-center">Output Options</h2>
       <div class="bg-box p-16 d-flex flex-col">
          <div class="d-flex flex-row">
-           <span>
+           <span title="Group all output fields that do not have an aggregation function applied. This amounts to distinct when no aggregations are applied">
             <toggle-switch v-model="reportNode.groupOutputs"></toggle-switch>
              Group Outputs
            </span>
@@ -28,16 +28,17 @@
           <TextField v-model="selectedOutput.alias" label-text="Alias name"></TextField>
           <TextField v-if="selectedOutput.supportsSuffixPrefix" class="m-t-16" v-model="selectedOutput.staticPrefix" label-text="Static prefix"></TextField>
           <TextField v-if="selectedOutput.supportsSuffixPrefix" class="m-t-16" v-model="selectedOutput.staticSuffix" label-text="Static suffix"></TextField>
-          <div class="d-flex flex-row align-items-center m-t-16">
-            <SelectMenu v-if="reportNode.groupOutputs"
-                        v-model="selectedOutput.aggregator"
+          <div v-if="reportNode.groupOutputs" class="d-flex flex-row align-items-center m-t-16">
+            <SelectMenu v-model="selectedOutput.aggregator"
                         :custom-comparator="compareAggregatorListItem"
                         :options="aggregationOptions"
                         label-text="Aggregate function">
             </SelectMenu>
-            <span class="material-icons m-l-16">
-              settings
-            </span>
+            <Button text-button class="m-l-16" title="Configure aggregate function">
+              <span class="material-icons text-default">
+                settings
+              </span>
+            </Button>
           </div>
         </div>
       </div>

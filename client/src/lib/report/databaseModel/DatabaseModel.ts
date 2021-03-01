@@ -13,6 +13,15 @@ export default class DatabaseModel
     this._entities = entities;
   }
 
+  /**
+   * get an entity buy name
+   * @param entityName - the name of the entity
+   */
+  public getEntityByName(entityName: string): Entity
+  {
+    return this.entities.find((entity) => entity.name === entityName);
+  }
+
   // ==========================================================
   // Getters
   // ==========================================================

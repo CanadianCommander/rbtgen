@@ -90,6 +90,38 @@ Document:
             schema:
               $ref: "../../common/error.model.yml#/api_error"
 
+  put:
+    summary: update a document
+    operationId: updateDocument
+    tags:
+      - user
+    parameters:
+      - in: path
+        name: document_id
+        description: The id of the document to get
+        schema:
+          type: string
+    requestBody:
+      description: document data to update with
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "document.model.yml#/document"
+    responses:
+      200:
+        description: the updated document. Note, file_data will be nil.
+        content:
+          application/json:
+            schema:
+              $ref: "document.model.yml#/document"
+      400:
+        description: update eror
+        content:
+          application/json:
+            schema:
+              $ref: "../../common/error.model.yml#/api_error"
+
   delete:
     summary: Delete the specified document
     operationId: deleteDocument

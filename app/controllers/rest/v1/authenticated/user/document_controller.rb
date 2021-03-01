@@ -50,6 +50,23 @@ module ::Rest::V1::Authenticated::User
       render json: ::Transfer::User::Document.from_blob(doc, include_data: include_data), status: @stats
     end
 
+    # PUT /user/self/document/:id
+    def update_document
+      params.require([:document_id, :file_data, :file_type])
+      document_service = ::Rbt::User::Document::DocumentService.new(@logged_in_user)
+
+      # get info from old document
+      doc = @logged_in_user.get_document_by_id(params[:document_id].to_s)
+      filename = doc.filename
+
+      # delete the old document
+      document_service.delete_document(params[:document_id].to_s)
+
+      # upload the new version
+      updated_document = document_service.attach_document(filename, Base64.decode64(params[:file_data].to_s), params[:file_type].to_s)
+      render json: ::Transfer::User::Document.from_blob(updated_document, type: params[:file_type].to_s), status: @stats
+    end
+
     # DELETE /user/self/document/:id
     def delete_document
       params.require([:document_id])

@@ -43,13 +43,14 @@ export default class ReportFactory
 
     const jsonData = JSON.parse(atob(reportDocument.fileData));
     const schemaDocument = await userApi.getDocument(jsonData.schemaDocument);
+    const databaseModel = DatabaseModelFactory.buildModelFromSchemaDocument(schemaDocument);
 
     return new Report(
       reportDocument,
       schemaDocument,
       jsonData.version,
-      DatabaseModelFactory.buildModelFromSchemaDocument(schemaDocument),
-      ReportModelFactory.buildReportModelFromReportDocument(reportDocument));
+      databaseModel,
+      ReportModelFactory.buildReportModelFromReportDocument(reportDocument, databaseModel));
   }
 
   /**

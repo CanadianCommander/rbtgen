@@ -98,6 +98,16 @@ export class PromiseUserApi {
         return result.toPromise();
     }
 	
+    /**
+     * update a document
+     * @param documentId The id of the document to get
+     * @param document document data to update with
+     */
+    public updateDocument(documentId: string, document: Document, options?: Configuration): Promise<Document> {
+    	const result = this.api.updateDocument(documentId, document, options);
+        return result.toPromise();
+    }
+	
 
 }
 

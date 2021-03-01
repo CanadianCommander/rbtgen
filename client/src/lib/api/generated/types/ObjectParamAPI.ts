@@ -110,6 +110,21 @@ export interface UserApiGetDocumentsRequest {
     includeData?: boolean
 }
 
+export interface UserApiUpdateDocumentRequest {
+    /**
+     * The id of the document to get
+     * @type string
+     * @memberof UserApiupdateDocument
+     */
+    documentId: string
+    /**
+     * document data to update with
+     * @type Document
+     * @memberof UserApiupdateDocument
+     */
+    document: Document
+}
+
 
 export class ObjectUserApi {
     private api: ObservableUserApi
@@ -148,6 +163,14 @@ export class ObjectUserApi {
      */
     public getDocuments(param: UserApiGetDocumentsRequest, options?: Configuration): Promise<Array<Document>> {
         return this.api.getDocuments(param.fileType, param.includeData,  options).toPromise();
+    }
+	
+    /**
+     * update a document
+     * @param param the request object
+     */
+    public updateDocument(param: UserApiUpdateDocumentRequest, options?: Configuration): Promise<Document> {
+        return this.api.updateDocument(param.documentId, param.document,  options).toPromise();
     }
 	
 
