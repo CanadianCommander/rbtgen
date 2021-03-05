@@ -34,4 +34,18 @@ export default class Relation
     return this._to;
   }
 
+  get type(): RelationType
+  {
+    return this._type;
+  }
+
+  get conditionSql(): string
+  {
+    return this._joinConditionSql;
+  }
+
+  get name(): string
+  {
+    return this._name;
+  }
 }

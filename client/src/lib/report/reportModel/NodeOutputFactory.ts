@@ -3,6 +3,7 @@ import NodeOutput from "@/lib/report/reportModel/NodeOutput";
 import DatabaseModel from "@/lib/report/databaseModel/DatabaseModel";
 import AggregationFactory from "@/lib/report/reportModel/AggregationFactory";
 import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
+import Aggregation from "@/lib/report/reportModel/Aggregation";
 
 export default class NodeOutputFactory
 {
@@ -50,7 +51,13 @@ export default class NodeOutputFactory
       throw new ReportModelError(`Node output of entity, [${json.entity}] uses non existent field [${json.field}]`);
     }
 
-    return new NodeOutput(field, json.alias, json.staticPrefix, json.staticSuffix, AggregationFactory.buildAggregation(json.aggregationType));
+    let aggregation: Aggregation = null;
+    if (json.aggregation)
+    {
+      aggregation = AggregationFactory.buildAggregationFromJson(json.aggregation);
+    }
+    
+    return new NodeOutput(field, json.alias, json.staticPrefix, json.staticSuffix, aggregation);
   }
 
   /**

@@ -28,6 +28,15 @@ export default class Entity
     return this.fields.find((field) => field.name === fieldName);
   }
 
+  /**
+   * get a relation on this entity by name
+   * @param relationName - the relation name to look for
+   */
+  public getRelationByName(relationName: string): Relation
+  {
+    return this.relations.find((relation) => relation.name === relationName);
+  }
+
   // ==========================================================
   // Getters
   // ==========================================================

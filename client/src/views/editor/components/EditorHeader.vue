@@ -62,6 +62,7 @@
       }
       catch (error)
       {
+        console.error(error);
         SnackBarAlertStore.showAlert({text: "Failed to save! OMG panic time!", icon: "error"});
       }
     }

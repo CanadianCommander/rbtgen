@@ -1,6 +1,7 @@
 import ReportNode from "@/lib/report/reportModel/ReportNode";
 import NodeOutput from "@/lib/report/reportModel/NodeOutput";
 import NodeOutputSqlGenerator from "@/lib/report/sql/NodeOutputSqlGenerator";
+import RelationSqlGenerator from "@/lib/report/sql/RelationSqlGenerator";
 
 export default class ReportNodeSqlGenerator
 {
@@ -11,10 +12,18 @@ export default class ReportNodeSqlGenerator
   /**
    * generate sql for the given report node.
    * @param reportNode
+   * @param root - if true treat this node as root node.
    */
-  public static generateSql(reportNode: ReportNode): string
+  public static generateSql(reportNode: ReportNode, root: boolean): string
   {
-    return this.generateSqlRootNode(reportNode);
+    if (root)
+    {
+      return this.generateSqlRootNode(reportNode);
+    }
+    else
+    {
+      return this.generateSqlChildNode(reportNode);
+    }
   }
 
   // ==========================================================
@@ -28,17 +37,16 @@ export default class ReportNodeSqlGenerator
    */
   protected static generateSqlRootNode(reportNode: ReportNode): string
   {
-    const selectFieldSql: string[] = [];
-    reportNode.nodeOutputs.forEach((nodeOutput: NodeOutput) =>
-    {
-      selectFieldSql.push(NodeOutputSqlGenerator.generateSql(nodeOutput, reportNode, true));
-    });
+    const selectSql = this.generateSelect(reportNode, true);
+    const groupBySql = this.generateGroupBy(reportNode);
+    const joinsSql = this.generateJoins(reportNode);
 
     return `
-SELECT
-${selectFieldSql.join(",\n")}
+${selectSql}
 FROM
-${reportNode.entity.name} AS ${reportNode.transientId};`;
+${reportNode.entity.name} AS ${reportNode.transientId}
+${joinsSql}
+${groupBySql};`;
   }
 
   /**
@@ -48,8 +56,79 @@ ${reportNode.entity.name} AS ${reportNode.transientId};`;
    */
   protected static generateSqlChildNode(reportNode: ReportNode): string
   {
-    console.log(reportNode);
-    return "TODO";
+    const selectSql = this.generateSelect(reportNode, false);
+    const groupBySql = this.generateGroupBy(reportNode);
+    const joinsSql = this.generateJoins(reportNode);
+
+    return `(
+${selectSql}
+FROM
+${reportNode.entity.name} AS ${reportNode.transientId}
+${joinsSql}
+${groupBySql}
+)
+AS ${reportNode.transientId}`;
+  }
+
+  /**
+   * generate sql for the group by statement of a node
+   * @param reportNode - node to generate the group by for
+   * @protected
+   */
+  protected static generateGroupBy(reportNode: ReportNode): string
+  {
+    // collect fields for GROUP BY
+    let groupBySql = "";
+    if (reportNode.groupOutputs)
+    {
+      groupBySql = "GROUP BY ";
+      const groupFieldNames: string[] = [];
+      reportNode.nodeOutputs.forEach((nodeOutput: NodeOutput) =>
+      {
+        if (!nodeOutput.aggregator)
+        {
+          groupFieldNames.push(NodeOutputSqlGenerator.generateFieldSql(nodeOutput, reportNode));
+        }
+      });
+      groupBySql += groupFieldNames.join(", ");
+    }
+    return groupBySql;
+  }
+
+  /**
+   * generate select SQL for a report node
+   * @param reportNode - the node to generate for
+   * @param root - if true generate for root node
+   * @protected
+   */
+  protected static generateSelect(reportNode: ReportNode, root: boolean): string
+  {
+    const selectFieldSql: string[] = [];
+    reportNode.nodeOutputs.forEach((nodeOutput: NodeOutput) =>
+    {
+      selectFieldSql.push(NodeOutputSqlGenerator.generateSql(nodeOutput, reportNode, root));
+    });
+
+    if (selectFieldSql.length > 0)
+    {
+      return `SELECT \n${selectFieldSql.join(",\n")}`;
+    }
+    return "";
+  }
+
+  /**
+   * generate JOIN sql for child tables
+   * @param reportNode - the node to generate for
+   * @protected
+   */
+  protected static generateJoins(reportNode: ReportNode): string
+  {
+    let sql = "";
+    reportNode.childNodes.forEach((childNode: ReportNode) =>
+    {
+      sql += RelationSqlGenerator.generateSql(childNode.parentRelation, reportNode, childNode);
+    });
+    return sql;
   }
 
 }

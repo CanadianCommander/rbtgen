@@ -13,6 +13,6 @@ export default class ReportModelSqlGenerator
    */
   public static generateSql(reportModel: ReportModel): string
   {
-    return ReportNodeSqlGenerator.generateSql(reportModel.rootNode);
+    return ReportNodeSqlGenerator.generateSql(reportModel.rootNode, true);
   }
 }

@@ -19,7 +19,7 @@ export default class NodeOutputSerializer
       alias: nodeOutput.alias,
       staticPrefix: nodeOutput.staticPrefix,
       staticSuffix: nodeOutput.staticSuffix,
-      aggregationType: nodeOutput.aggregatorType, // <-- TODO will probably need to serialize aggregation object
+      aggregation: nodeOutput.aggregator?.toHash(),
     };
   }
 }

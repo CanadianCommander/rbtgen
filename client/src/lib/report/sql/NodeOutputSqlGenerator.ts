@@ -20,26 +20,33 @@ export default class NodeOutputSqlGenerator
   {
     let fieldSql: string = this.generateFieldSql(nodeOutput, reportNode);
 
+    if (nodeOutput.aggregator && reportNode.groupOutputs)
+    {
+      fieldSql = nodeOutput.aggregator.toSql(fieldSql);
+    }
+
     fieldSql = this.applyPrefixSuffix(fieldSql, nodeOutput);
+
     if (atRoot && nodeOutput.alias)
     {
       fieldSql = this.applyAlias(fieldSql, nodeOutput);
+    }
+    else if (nodeOutput.aggregator && reportNode.groupOutputs)
+    {
+      // if we aggregate we must preserve the field name
+      fieldSql += ` AS ${nodeOutput.name}`;
     }
 
     return fieldSql;
   }
 
-  // ==========================================================
-  // Protected class methods
-  // ==========================================================
-
   /**
-   * generate the field sql
+   * generate sql for the field of this node output. This excludes aggregation, suffix, prefix, alias ... ect
    * @param nodeOutput
    * @param reportNode - the report node of this node output
    * @protected
    */
-  protected static generateFieldSql(nodeOutput: NodeOutput, reportNode: ReportNode): string
+  public static generateFieldSql(nodeOutput: NodeOutput, reportNode: ReportNode): string
   {
     if (nodeOutput.type === FieldType.CUSTOM)
     {
@@ -57,6 +64,10 @@ export default class NodeOutputSqlGenerator
       return `${closestNode.transientId}.${nodeOutput.field.name}`;
     }
   }
+
+  // ==========================================================
+  // Protected class methods
+  // ==========================================================
 
   /**
    * apply a suffix and prefix to the provided sql if applicable

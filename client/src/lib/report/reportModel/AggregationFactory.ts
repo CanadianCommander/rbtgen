@@ -1,7 +1,7 @@
 import {AggregationType} from "@/lib/report/reportModel/AggregationType";
 import Aggregation from "@/lib/report/reportModel/Aggregation";
 import {FieldType} from "@/lib/report/databaseModel/FieldType";
-import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
+import SimpleAggregation from "@/lib/report/reportModel/aggregators/SimpleAggregation";
 
 export default class AggregationFactory
 {
@@ -17,8 +17,19 @@ export default class AggregationFactory
     }
     else
     {
-      return new Aggregation(type);
+      // for now all aggregations are "simple"
+      return new SimpleAggregation(type);
     }
+  }
+
+  /**
+   * build aggregation from json formatted aggregator data
+   * @param json
+   */
+  public static buildAggregationFromJson(json: any): Aggregation
+  {
+    // TODO one day this will be more complex
+    return this.buildAggregation(json.type);
   }
 
   /**

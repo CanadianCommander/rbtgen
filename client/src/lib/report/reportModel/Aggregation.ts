@@ -1,6 +1,6 @@
 import {AggregationType} from "@/lib/report/reportModel/AggregationType";
 
-export default class Aggregation
+export default abstract class Aggregation
 {
   protected _aggregationType: AggregationType
 
@@ -13,6 +13,10 @@ export default class Aggregation
     this._aggregationType = aggregationType;
   }
 
+  abstract toHash(): any;
+
+  abstract toSql(nodeSql: string): string;
+
   // ==========================================================
   // Getters
   // ==========================================================
@@ -21,5 +25,7 @@ export default class Aggregation
   {
     return this._aggregationType;
   }
+
+  abstract get configurable(): boolean;
 
 }

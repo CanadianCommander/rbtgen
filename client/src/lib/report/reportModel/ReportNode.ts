@@ -5,6 +5,7 @@ import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 import NodeOutput from "@/lib/report/reportModel/NodeOutput";
 import NodeOutputFactory from "@/lib/report/reportModel/NodeOutputFactory";
 import cryptoRandomString from "crypto-random-string";
+import Relation from "@/lib/report/databaseModel/Relation";
 
 export default class ReportNode
 {
@@ -17,6 +18,7 @@ export default class ReportNode
   protected _nodeOutputs: NodeOutput[];
   protected _filters: Filter[];
   protected _childNodes: ReportNode[];
+  protected _parentRelation: Relation = null;
 
   // ==========================================================
   // Node settings
@@ -114,6 +116,11 @@ export default class ReportNode
     return outputs;
   }
 
+  get parentRelation(): Relation
+  {
+    return this._parentRelation;
+  }
+
   // ==========================================================
   // Setters
   // ==========================================================
@@ -121,6 +128,11 @@ export default class ReportNode
   set groupOutputs(group: boolean)
   {
     this._groupOutputs = group;
+  }
+
+  set parentRelation(relation: Relation)
+  {
+    this._parentRelation = relation;
   }
 
   // ==========================================================

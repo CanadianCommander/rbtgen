@@ -20,7 +20,7 @@ export default class ReportModelFactory
 
     if (jsonData.report)
     {
-      return new ReportModel(ReportNodeFactory.buildReportNodeFromJson(jsonData.report.root, databaseModel));
+      return new ReportModel(ReportNodeFactory.buildReportNodeFromJson(jsonData.report.root, databaseModel, null));
     }
     else
     {

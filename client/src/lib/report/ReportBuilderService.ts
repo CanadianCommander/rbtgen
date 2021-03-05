@@ -1,7 +1,7 @@
 import Report from "@/lib/report/Report";
 import ReportNode from "@/lib/report/reportModel/ReportNode";
-import Entity from "@/lib/report/databaseModel/Entity";
 import ReportNodeFactory from "@/lib/report/reportModel/ReportNodeFactory";
+import Relation from "@/lib/report/databaseModel/Relation";
 
 export default class ReportBuilderService
 {
@@ -27,24 +27,25 @@ export default class ReportBuilderService
 
   /**
    * add a new node to the report graph built of the given entity
-   * @param entity - the entity to use as the base of the new node
-   * @param to - the node which is to be the parent of the new node.
+   * @param relation - the entity to use as the base of the new node
+   * @param from - the node which is to be the parent of the new node.
    * @return the new node that was added to the graph
    */
-  public addNodeFromEntity(entity: Entity, to: ReportNode): ReportNode
+  public addNodeFromRelation(relation: Relation, from: ReportNode): ReportNode
   {
-    const newNode = ReportNodeFactory.newReportNode(entity);
-    this.addNode(newNode, to);
+    const newNode = ReportNodeFactory.newReportNode(relation.to);
+    this.addNode(newNode, from);
+    newNode.parentRelation = relation;
     return newNode;
   }
 
   /**
    * add a node to the report graph
    * @param newNode - the node to add
-   * @param to - the node which is to be the parent of the new node.
+   * @param from - the node which is to be the parent of the new node.
    */
-  public addNode(newNode: ReportNode, to: ReportNode): void
+  public addNode(newNode: ReportNode, from: ReportNode): void
   {
-    to.pushChildNode(newNode);
+    from.pushChildNode(newNode);
   }
 }

@@ -31,6 +31,7 @@
   import Report from "@/lib/report/Report";
   import ReportStore from "@/lib/report/ReportStore";
   import SelectModal from "@/components/modals/SelectModal.vue";
+  import Relation from "@/lib/report/databaseModel/Relation";
 
   @Component({})
   export default class EntityRelationItem extends Vue
@@ -45,12 +46,12 @@
 
     public async selectEntityRelation(): Promise<void>
     {
-      const entity = await this.openSelectEntityModal("New entity relation", this.currentSelection.entity.relatedEntities);
+      const relation = await this.openSelectRelationModal("New entity relation", this.currentSelection.entity.relations);
 
-      if (entity)
+      if (relation)
       {
         const reportBuilderService = new ReportBuilderService(this.report);
-        const newNode = reportBuilderService.addNodeFromEntity(entity, this.currentSelection);
+        const newNode = reportBuilderService.addNodeFromRelation(relation, this.currentSelection);
         ReportStore.setSelectedNode(newNode);
       }
     }
@@ -73,9 +74,19 @@
     // Protected methods
     // ==========================================================
 
-    protected async openSelectEntityModal(title: string, entityOptions: Entity[]): Promise<Entity>
+    protected async openSelectRelationModal(title: string, relations: Relation[]): Promise<Relation>
     {
-      const options = entityOptions.map((entity) =>
+      const options = relations.map((relation) =>
+      {
+        return {label: relation.to.name, value: relation};
+      });
+
+      return await openModal(SelectModal, {title, options});
+    }
+
+    protected async openSelectEntityModal(title: string, entities: Entity[]): Promise<Entity>
+    {
+      const options = entities.map((entity) =>
       {
         return {label: entity.name, value: entity};
       });

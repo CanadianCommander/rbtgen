@@ -16,6 +16,7 @@ export default class ReportNodeSerializer
   {
     return {
       entityName: reportNode.entity.name,
+      parentRelationName: reportNode.parentRelation?.name,
       filters: [],
       childNodes: reportNode.childNodes.map((node) => this.serializeHash(node)),
       nodeOutputs: reportNode.nodeOutputs.map((output) => NodeOutputSerializer.serializeHash(output)),
