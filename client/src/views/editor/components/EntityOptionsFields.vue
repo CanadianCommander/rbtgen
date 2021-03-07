@@ -3,7 +3,7 @@
     <!-- global output options -->
     <div class="side-field flex-item-grow m-l-16 m-r-16">
       <h2 class="m-8 text-center">Output Options</h2>
-      <div class="bg-box p-16 d-flex flex-col">
+      <div class="bg-box option-box p-16 d-flex flex-col">
          <div class="d-flex flex-row">
            <span title="Group all output fields that do not have an aggregation function applied. This amounts to distinct when no aggregations are applied">
             <toggle-switch v-model="reportNode.groupOutputs"></toggle-switch>
@@ -24,7 +24,7 @@
     <div class="side-field flex-item-grow">
       <div v-if="selectedOutput" class="m-l-16 m-r-16">
         <h2 class="m-8 text-center">{{ selectedOutput.name }}</h2>
-        <div class="bg-box p-16">
+        <div class="bg-box option-box p-16">
           <TextField v-model="selectedOutput.alias" label-text="Alias name"></TextField>
           <TextField v-if="selectedOutput.supportsSuffixPrefix" class="m-t-16" v-model="selectedOutput.staticPrefix" label-text="Static prefix"></TextField>
           <TextField v-if="selectedOutput.supportsSuffixPrefix" class="m-t-16" v-model="selectedOutput.staticSuffix" label-text="Static suffix"></TextField>
@@ -40,6 +40,11 @@
               </span>
             </Button>
           </div>
+        </div>
+        <div class="d-flex flex-row justify-content-end">
+          <Button class="m-t-16" @click="deleteSelectedOutput()" filled>
+            Delete
+          </Button>
         </div>
       </div>
     </div>
@@ -60,12 +65,15 @@
   import SelectMenu from "@/components/controls/SelectMenu.vue";
   import AggregationFactory from "@/lib/report/reportModel/AggregationFactory";
   import Aggregation from "@/lib/report/reportModel/Aggregation";
+  import ReportBuilderService from "@/lib/report/ReportBuilderService";
+  import Report from "@/lib/report/Report";
 
   @Component({
     components: {SelectMenu, ToggleSwitch, TextField, Button, List},
   })
   export default class EntityOptionsFields extends Vue
   {
+    @Prop({type: Object}) report: Report;
     @Prop({type: Object}) public reportNode: ReportNode;
 
     public selectedOutput: NodeOutput = null;
@@ -104,6 +112,16 @@
     public compareAggregatorListItem(listItem: ListItem, aggregator: Aggregation): boolean
     {
       return listItem.value?.type === aggregator?.type;
+    }
+
+    /**
+     * deletes the currently selected output option
+     */
+    public deleteSelectedOutput(): void
+    {
+      const reportBuilder = new ReportBuilderService(this.report);
+      reportBuilder.deleteOutputFromNode(this.selectedOutput, this.reportNode);
+      this.selectedOutput = null;
     }
 
     // ==========================================================
@@ -175,6 +193,10 @@
 
     .side-field {
       max-width: calc(50% - 155px);
+    }
+
+    .option-box {
+      height: 278px;
     }
   }
 </style>

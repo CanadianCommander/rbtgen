@@ -7,6 +7,29 @@ export default class ReportQueryService
   // ==========================================================
 
   /**
+   * find the parent for the provided node in the report graph
+   * @param searchNode - the node to look for
+   * @param rootNode - the report root node and or the node to start the search from
+   * @return the parent of "node", or null if none found.
+   */
+  public findNodeParent(searchNode: ReportNode, rootNode: ReportNode): ReportNode
+  {
+    let parentNode: ReportNode = null;
+    this.bfsReportNodes(rootNode, (nodes: ReportNode[]) =>
+    {
+      for (const node of nodes)
+      {
+        if (node.childNodes.includes(searchNode))
+        {
+          parentNode = node;
+        }
+      }
+    });
+
+    return parentNode;
+  }
+
+  /**
    * find the closest report node (in terms of depth) by entity name.
    * @param name - the entity name to search for
    * @param startNode - the node at which to start the search
@@ -54,6 +77,19 @@ export default class ReportQueryService
     });
 
     return result;
+  }
+
+  /**
+   * iterate over each node in the sub tree indicated by startNode
+   * @param startNode - the node to start the iteration at
+   * @param callback - callback to be called for every node in the graph
+   */
+  public forEachReportNode(startNode: ReportNode, callback: (node: ReportNode) => void): void
+  {
+    this.bfsReportNodes(startNode, (nodes: ReportNode[]) =>
+    {
+      nodes.forEach((node) => callback(node));
+    });
   }
 
   /**

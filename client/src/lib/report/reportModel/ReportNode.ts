@@ -49,9 +49,23 @@ export default class ReportNode
     this._childNodes.push(child);
   }
 
+  public removeChildNode(child: ReportNode): void
+  {
+    this._childNodes = this._childNodes.filter((childNode) => childNode !== child);
+  }
+
   public pushNodeOutput(newOutput: NodeOutput): void
   {
     this._nodeOutputs.push(newOutput);
+  }
+
+  /**
+   * removes the specified node output from this node
+   * @param nodeOutput - the node output to remove
+   */
+  public removeNodeOutput(nodeOutput: NodeOutput): void
+  {
+    this._nodeOutputs = this._nodeOutputs.filter((node) => node !== nodeOutput);
   }
 
   public addOutputFromField(newField: Field): void

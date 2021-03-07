@@ -4,7 +4,8 @@
       <div class="flex-item-grow d-flex flex-col">
         <editor-header :report="report" @save="onSave"></editor-header>
         <entity-relation-view class="entity-relations" :report="report"></entity-relation-view>
-        <entity-options-pane class="entity-options"></entity-options-pane>
+        <entity-options-bar :report="report"></entity-options-bar>
+        <entity-options-pane :report="report" class="entity-options"></entity-options-pane>
       </div>
     </loading-mask>
   </div>
@@ -19,9 +20,10 @@
   import EntityRelationView from "@/views/editor/components/EntityRelationView.vue";
   import EntityOptionsPane from "@/views/editor/components/EntityOptionsPane.vue";
   import ReportStore from "@/lib/report/ReportStore";
+  import EntityOptionsBar from "@/views/editor/components/EntityOptionsBar.vue";
 
   @Component({
-    components: {EntityOptionsPane, EntityRelationView, EditorHeader, LoadingMask},
+    components: {EntityOptionsBar, EntityOptionsPane, EntityRelationView, EditorHeader, LoadingMask},
   })
   export default class Editor extends Vue
   {
