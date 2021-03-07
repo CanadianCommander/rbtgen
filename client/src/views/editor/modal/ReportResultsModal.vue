@@ -3,7 +3,9 @@
     <div class="modal-content">
       <h2>Report</h2>
       <pre class="p-16">{{reportResult}}</pre>
-      <Button>Done</Button>
+      <Button class="w-100" @click="close" text-button>
+        Done
+      </Button>
     </div>
   </modal>
 </template>
@@ -21,6 +23,15 @@
   export default class ReportResultsModal extends Vue
   {
     @Prop({type: Object}) public report: Report;
+
+    // ==========================================================
+    // Public methods
+    // ==========================================================
+
+    public close(): void
+    {
+      this.$emit("close");
+    }
 
     // ==========================================================
     // Getters

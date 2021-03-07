@@ -18,7 +18,8 @@ export default class RelationSqlGenerator
    */
   public static generateSql(relation: Relation, parentNode: ReportNode, childNode: ReportNode): string
   {
-    return `${this.generateJoin(relation)}
+    return `
+${this.generateJoin(relation)}
 ${ReportNodeSqlGenerator.generateSql(childNode, false)}
 ${this.generateOn(relation, parentNode)}`;
   }

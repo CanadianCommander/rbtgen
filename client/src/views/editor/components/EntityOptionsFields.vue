@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="d-flex flex-row justify-content-end">
-          <Button class="m-t-16" @click="deleteSelectedOutput()" filled>
+          <Button v-if="!selectedOutput.required" class="m-t-16" @click="deleteSelectedOutput()" filled>
             Delete
           </Button>
         </div>
@@ -169,7 +169,7 @@
           label = `${label} (${output.alias})`;
         }
 
-        return {label: label, value: output};
+        return {label: label, icon: output.required ? "link" : "", value: output};
       });
 
     }

@@ -4,6 +4,7 @@ import ReportNodeFactory from "@/lib/report/reportModel/ReportNodeFactory";
 import Relation from "@/lib/report/databaseModel/Relation";
 import ReportQueryService from "@/lib/report/ReportQueryService";
 import NodeOutput from "@/lib/report/reportModel/NodeOutput";
+import NodeOutputFactory from "@/lib/report/reportModel/NodeOutputFactory";
 
 export default class ReportBuilderService
 {
@@ -36,6 +37,15 @@ export default class ReportBuilderService
   public addNodeFromRelation(relation: Relation, from: ReportNode): ReportNode
   {
     const newNode = ReportNodeFactory.newReportNode(relation.to);
+
+    // add required outputs
+    relation.requiredFields.forEach((reqField) =>
+    {
+      const reqOutput = NodeOutputFactory.buildNodeOutputFromField(reqField);
+      reqOutput.required = true;
+      newNode.pushNodeOutput(reqOutput);
+    });
+
     this.addNode(newNode, from);
     newNode.parentRelation = relation;
     return newNode;

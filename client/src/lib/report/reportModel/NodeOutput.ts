@@ -13,6 +13,7 @@ export default class NodeOutput
   protected _staticPrefix: string = null;
   protected _staticSuffix: string = null;
   protected _aggregator: Aggregation = null;
+  protected _required = false;
 
   // ==========================================================
   // Public methods
@@ -90,6 +91,11 @@ export default class NodeOutput
       this._field.type === FieldType.FLOAT;
   }
 
+  get required(): boolean
+  {
+    return this._required;
+  }
+
   // ==========================================================
   // Setters
   // ==========================================================
@@ -128,5 +134,10 @@ export default class NodeOutput
   {
     console.log("FOOOOO");
     this._aggregator = AggregationFactory.buildAggregation(newType);
+  }
+
+  set required(required: boolean)
+  {
+    this._required = required;
   }
 }

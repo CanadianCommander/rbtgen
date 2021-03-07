@@ -29,6 +29,11 @@ export default class Relation
   // Getters
   // ==========================================================
 
+  get name(): string
+  {
+    return this._name;
+  }
+
   get to(): Entity
   {
     return this._to;
@@ -44,8 +49,8 @@ export default class Relation
     return this._joinConditionSql;
   }
 
-  get name(): string
+  get requiredFields(): Field[]
   {
-    return this._name;
+    return this._requiredFields;
   }
 }

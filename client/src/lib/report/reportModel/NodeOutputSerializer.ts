@@ -20,6 +20,7 @@ export default class NodeOutputSerializer
       staticPrefix: nodeOutput.staticPrefix,
       staticSuffix: nodeOutput.staticSuffix,
       aggregation: nodeOutput.aggregator?.toHash(),
+      required: nodeOutput.required,
     };
   }
 }

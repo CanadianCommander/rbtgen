@@ -56,8 +56,11 @@ export default class NodeOutputFactory
     {
       aggregation = AggregationFactory.buildAggregationFromJson(json.aggregation);
     }
-    
-    return new NodeOutput(field, json.alias, json.staticPrefix, json.staticSuffix, aggregation);
+
+    const output = new NodeOutput(field, json.alias, json.staticPrefix, json.staticSuffix, aggregation);
+    output.required = json.required;
+
+    return output;
   }
 
   /**

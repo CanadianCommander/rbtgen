@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <ul class="mdc-list mdc-list--dense" ref="mdcList" @MDCList:action="onSelect($event)">
+    <ul class="mdc-list mdc-list--dense " ref="mdcList" @MDCList:action="onSelect($event)">
       <li class="mdc-list-item"
           v-for="(item, index) of options"
           :key="index"
@@ -8,6 +8,7 @@
           :class="{'mdc-list-item--selected': item.value === value}">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__text">{{item.label}}</span>
+        <span class="mdc-list-item__meta material-icons">{{item.icon}}</span>
       </li>
     </ul>
   </div>
@@ -53,6 +54,7 @@
 
     .mdc-list {
       @include list.item-primary-text-ink-color(var(--color-text));
+      @include list.item-meta-ink-color(var(--color-text));
     }
   }
 </style>
