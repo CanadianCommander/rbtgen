@@ -3,7 +3,7 @@
     <Tabs :current-tab.sync="currentTab" :tabList="tabOptions"></Tabs>
     <div v-if="selectedNode" class="p-l-16 p-r-16 p-b-16 flex-item-grow d-flex flex-col">
       <entity-options-fields v-if="currentTab === TABS.FIELDS" :report="report" :report-node="selectedNode"></entity-options-fields>
-      <entity-options-filters v-if="currentTab === TABS.FILTERS"></entity-options-filters>
+      <entity-options-filters v-if="currentTab === TABS.FILTERS" :report="report" :report-node="selectedNode"></entity-options-filters>
     </div>
   </div>
 </template>

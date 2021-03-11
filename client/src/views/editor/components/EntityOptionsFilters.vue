@@ -1,18 +1,116 @@
 <template>
-  <div>
-    <h1>Filters</h1>
+  <div class=" entity-filters d-flex flex-row">
+    <div class="filters-list m-r-16">
+      <h2 class="m-8">Filters</h2>
+      <div class="option-box">
+        <list v-model="selectedFilter" :options="selectedNodeFilterList">
+        </list>
+      </div>
+      <Button class="w-100 m-t-16" @click="addFilter()" filled>
+        Add
+      </Button>
+    </div>
+    <div class="flex-item-grow">
+      <div v-if="selectedFilter">
+        <h2 class="m-8 text-center">{{selectedFilter.name}}</h2>
+        <div class="option-box">
+          <div class="p-8 d-flex flex-col flex-wrap">
+            <div v-for="(option, index) of selectedFilter.options" :key="index">
+              <!-- SELECT MENU OPTION -->
+              <div v-if="option.type === NodeFilterOptionType.SELECT_OPTION" class="option">
+                <SelectMenu v-model="option.value" :options="option.options" :label-text="option.name">
+                </SelectMenu>
+              </div>
+              <!-- VARIABLE OPTION -->
+              <div v-else-if="option.type === NodeFilterOptionType.VARIABLE" class="option">
+                <TextField v-model="option.value" :label-text="option.name">
+                </TextField>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
   import Vue from "vue";
-  import {Component} from "vue-property-decorator";
+  import {Component, Prop} from "vue-property-decorator";
+  import Report from "@/lib/report/Report";
+  import ReportNode from "@/lib/report/reportModel/ReportNode";
+  import Button from "@/components/controls/Button.vue";
+  import {openModal} from "@/lib/alert/Modal";
+  import SelectModal from "@/components/modals/SelectModal.vue";
+  import ListItem from "@/components/lib/ListItem";
+  import NodeFilterFactory from "@/lib/report/reportModel/NodeFilterFactory";
+  import List from "@/components/controls/List.vue";
+  import {NodeFilterOptionType} from "@/lib/report/reportModel/NodeFilterOptionType";
+  import SelectMenu from "@/components/controls/SelectMenu.vue";
+  import TextField from "@/components/controls/TextField.vue";
 
-  @Component({})
+  @Component({
+    components: {TextField, SelectMenu, List, Button},
+  })
   export default class EntityOptionsFilters extends Vue
   {
+    @Prop({type: Object}) report: Report;
+    @Prop({type: Object}) public reportNode: ReportNode;
+
+    public selectedFilter: NodeFilter = null;
+    public NodeFilterOptionType = NodeFilterOptionType;
+
+    // ==========================================================
+    // Public methods
+    // ==========================================================
+
+    public async addFilter(): Promise<void>
+    {
+      const newFilter = await openModal(SelectModal, {title: "New Filter", options: this.newNodeFilterOptionList});
+      if (newFilter)
+      {
+        this.reportNode.pushNodeFilter(newFilter);
+      }
+    }
+
+    // ==========================================================
+    // Getters
+    // ==========================================================
+
+    get newNodeFilterOptionList(): ListItem[]
+    {
+     return NodeFilterFactory.buildAllNodeFiltersForReportNode(this.reportNode)
+        .map((filter) =>
+        {
+          return {label: filter.name, value: filter};
+        });
+    }
+
+    get selectedNodeFilterList(): ListItem[]
+    {
+      return this.reportNode.nodeFilters
+        .map((filter) =>
+        {
+          return {label: filter.name, value: filter};
+        });
+    }
 
   }
 </script>
 <style lang="scss" scoped>
+  .entity-filters {
 
+    .filters-list {
+      width: 256px;
+    }
+
+    .option-box {
+      background-color: var(--color-background);
+      height: 278px;
+    }
+
+    .option {
+      margin: 8px;
+      max-width: 256px;
+    }
+  }
 </style>

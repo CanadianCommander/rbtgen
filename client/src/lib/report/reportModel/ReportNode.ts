@@ -1,11 +1,11 @@
 import Entity from "@/lib/report/databaseModel/Entity";
 import Field from "@/lib/report/databaseModel/Field";
-import Filter from "@/lib/report/databaseModel/Filter";
 import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 import NodeOutput from "@/lib/report/reportModel/NodeOutput";
 import NodeOutputFactory from "@/lib/report/reportModel/NodeOutputFactory";
 import cryptoRandomString from "crypto-random-string";
 import Relation from "@/lib/report/databaseModel/Relation";
+import NodeFilter from "@/lib/report/reportModel/NodeFilter";
 
 export default class ReportNode
 {
@@ -16,7 +16,7 @@ export default class ReportNode
   protected _transientId: string = "r" + cryptoRandomString({length: 16, type: "alphanumeric"});
   protected _primaryEntity: Entity;
   protected _nodeOutputs: NodeOutput[];
-  protected _filters: Filter[];
+  protected _filters: NodeFilter[];
   protected _childNodes: ReportNode[];
   protected _parentRelation: Relation = null;
 
@@ -31,7 +31,7 @@ export default class ReportNode
   // Public methods
   // ==========================================================
 
-  constructor(primaryEntity: Entity, nodeOutputs: NodeOutput[] = [], filters: Filter[] = [], childNodes: ReportNode[] = [])
+  constructor(primaryEntity: Entity, nodeOutputs: NodeOutput[] = [], filters: NodeFilter[] = [], childNodes: ReportNode[] = [])
   {
     this._primaryEntity = primaryEntity;
     this._nodeOutputs = nodeOutputs;
@@ -71,6 +71,15 @@ export default class ReportNode
   public addOutputFromField(newField: Field): void
   {
     this._nodeOutputs.push(NodeOutputFactory.buildNodeOutputFromField(newField));
+  }
+
+  /**
+   * add a node filter to the report node
+   * @param nodeFilter - the node filter to add
+   */
+  public pushNodeFilter(nodeFilter: NodeFilter): void
+  {
+    this._filters.push(nodeFilter);
   }
 
   // ==========================================================
@@ -133,6 +142,11 @@ export default class ReportNode
   get parentRelation(): Relation
   {
     return this._parentRelation;
+  }
+
+  get nodeFilters(): NodeFilter[]
+  {
+    return this._filters;
   }
 
   // ==========================================================

@@ -56,6 +56,11 @@ export default class Entity
     return this._fields;
   }
 
+  get filters(): Filter[]
+  {
+    return this._filters;
+  }
+
   /**
    * get all entities this entity is related to. only covers outgoing relations.
    * @return list of related entities

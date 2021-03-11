@@ -16,4 +16,13 @@ export default class Filter
     this._sql = sql;
     this._requiredEntities = requiredEntities;
   }
+
+  // ==========================================================
+  // Getters
+  // ==========================================================
+
+  get name(): string
+  {
+    return this._name;
+  }
 }
