@@ -36,10 +36,23 @@ export default class NodeFilterOptionFactory
   {
     const options: ListItem[] = [
       {label: "Equal", value: NodeFilterOptionComparisonType.EQ},
+      {label: "Like", value: NodeFilterOptionComparisonType.LIKE},
       {label: "Less Than", value: NodeFilterOptionComparisonType.LT},
       {label: "Greater Than", value: NodeFilterOptionComparisonType.GT},
     ];
 
     return new NodeFilterOption(NodeFilterOptionType.SELECT_OPTION, name, options);
+  }
+
+  /**
+   * build a node filter option form json definition
+   * @param json - json filter option definition
+   */
+  public static buildNodeFilterOptionFromJson(json: any): NodeFilterOption
+  {
+    const newOption = new NodeFilterOption(json.type, json.name, json.options as ListItem[]);
+    newOption.identifier = json.identifier;
+    newOption.value = json.value;
+    return newOption;
   }
 }

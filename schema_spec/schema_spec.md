@@ -23,7 +23,6 @@ and [] indicates an optional field.
     filters:
         <filter name>:
             sql: <filter sql>
-            [required_tables: <yaml list of table names required for this filter to function>]
 
 ... more table defintions ....
 ```

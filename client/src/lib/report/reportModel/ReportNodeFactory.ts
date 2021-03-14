@@ -4,6 +4,7 @@ import DatabaseModel from "@/lib/report/databaseModel/DatabaseModel";
 import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 import NodeOutputFactory from "@/lib/report/reportModel/NodeOutputFactory";
 import Relation from "@/lib/report/databaseModel/Relation";
+import NodeFilterFactory from "@/lib/report/reportModel/NodeFilterFactory";
 
 export default class ReportNodeFactory
 {
@@ -39,7 +40,7 @@ export default class ReportNodeFactory
     const reportNode = new ReportNode(
       entity,
       NodeOutputFactory.buildNodeOutputsFromJson(json.nodeOutputs, databaseModel),
-      [],
+      NodeFilterFactory.buildNodeFiltersFromJson(json.filters, databaseModel),
       this.buildReportNodesFromJson(json.childNodes, databaseModel, entity));
 
     if (json.parentRelationName)

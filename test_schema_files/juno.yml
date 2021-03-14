@@ -84,7 +84,7 @@ models:
         type: integer
 
     filters:
-      most_recent_by_type_and_demographic:
+      most_recent:
         sql: >
           NOT EXISTS (
             SELECT dateObserved FROM measurements
@@ -219,6 +219,13 @@ models:
         type: left
         condition: "{{demographic.demographic_no}} = {{measurements.demographicNo}}"
 
+    filters:
+      profile_complete:
+        sql: >
+          {{last_name}} != "" AND {{last_name}} IS NOT NULL
+          {{first_name}} != "" AND {{first_name}} IS NOT NULL
+          {{hin}} != "" AND {{hin}} IS NOT NULL
+          {{sex}} != "" AND {{sex}} IS NOT NULL
     fields:
       demographic_no:
         type: integer

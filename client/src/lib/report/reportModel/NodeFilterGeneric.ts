@@ -2,8 +2,10 @@ import NodeFilter from "@/lib/report/reportModel/NodeFilter";
 import {NodeFilterType} from "@/lib/report/reportModel/NodeFilterType";
 import Field from "@/lib/report/databaseModel/Field";
 import NodeFilterOptionFactory from "@/lib/report/reportModel/NodeFilterOptionFactory";
+import {NodeFilterOptionComparisonType} from "@/lib/report/reportModel/NodeFilterOptionComparisonType";
+import NodeFilterOption from "@/lib/report/reportModel/NodeFilterOption";
 
-enum OPTION
+export enum OPTION
 {
   COMPARISON_MODE = "comparison_mode",
   VALUE = "value",
@@ -17,12 +19,19 @@ export default class NodeFilterGeneric extends NodeFilter
   // Public Methods
   // ==========================================================
 
-  constructor(field: Field)
+  constructor(field: Field, options: NodeFilterOption[] = null)
   {
     super(null);
     this._field = field;
 
-    this.buildOptions();
+    if (options)
+    {
+      this._options = options;
+    }
+    else
+    {
+      this.buildOptions();
+    }
   }
 
   // ==========================================================
@@ -39,6 +48,11 @@ export default class NodeFilterGeneric extends NodeFilter
     return this._field.name;
   }
 
+  get field(): Field
+  {
+    return this._field;
+  }
+
   // ==========================================================
   // Protected Methods
   // ==========================================================
@@ -49,6 +63,7 @@ export default class NodeFilterGeneric extends NodeFilter
 
     const comparisonSelect = NodeFilterOptionFactory.buildComparisonSelectNodeFilterOptionForField("Comparison Type");
     comparisonSelect.identifier = OPTION.COMPARISON_MODE;
+    comparisonSelect.value = NodeFilterOptionComparisonType.EQ;
 
     const valueSelect = NodeFilterOptionFactory.newVariableNodeFilterOption("Value");
     valueSelect.identifier = OPTION.VALUE;

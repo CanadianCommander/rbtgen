@@ -1,5 +1,6 @@
 import ReportNode from "@/lib/report/reportModel/ReportNode";
 import NodeOutputSerializer from "@/lib/report/reportModel/NodeOutputSerializer";
+import NodeFilterSerializer from "@/lib/report/reportModel/NodeFilterSerializer";
 
 export default class ReportNodeSerializer
 {
@@ -17,7 +18,7 @@ export default class ReportNodeSerializer
     return {
       entityName: reportNode.entity.name,
       parentRelationName: reportNode.parentRelation?.name,
-      filters: [],
+      filters: reportNode.nodeFilters.map((filter) => NodeFilterSerializer.serializeHash(filter)),
       childNodes: reportNode.childNodes.map((node) => this.serializeHash(node)),
       nodeOutputs: reportNode.nodeOutputs.map((output) => NodeOutputSerializer.serializeHash(output)),
       options: {

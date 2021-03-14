@@ -2,6 +2,7 @@ import ReportNode from "@/lib/report/reportModel/ReportNode";
 import NodeOutput from "@/lib/report/reportModel/NodeOutput";
 import NodeOutputSqlGenerator from "@/lib/report/sql/NodeOutputSqlGenerator";
 import RelationSqlGenerator from "@/lib/report/sql/RelationSqlGenerator";
+import NodeFilterSqlGenerator from "@/lib/report/sql/NodeFilterSqlGenerator";
 
 export default class ReportNodeSqlGenerator
 {
@@ -38,6 +39,7 @@ export default class ReportNodeSqlGenerator
   protected static generateSqlRootNode(reportNode: ReportNode): string
   {
     const selectSql = this.generateSelect(reportNode, true);
+    const whereSql = this.generateWhere(reportNode);
     const groupBySql = this.generateGroupBy(reportNode);
     const joinsSql = this.generateJoins(reportNode);
 
@@ -46,6 +48,7 @@ ${selectSql}
 FROM
 ${reportNode.entity.name} AS ${reportNode.transientId}
 ${joinsSql}
+${whereSql}
 ${groupBySql};`;
   }
 
@@ -57,6 +60,7 @@ ${groupBySql};`;
   protected static generateSqlChildNode(reportNode: ReportNode): string
   {
     const selectSql = this.generateSelect(reportNode, false);
+    const whereSql = this.generateWhere(reportNode);
     const groupBySql = this.generateGroupBy(reportNode);
     const joinsSql = this.generateJoins(reportNode);
 
@@ -65,6 +69,7 @@ ${selectSql}
 FROM
 ${reportNode.entity.name} AS ${reportNode.transientId}
 ${joinsSql}
+${whereSql}
 ${groupBySql}
 )
 AS ${reportNode.transientId}`;
@@ -112,6 +117,20 @@ AS ${reportNode.transientId}`;
     if (selectFieldSql.length > 0)
     {
       return `SELECT \n${selectFieldSql.join(",\n")}`;
+    }
+    return "";
+  }
+
+  /**
+   * generate the where statement SQL for this node
+   * @param reportNode
+   * @protected
+   */
+  protected static generateWhere(reportNode: ReportNode)
+  {
+    if (reportNode.nodeFilters.length > 0)
+    {
+      return `WHERE\n${NodeFilterSqlGenerator.generateSqlForFilters(reportNode.nodeFilters, reportNode)}`;
     }
     return "";
   }

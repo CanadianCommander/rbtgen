@@ -37,6 +37,16 @@ export default class Entity
     return this.relations.find((relation) => relation.name === relationName);
   }
 
+  /**
+   * get entity filter by name
+   * @param filterName - the name of the filter to look for
+   * @return - the found filter or null.
+   */
+  public getFilterByName(filterName: string): Filter
+  {
+    return this.filters.find((filter) => filter.name === filterName);
+  }
+
   // ==========================================================
   // Getters
   // ==========================================================
@@ -93,6 +103,7 @@ export default class Entity
   set filters(filters: Filter[])
   {
     this._filters = filters;
+    this.linkFiltersToSelf(filters);
   }
 
   // ==========================================================
@@ -110,6 +121,19 @@ export default class Entity
     fields.forEach((field) =>
     {
       field.entity = this;
+    });
+  }
+
+  /**
+   * link this list of filters to this entity
+   * @param filters - the filters to link
+   * @protected
+   */
+  protected linkFiltersToSelf(filters: Filter[]): void
+  {
+    filters.forEach((filter) =>
+    {
+      filter.entity = this;
     });
   }
 

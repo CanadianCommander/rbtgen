@@ -15,7 +15,7 @@ export default class TemplateUtil
    */
   public static replaceColumnTags(sql: string, currentNode: ReportNode): string
   {
-    return this.mapTags(sql, (tag) =>
+    return this.mapColumnTags(sql, (tag) =>
     {
       const tableNameMatch = tag.match(/([^.]+)\.([^.]+)/);
       if (tableNameMatch)
@@ -34,6 +34,36 @@ export default class TemplateUtil
         return `${currentNode.transientId}.${tag}`;
       }
     });
+  }
+
+  /**
+   * replace variable tags in sql with the provided replace values
+   * @param sql - the sql to modify
+   * @param replaceValues - replace value mapping tag -> value
+   */
+  public static replaceVariableTags(sql: string, replaceValues: {tag: string; value: string}[]): string
+  {
+    return this.mapVariableTags(sql, (tag) =>
+    {
+      const replace = replaceValues.find((repVal) => repVal.tag === tag);
+      return replace ? replace.value : null;
+    });
+  }
+
+  /**
+   * get at list of variable tags found in the sql
+   * @param sql
+   */
+  public static getVariableTags(sql: string): string[]
+  {
+    const tags: string[] = [];
+    this.mapVariableTags(sql, (tag) =>
+    {
+      tags.push(tag);
+      return null;
+    });
+
+    return tags;
   }
 
   // ==========================================================
@@ -56,9 +86,48 @@ export default class TemplateUtil
 
     matchResults.forEach((result) =>
     {
-      sql = sql.replace(/{{[^}]*}}/, result);
+      if (result != null)
+      {
+        sql = sql.replace(/{{[^}]*}}/, result);
+      }
     });
 
     return sql;
+  }
+
+  /**
+   * like mapTags but only invokes the callback on column type tags
+   * @param sql - the sql template
+   * @param callback - a callback that transforms the value of the tag. It's return value will replace the tag
+   * @protected
+   */
+  protected static mapColumnTags(sql: string, callback: (tag: string) => string): string
+  {
+    return this.mapTags(sql, (tag: string) =>
+    {
+      if (!tag.match(/\$.*/))
+      {
+        return callback(tag);
+      }
+      return null;
+    });
+  }
+
+  /**
+   * like mapTags but only invokes the callback on variable type tags
+   * @param sql - the sql template
+   * @param callback - a callback that transforms the value of the tag. It's return value will replace the tag
+   * @protected
+   */
+  protected static mapVariableTags(sql: string, callback: (tag: string) => string): string
+  {
+    return this.mapTags(sql, (tag: string) =>
+    {
+      if (tag.match(/\$.*/))
+      {
+        return callback(tag.replace("$", ""));
+      }
+      return null;
+    });
   }
 }

@@ -22,10 +22,8 @@
                 </SelectMenu>
               </div>
               <!-- VARIABLE OPTION -->
-              <div v-else-if="option.type === NodeFilterOptionType.VARIABLE" class="option">
-                <TextField v-model="option.value" :label-text="option.name">
-                </TextField>
-              </div>
+              <FilterVariableOption v-else-if="option.type === NodeFilterOptionType.VARIABLE" :option="option">
+              </FilterVariableOption>
             </div>
           </div>
         </div>
@@ -35,7 +33,7 @@
 </template>
 <script lang="ts">
   import Vue from "vue";
-  import {Component, Prop} from "vue-property-decorator";
+  import {Component, Prop, Watch} from "vue-property-decorator";
   import Report from "@/lib/report/Report";
   import ReportNode from "@/lib/report/reportModel/ReportNode";
   import Button from "@/components/controls/Button.vue";
@@ -47,9 +45,10 @@
   import {NodeFilterOptionType} from "@/lib/report/reportModel/NodeFilterOptionType";
   import SelectMenu from "@/components/controls/SelectMenu.vue";
   import TextField from "@/components/controls/TextField.vue";
+  import FilterVariableOption from "@/views/editor/components/FilterVariableOption.vue";
 
   @Component({
-    components: {TextField, SelectMenu, List, Button},
+    components: {FilterVariableOption, TextField, SelectMenu, List, Button},
   })
   export default class EntityOptionsFilters extends Vue
   {
@@ -58,6 +57,17 @@
 
     public selectedFilter: NodeFilter = null;
     public NodeFilterOptionType = NodeFilterOptionType;
+
+    // ==========================================================
+    // Vue hooks
+    // ==========================================================
+
+    @Watch("reportNode")
+    public onReportNodeChange()
+    {
+      // clear selection
+       this.selectedFilter = null;
+    }
 
     // ==========================================================
     // Public methods

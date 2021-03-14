@@ -49,6 +49,16 @@ export default class Field
     return this._sql;
   }
 
+  get isNumeric(): boolean
+  {
+    return [FieldType.INTEGER, FieldType.FLOAT].includes(this._type);
+  }
+
+  get isCustom(): boolean
+  {
+    return this._type === FieldType.CUSTOM;
+  }
+
   // ==========================================================
   // Setters
   // ==========================================================
