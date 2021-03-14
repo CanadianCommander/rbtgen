@@ -50,6 +50,7 @@
     @Prop({}) value: any;
     @Prop({type: String, default: ""}) labelText: string;
     @Prop({type: Array, default: []}) options: ListItem[];
+    @Prop({type: Boolean, default: false}) noBlankValue: boolean;
     // used to check the equality of the value === list item.
     @Prop({type: Function}) customComparator: (opt: ListItem, val: any) => boolean
 
@@ -94,6 +95,10 @@
 
     get listOptions(): ListItem[]
     {
+      if (this.noBlankValue)
+      {
+        return this.options;
+      }
       return this.options.concat([{label: "", value: null}]);
     }
 

@@ -2,6 +2,8 @@ import UserDocument from "@/lib/user/model/UserDocument";
 import ReportModel from "@/lib/report/reportModel/ReportModel";
 import ReportNodeFactory from "@/lib/report/reportModel/ReportNodeFactory";
 import DatabaseModel from "@/lib/report/databaseModel/DatabaseModel";
+import ReportParameterFactory from "@/lib/report/reportModel/ReportParameterFactory";
+import ReportParameter from "@/lib/report/reportModel/ReportParameter";
 
 export default class ReportModelFactory
 {
@@ -20,11 +22,19 @@ export default class ReportModelFactory
 
     if (jsonData.report)
     {
-      return new ReportModel(ReportNodeFactory.buildReportNodeFromJson(jsonData.report.root, databaseModel, null));
+      let params: ReportParameter[] = [];
+      if (jsonData.report.parameters)
+      {
+        params = jsonData.report.parameters.map((paramJson: any) => ReportParameterFactory.buildReportParameterFromJson(paramJson));
+      }
+
+      return new ReportModel(
+        ReportNodeFactory.buildReportNodeFromJson(jsonData.report.root, databaseModel, null),
+        params);
     }
     else
     {
-      return new ReportModel(null);
+      return new ReportModel(null, []);
     }
   }
 

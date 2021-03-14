@@ -4,6 +4,7 @@
     <div v-if="selectedNode" class="p-l-16 p-r-16 p-b-16 flex-item-grow d-flex flex-col">
       <entity-options-fields v-if="currentTab === TABS.FIELDS" :report="report" :report-node="selectedNode"></entity-options-fields>
       <entity-options-filters v-if="currentTab === TABS.FILTERS" :report="report" :report-node="selectedNode"></entity-options-filters>
+      <report-parameters v-if="currentTab === TABS.REPORT_PARAMS" :report="report"></report-parameters>
     </div>
   </div>
 </template>
@@ -17,15 +18,16 @@
   import EntityOptionsFields from "@/views/editor/components/EntityOptionsFields.vue";
   import EntityOptionsFilters from "@/views/editor/components/EntityOptionsFilters.vue";
   import Report from "@/lib/report/Report";
+  import ReportParameters from "@/views/editor/components/ReportParameters.vue";
 
   enum TAB{
     FIELDS = "fields",
     FILTERS = "filters",
-    NODE_OPTIONS = "nodeOptions"
+    REPORT_PARAMS = "reportParams"
   }
 
   @Component({
-    components: {EntityOptionsFilters, EntityOptionsFields, Tabs},
+    components: {ReportParameters, EntityOptionsFilters, EntityOptionsFields, Tabs},
   })
   export default class EntityOptionsPane extends Vue
   {
@@ -50,8 +52,8 @@
           value: TAB.FILTERS,
         },
         {
-          label: "Config",
-          value: TAB.NODE_OPTIONS,
+          label: "Report Parameters",
+          value: TAB.REPORT_PARAMS,
         },
       ];
     }

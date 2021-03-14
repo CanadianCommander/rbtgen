@@ -1,5 +1,6 @@
 import ReportModel from "@/lib/report/reportModel/ReportModel";
 import ReportNodeSerializer from "@/lib/report/reportModel/ReportNodeSerializer";
+import ReportParameterSerializer from "@/lib/report/reportModel/ReportParameterSerializer";
 
 export default class ReportModelSerializer
 {
@@ -16,6 +17,7 @@ export default class ReportModelSerializer
   {
     return {
       root: ReportNodeSerializer.serializeHash(reportModel.rootNode),
+      parameters: reportModel.parameters.map((param) => ReportParameterSerializer.serializeHash(param)),
     };
   }
 }

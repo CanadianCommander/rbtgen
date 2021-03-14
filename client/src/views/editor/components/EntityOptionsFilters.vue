@@ -75,25 +75,31 @@
 
     public async addFilter(): Promise<void>
     {
-      const newFilter = await openModal(SelectModal, {title: "New Filter", options: this.newNodeFilterOptionList});
+      const newFilter = await openModal(SelectModal, {title: "New Filter", options: this.getNewNodeFilterOptionList()});
       if (newFilter)
       {
         this.reportNode.pushNodeFilter(newFilter);
       }
     }
 
-    // ==========================================================
-    // Getters
-    // ==========================================================
-
-    get newNodeFilterOptionList(): ListItem[]
+    /**
+     * Get a list of filter options. MUST NOT BE A GETTER.
+     * GETTERS are cached by Vue and this will cause problems with adding the same
+     * filter multiple times.
+     */
+    public getNewNodeFilterOptionList(): ListItem[]
     {
-     return NodeFilterFactory.buildAllNodeFiltersForReportNode(this.reportNode)
+      console.log("GETTING LIST");
+      return NodeFilterFactory.buildAllNodeFiltersForReportNode(this.reportNode)
         .map((filter) =>
         {
           return {label: filter.name, value: filter};
         });
     }
+
+    // ==========================================================
+    // Getters
+    // ==========================================================
 
     get selectedNodeFilterList(): ListItem[]
     {
