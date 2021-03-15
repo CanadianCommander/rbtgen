@@ -4,6 +4,8 @@ import TemplateUtil from "@/lib/report/sql/TemplateUtil";
 import ReportNode from "@/lib/report/reportModel/ReportNode";
 import NodeFilterGeneric, {OPTION} from "@/lib/report/reportModel/NodeFilterGeneric";
 import {NodeFilterOptionComparisonType} from "@/lib/report/reportModel/NodeFilterOptionComparisonType";
+import ReportQueryService from "@/lib/report/ReportQueryService";
+import SqlGenerationError from "@/lib/report/sql/error/SqlGenerationError";
 
 export default class NodeFilterSqlGenerator
 {
@@ -52,6 +54,7 @@ export default class NodeFilterSqlGenerator
   {
     if (filter.field.isCustom)
     {
+      // TODO this probably doesn't work
       return `${filter.field.customSql} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value} ${filter.getOptionByIdentifier(OPTION.VALUE).value}`;
     }
     else
@@ -62,12 +65,19 @@ export default class NodeFilterSqlGenerator
         value = `'${value}'`;
       }
 
+      const filterNode = (new ReportQueryService()).getClosestNodeByName(filter.field.entity.name, reportNode);
+      if (!filterNode)
+      {
+        throw new SqlGenerationError(
+          `Filter ${filter.name} references entity ${filter.field.entity.name} which is not a child of node ${reportNode.entity.name}`);
+      }
+
       switch (filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value)
       {
         case NodeFilterOptionComparisonType.NOT_NULL:
-          return `${reportNode.transientId}.${filter.field.name} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value}`;
+          return `${filterNode.transientId}.${filter.field.name} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value}`;
         default:
-          return `${reportNode.transientId}.${filter.field.name} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value} ${value}`;
+          return `${filterNode.transientId}.${filter.field.name} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value} ${value}`;
       }
     }
   }

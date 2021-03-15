@@ -106,6 +106,11 @@ export default class NodeFilterFactory
       reportNode.entity.fields.forEach((field) => nodeFilters.push(this.buildNodeFilterFromField(field)));
     }
 
+    reportNode.childNodes.forEach((child) =>
+    {
+      child.nodeOutputs.forEach((output) => nodeFilters.push(this.buildNodeFilterFromField(output.field)));
+    });
+
     return nodeFilters;
   }
 

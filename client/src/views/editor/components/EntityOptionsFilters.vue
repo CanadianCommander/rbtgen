@@ -46,6 +46,8 @@
   import SelectMenu from "@/components/controls/SelectMenu.vue";
   import TextField from "@/components/controls/TextField.vue";
   import FilterVariableOption from "@/views/editor/components/FilterVariableOption.vue";
+  import {NodeFilterType} from "@/lib/report/reportModel/NodeFilterType";
+  import NodeFilterGeneric from "@/lib/report/reportModel/NodeFilterGeneric";
 
   @Component({
     components: {FilterVariableOption, TextField, SelectMenu, List, Button},
@@ -92,7 +94,14 @@
       return NodeFilterFactory.buildAllNodeFiltersForReportNode(this.reportNode)
         .map((filter) =>
         {
-          return {label: filter.name, value: filter};
+          if (filter.filterType === NodeFilterType.GENERIC_FILTER && (filter as NodeFilterGeneric).field.entity !== this.reportNode.entity)
+          {
+            return {label: `${(filter as NodeFilterGeneric).field.entity.name}.${filter.name}`, value: filter};
+          }
+          else
+          {
+            return {label: filter.name, value: filter};
+          }
         });
     }
 
@@ -105,7 +114,14 @@
       return this.reportNode.nodeFilters
         .map((filter) =>
         {
-          return {label: filter.name, value: filter};
+          if (filter.filterType === NodeFilterType.GENERIC_FILTER && (filter as NodeFilterGeneric).field.entity !== this.reportNode.entity)
+          {
+            return {label: `${(filter as NodeFilterGeneric).field.entity.name}.${filter.name}`, value: filter};
+          }
+          else
+          {
+            return {label: filter.name, value: filter};
+          }
         });
     }
 

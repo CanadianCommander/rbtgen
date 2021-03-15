@@ -10,7 +10,7 @@ export default class ReportTemplateGenerator
 
   public static generateReportTemplate(report: Report): string
   {
-    return `<report title="${report.name}" description="" active="1">
+    return `<report title="${report.name}" description="" active="1" meta="Generated With rbtGen!">
 <query>
 ${ReportSqlGenerator.generateSql(report)}
 </query>
