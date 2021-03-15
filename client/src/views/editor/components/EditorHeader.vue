@@ -17,6 +17,11 @@
           preview
         </span>
       </Button>
+      <Button @click="downloadReport" title="Download report for upload in to Juno/Oscar" text-button>
+        <span class="material-icons">
+          download
+        </span>
+      </Button>
       <Button @click="saveReport" title="Save report" text-button>
         <span class="material-icons">
           save
@@ -38,6 +43,7 @@
   import {openModal} from "@/lib/alert/Modal";
   import ReportResultsModal from "@/views/editor/modal/ReportResultsModal.vue";
   import {saveAs} from "file-saver";
+  import ReportTemplateGenerator from "@/lib/report/reportTemplate/ReportTemplateGenerator";
 
   @Component({
     components: {Button},
@@ -65,6 +71,14 @@
         console.error(error);
         SnackBarAlertStore.showAlert({text: "Failed to save! OMG panic time!", icon: "error"});
       }
+    }
+
+    public async downloadReport(): Promise<void>
+    {
+      saveAs(new Blob(
+        [ReportTemplateGenerator.generateReportTemplate(this.report)],
+        {type: "text/xml;charset=utf-8"}),
+        `${this.report.name}.xml`);
     }
 
     public async viewReport(): Promise<void>
