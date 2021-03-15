@@ -7,6 +7,7 @@ import DatabaseModel from "@/lib/report/databaseModel/DatabaseModel";
 import {NodeFilterType} from "@/lib/report/reportModel/NodeFilterType";
 import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 import NodeFilterOptionFactory from "@/lib/report/reportModel/NodeFilterOptionFactory";
+import ReportParameter from "@/lib/report/reportModel/ReportParameter";
 
 export default class NodeFilterFactory
 {
@@ -38,8 +39,9 @@ export default class NodeFilterFactory
    * build a node filter from the json definition of a node filter
    * @param json - json definition of the node filter
    * @param databaseModel
+   * @param params - report parameters
    */
-  public static buildNodeFilterFromJson(json: any, databaseModel: DatabaseModel): NodeFilter
+  public static buildNodeFilterFromJson(json: any, databaseModel: DatabaseModel, params: ReportParameter[]): NodeFilter
   {
     let nodeFilter = null;
     const type = json.type as NodeFilterType;
@@ -67,7 +69,7 @@ export default class NodeFilterFactory
         break;
     }
 
-    nodeFilter.options = json.options.map((optDef: any) => NodeFilterOptionFactory.buildNodeFilterOptionFromJson(optDef));
+    nodeFilter.options = json.options.map((optDef: any) => NodeFilterOptionFactory.buildNodeFilterOptionFromJson(optDef, params));
 
     return nodeFilter;
   }
@@ -76,12 +78,13 @@ export default class NodeFilterFactory
    * plural of buildNodeFilterFromJson
    * @param json - json array of node filter definitions
    * @param databaseModel
+   * @param params - report parameters
    */
-  public static buildNodeFiltersFromJson(json: any, databaseModel: DatabaseModel): NodeFilter[]
+  public static buildNodeFiltersFromJson(json: any, databaseModel: DatabaseModel, params: ReportParameter[]): NodeFilter[]
   {
     return json.map((filterDef: any) =>
     {
-      return this.buildNodeFilterFromJson(filterDef, databaseModel);
+      return this.buildNodeFilterFromJson(filterDef, databaseModel, params);
     });
   }
 

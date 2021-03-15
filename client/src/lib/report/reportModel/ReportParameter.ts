@@ -45,7 +45,7 @@ export default class ReportParameter
 
   set id(id: string)
   {
-    this._id = id;
+    this._id = id.replace(" ", "_");
   }
 
   set type(type: ReportParameterType)

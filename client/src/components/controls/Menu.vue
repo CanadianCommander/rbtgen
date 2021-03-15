@@ -2,7 +2,7 @@
   <div class="menu mdc-menu-surface--anchor">
     <div class="mdc-menu mdc-menu-surface" ref="mdcMenu" v-on:MDCMenuSurface:closed="onClose();">
       <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-        <li v-for="menuItem in menuItems" :key="menuItem.value" class="mdc-list-item" role="menuitem" @click="itemSelected(menuItem.value)">
+        <li v-for="(menuItem, index) in menuItems" :key="index" class="mdc-list-item" role="menuitem" @click="itemSelected(menuItem.value)">
           <span class="mdc-list-item__ripple"></span>
           <span class="mdc-list-item__text">{{menuItem.label}}</span>
         </li>

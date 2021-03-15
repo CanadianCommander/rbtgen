@@ -5,6 +5,7 @@ import ReportModelError from "@/lib/report/reportModel/error/ReportModelError";
 import NodeOutputFactory from "@/lib/report/reportModel/NodeOutputFactory";
 import Relation from "@/lib/report/databaseModel/Relation";
 import NodeFilterFactory from "@/lib/report/reportModel/NodeFilterFactory";
+import ReportParameter from "@/lib/report/reportModel/ReportParameter";
 
 export default class ReportNodeFactory
 {
@@ -27,9 +28,10 @@ export default class ReportNodeFactory
    * @param json - report node json
    * @param databaseModel - the database model for this report
    * @param parentEntity - the entity of the parent of this node or null
+   * @param params - the report parameters
    * @return a new report node
    */
-  public static buildReportNodeFromJson(json: any, databaseModel: DatabaseModel, parentEntity: Entity): ReportNode
+  public static buildReportNodeFromJson(json: any, databaseModel: DatabaseModel, parentEntity: Entity, params: ReportParameter[]): ReportNode
   {
     const entity = databaseModel.entities.find((entity) => entity.name === json.entityName);
     if (!entity)
@@ -40,8 +42,8 @@ export default class ReportNodeFactory
     const reportNode = new ReportNode(
       entity,
       NodeOutputFactory.buildNodeOutputsFromJson(json.nodeOutputs, databaseModel),
-      NodeFilterFactory.buildNodeFiltersFromJson(json.filters, databaseModel),
-      this.buildReportNodesFromJson(json.childNodes, databaseModel, entity));
+      NodeFilterFactory.buildNodeFiltersFromJson(json.filters, databaseModel, params),
+      this.buildReportNodesFromJson(json.childNodes, databaseModel, entity, params));
 
     if (json.parentRelationName)
     {
@@ -66,14 +68,15 @@ export default class ReportNodeFactory
    * @param jsonArray - report node json
    * @param databaseModel - the database model for this report
    * @param parentEntity - the entity of the parent of these nodes or null
+   * @param params - the report parameters
    * @return a new report node
    */
-  public static buildReportNodesFromJson(jsonArray: any, databaseModel: DatabaseModel, parentEntity: Entity): ReportNode[]
+  public static buildReportNodesFromJson(jsonArray: any, databaseModel: DatabaseModel, parentEntity: Entity, params: ReportParameter[]): ReportNode[]
   {
     const newNodes: ReportNode[] = [];
     jsonArray.forEach((nodeJson: any) =>
     {
-      newNodes.push(this.buildReportNodeFromJson(nodeJson, databaseModel, parentEntity));
+      newNodes.push(this.buildReportNodeFromJson(nodeJson, databaseModel, parentEntity, params));
     });
     return newNodes;
   }

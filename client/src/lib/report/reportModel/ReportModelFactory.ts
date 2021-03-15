@@ -29,7 +29,7 @@ export default class ReportModelFactory
       }
 
       return new ReportModel(
-        ReportNodeFactory.buildReportNodeFromJson(jsonData.report.root, databaseModel, null),
+        ReportNodeFactory.buildReportNodeFromJson(jsonData.report.root, databaseModel, null, params),
         params);
     }
     else

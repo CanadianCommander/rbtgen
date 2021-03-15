@@ -3,6 +3,7 @@ import {NodeFilterType} from "@/lib/report/reportModel/NodeFilterType";
 import TemplateUtil from "@/lib/report/sql/TemplateUtil";
 import ReportNode from "@/lib/report/reportModel/ReportNode";
 import NodeFilterGeneric, {OPTION} from "@/lib/report/reportModel/NodeFilterGeneric";
+import {NodeFilterOptionComparisonType} from "@/lib/report/reportModel/NodeFilterOptionComparisonType";
 
 export default class NodeFilterSqlGenerator
 {
@@ -60,7 +61,14 @@ export default class NodeFilterSqlGenerator
       {
         value = `'${value}'`;
       }
-      return `${reportNode.transientId}.${filter.field.name} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value} ${value}`;
+
+      switch (filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value)
+      {
+        case NodeFilterOptionComparisonType.NOT_NULL:
+          return `${reportNode.transientId}.${filter.field.name} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value}`;
+        default:
+          return `${reportNode.transientId}.${filter.field.name} ${filter.getOptionByIdentifier(OPTION.COMPARISON_MODE).value} ${value}`;
+      }
     }
   }
 

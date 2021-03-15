@@ -1,5 +1,6 @@
 import {NodeFilterOptionType} from "@/lib/report/reportModel/NodeFilterOptionType";
 import ListItem from "@/components/lib/ListItem";
+import ReportParameter from "@/lib/report/reportModel/ReportParameter";
 
 export default class NodeFilterOption
 {
@@ -36,6 +37,10 @@ export default class NodeFilterOption
 
   get value(): any
   {
+    if (this._value instanceof ReportParameter)
+    {
+      return `{${this._value.id}}`;
+    }
     return this._value;
   }
 

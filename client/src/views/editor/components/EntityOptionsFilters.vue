@@ -22,7 +22,7 @@
                 </SelectMenu>
               </div>
               <!-- VARIABLE OPTION -->
-              <FilterVariableOption v-else-if="option.type === NodeFilterOptionType.VARIABLE" :option="option">
+              <FilterVariableOption v-else-if="option.type === NodeFilterOptionType.VARIABLE" :report="report" :option="option">
               </FilterVariableOption>
             </div>
           </div>
@@ -89,7 +89,6 @@
      */
     public getNewNodeFilterOptionList(): ListItem[]
     {
-      console.log("GETTING LIST");
       return NodeFilterFactory.buildAllNodeFiltersForReportNode(this.reportNode)
         .map((filter) =>
         {

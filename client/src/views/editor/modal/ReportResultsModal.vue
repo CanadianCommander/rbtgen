@@ -13,9 +13,9 @@
   import Vue from "vue";
   import {Component, Prop} from "vue-property-decorator";
   import Modal from "@/components/modals/Modal.vue";
-  import ReportSqlGenerator from "@/lib/report/sql/ReportSqlGenerator";
   import Report from "@/lib/report/Report";
   import Button from "@/components/controls/Button.vue";
+  import ReportTemplateGenerator from "@/lib/report/reportTemplate/ReportTemplateGenerator";
 
   @Component({
     components: {Button, Modal},
@@ -39,7 +39,7 @@
 
     get reportResult(): string
     {
-      return ReportSqlGenerator.generateSql(this.report);
+      return ReportTemplateGenerator.generateReportTemplate(this.report);
     }
   }
 </script>
