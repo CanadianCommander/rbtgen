@@ -26,6 +26,6 @@ services:
     volumes:
       - ../../client/dist/:/usr/local/apache2/htdocs/
     ports:
-      - 4269:80
+      - 127.0.0.1:4269:80
     depends_on:
       - api
