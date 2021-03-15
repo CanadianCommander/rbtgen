@@ -1,6 +1,8 @@
 # Report By Template Generator (RBTgen)
 Are you tired of making RBT reports by hand in Juno/Oscar? This generator provides a simple 
 interface for building reports. 
+### Try it out @ [rbtgen.ca](https://rbtgen.ca)
+This product is in alpha. You should always backup your reports! I cannot guarantee that future changes will be compatible with existing reports.
 
 ### Dev setup 
 Requirements 
