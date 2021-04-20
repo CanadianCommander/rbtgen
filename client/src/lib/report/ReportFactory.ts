@@ -8,7 +8,9 @@ import ReportModelFactory from "@/lib/report/reportModel/ReportModelFactory";
 export default class ReportFactory
 {
 
-  public static NEW_REPORT_VERSION = "1.0.0";
+  public static readonly REPORT_V1_0_0 = "1.0.0";
+  public static readonly REPORT_V2_0_0 = "2.0.0";
+  public static readonly CURRENT_VERSION = ReportFactory.REPORT_V2_0_0
 
   // ==========================================================
   // Public class methods
@@ -28,8 +30,7 @@ export default class ReportFactory
       fileType: UserDocumentTypes.RBT,
     });
 
-    // TODO replace null with correct values once such objects exist
-    return new Report(newReport, schemaDocument, this.NEW_REPORT_VERSION, null, null);
+    return new Report(newReport, schemaDocument, this.CURRENT_VERSION, null, null);
   }
 
   /**
@@ -42,7 +43,16 @@ export default class ReportFactory
     const reportDocument: UserDocument = await userApi.getDocument(reportDocumentId, true);
 
     const jsonData = JSON.parse(atob(reportDocument.fileData));
-    const schemaDocument = await userApi.getDocument(jsonData.schemaDocument);
+    let schemaDocument = null;
+    if (jsonData.version === this.REPORT_V1_0_0)
+    {
+      schemaDocument = (await userApi.getDocument(jsonData.schemaDocument, true));
+    }
+    else
+    {
+      console.log(jsonData.schemaDocument);
+      schemaDocument = (await userApi.getDocuments(UserDocumentTypes.SCHEMA, jsonData.schemaDocument, true))[0];
+    }
     const databaseModel = DatabaseModelFactory.buildModelFromSchemaDocument(schemaDocument);
 
     return new Report(
@@ -60,6 +70,6 @@ export default class ReportFactory
    */
   public static getReportDocumentBootstrap(schemaDocument: UserDocument): string
   {
-    return `{ "version": "${ReportFactory.NEW_REPORT_VERSION}", "report": null, "schemaDocument": "${schemaDocument.id}"}`;
+    return `{ "version": "${ReportFactory.CURRENT_VERSION}", "report": null, "schemaDocument": "${schemaDocument.fileName}"}`;
   }
 }

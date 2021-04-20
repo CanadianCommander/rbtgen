@@ -62,4 +62,9 @@ export default class Report
     return this._schemaDocument.id;
   }
 
+  get schemaDocumentName(): string
+  {
+    return this._schemaDocument.fileName;
+  }
+
 }

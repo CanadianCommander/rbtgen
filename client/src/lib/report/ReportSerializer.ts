@@ -19,7 +19,7 @@ export default class ReportSerializer
     return JSON.stringify({
       version: report.version,
       report: ReportModelSerializer.serializeHash(report.reportModel),
-      schemaDocument: report.schemaDocumentId,
+      schemaDocument: report.schemaDocumentName,
     });
   }
 

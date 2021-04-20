@@ -13,35 +13,35 @@ import { Document } from '../models/Document';
  * no description
  */
 export class UserApiRequestFactory extends BaseAPIRequestFactory {
-	
+
     /**
      * Add schema document
      * @param document schema document upload
      */
     public async addDocument(document: Document, options?: Configuration): Promise<RequestContext> {
-		let config = options || this.configuration;
-		
+        let config = options || this.configuration;
+
         // verify required parameter 'document' is not null or undefined
         if (document === null || document === undefined) {
             throw new RequiredError('Required parameter document was null or undefined when calling addDocument.');
         }
 
-		
-		// Path Params
-    	const localVarPath = '/authenticated/user/self/document';
 
-		// Make Request Context
-    	const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.POST);
+        // Path Params
+        const localVarPath = '/authenticated/user/self/document';
+
+        // Make Request Context
+        const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.POST);
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
         // Query Params
-	
-		// Header Params
-	
-		// Form Params
+
+        // Header Params
+
+        // Form Params
 
 
-		// Body Params
+        // Body Params
         const contentType = ObjectSerializer.getPreferredMediaType([
             "application/json"
         ]);
@@ -62,30 +62,30 @@ export class UserApiRequestFactory extends BaseAPIRequestFactory {
      * @param documentId The id of the document to delete
      */
     public async deleteDocument(documentId: string, options?: Configuration): Promise<RequestContext> {
-		let config = options || this.configuration;
-		
+        let config = options || this.configuration;
+
         // verify required parameter 'documentId' is not null or undefined
         if (documentId === null || documentId === undefined) {
             throw new RequiredError('Required parameter documentId was null or undefined when calling deleteDocument.');
         }
 
-		
-		// Path Params
-    	const localVarPath = '/authenticated/user/self/document/{document_id}'
+
+        // Path Params
+        const localVarPath = '/authenticated/user/self/document/{document_id}'
             .replace('{' + 'document_id' + '}', encodeURIComponent(String(documentId)));
 
-		// Make Request Context
-    	const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.DELETE);
+        // Make Request Context
+        const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.DELETE);
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
         // Query Params
-	
-		// Header Params
-	
-		// Form Params
+
+        // Header Params
+
+        // Form Params
 
 
-		// Body Params
+        // Body Params
 
         // Apply auth methods
 
@@ -98,34 +98,34 @@ export class UserApiRequestFactory extends BaseAPIRequestFactory {
      * @param includeData if true returned file will contain data.
      */
     public async getDocument(documentId: string, includeData?: boolean, options?: Configuration): Promise<RequestContext> {
-		let config = options || this.configuration;
-		
+        let config = options || this.configuration;
+
         // verify required parameter 'documentId' is not null or undefined
         if (documentId === null || documentId === undefined) {
             throw new RequiredError('Required parameter documentId was null or undefined when calling getDocument.');
         }
 
-		
-		
-		// Path Params
-    	const localVarPath = '/authenticated/user/self/document/{document_id}'
+
+
+        // Path Params
+        const localVarPath = '/authenticated/user/self/document/{document_id}'
             .replace('{' + 'document_id' + '}', encodeURIComponent(String(documentId)));
 
-		// Make Request Context
-    	const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
+        // Make Request Context
+        const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
         // Query Params
         if (includeData !== undefined) {
-        	requestContext.setQueryParam("include_data", ObjectSerializer.serialize(includeData, "boolean", ""));
+            requestContext.setQueryParam("include_data", ObjectSerializer.serialize(includeData, "boolean", ""));
         }
-	
-		// Header Params
-	
-		// Form Params
+
+        // Header Params
+
+        // Form Params
 
 
-		// Body Params
+        // Body Params
 
         // Apply auth methods
 
@@ -135,39 +135,44 @@ export class UserApiRequestFactory extends BaseAPIRequestFactory {
     /**
      * Get all the schema documents for a user.
      * @param fileType the document type to fetch
+     * @param fileName If provided only files matching this name will be returned
      * @param includeData if true returned files will contain data.
      */
-    public async getDocuments(fileType: string, includeData?: boolean, options?: Configuration): Promise<RequestContext> {
-		let config = options || this.configuration;
-		
+    public async getDocuments(fileType: string, fileName?: string, includeData?: boolean, options?: Configuration): Promise<RequestContext> {
+        let config = options || this.configuration;
+
         // verify required parameter 'fileType' is not null or undefined
         if (fileType === null || fileType === undefined) {
             throw new RequiredError('Required parameter fileType was null or undefined when calling getDocuments.');
         }
 
-		
-		
-		// Path Params
-    	const localVarPath = '/authenticated/user/self/documents/';
 
-		// Make Request Context
-    	const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
+
+
+        // Path Params
+        const localVarPath = '/authenticated/user/self/documents/';
+
+        // Make Request Context
+        const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
         // Query Params
         if (fileType !== undefined) {
-        	requestContext.setQueryParam("file_type", ObjectSerializer.serialize(fileType, "string", ""));
+            requestContext.setQueryParam("file_type", ObjectSerializer.serialize(fileType, "string", ""));
+        }
+        if (fileName !== undefined) {
+            requestContext.setQueryParam("file_name", ObjectSerializer.serialize(fileName, "string", ""));
         }
         if (includeData !== undefined) {
-        	requestContext.setQueryParam("include_data", ObjectSerializer.serialize(includeData, "boolean", ""));
+            requestContext.setQueryParam("include_data", ObjectSerializer.serialize(includeData, "boolean", ""));
         }
-	
-		// Header Params
-	
-		// Form Params
+
+        // Header Params
+
+        // Form Params
 
 
-		// Body Params
+        // Body Params
 
         // Apply auth methods
 
@@ -180,36 +185,36 @@ export class UserApiRequestFactory extends BaseAPIRequestFactory {
      * @param document document data to update with
      */
     public async updateDocument(documentId: string, document: Document, options?: Configuration): Promise<RequestContext> {
-		let config = options || this.configuration;
-		
+        let config = options || this.configuration;
+
         // verify required parameter 'documentId' is not null or undefined
         if (documentId === null || documentId === undefined) {
             throw new RequiredError('Required parameter documentId was null or undefined when calling updateDocument.');
         }
 
-		
+
         // verify required parameter 'document' is not null or undefined
         if (document === null || document === undefined) {
             throw new RequiredError('Required parameter document was null or undefined when calling updateDocument.');
         }
 
-		
-		// Path Params
-    	const localVarPath = '/authenticated/user/self/document/{document_id}'
+
+        // Path Params
+        const localVarPath = '/authenticated/user/self/document/{document_id}'
             .replace('{' + 'document_id' + '}', encodeURIComponent(String(documentId)));
 
-		// Make Request Context
-    	const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.PUT);
+        // Make Request Context
+        const requestContext = config.baseServer.makeRequestContext(localVarPath, HttpMethod.PUT);
         requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
 
         // Query Params
-	
-		// Header Params
-	
-		// Form Params
+
+        // Header Params
+
+        // Form Params
 
 
-		// Body Params
+        // Body Params
         const contentType = ObjectSerializer.getPreferredMediaType([
             "application/json"
         ]);
@@ -226,8 +231,6 @@ export class UserApiRequestFactory extends BaseAPIRequestFactory {
     }
 
 }
-
-
 
 export class UserApiResponseProcessor {
 
@@ -265,9 +268,9 @@ export class UserApiResponseProcessor {
         }
 
         let body = response.body || "";
-    	throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
+        throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
     }
-			
+
     /**
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
@@ -298,9 +301,9 @@ export class UserApiResponseProcessor {
         }
 
         let body = response.body || "";
-    	throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
+        throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
     }
-			
+
     /**
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
@@ -335,9 +338,9 @@ export class UserApiResponseProcessor {
         }
 
         let body = response.body || "";
-    	throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
+        throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
     }
-			
+
     /**
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
@@ -372,9 +375,9 @@ export class UserApiResponseProcessor {
         }
 
         let body = response.body || "";
-    	throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
+        throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
     }
-			
+
     /**
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
@@ -409,7 +412,7 @@ export class UserApiResponseProcessor {
         }
 
         let body = response.body || "";
-    	throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
+        throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
     }
-			
+
 }

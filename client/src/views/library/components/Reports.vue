@@ -62,7 +62,7 @@
 
       try
       {
-        const userDocs = await userApi.getDocuments(UserDocumentTypes.RBT, false);
+        const userDocs = await userApi.getDocuments(UserDocumentTypes.RBT, null, false);
         userDocs.forEach((doc: UserDocument) =>
         {
           this.libraryItems.push(new ReportLibraryItem(

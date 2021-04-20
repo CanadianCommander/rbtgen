@@ -37,7 +37,7 @@
     public async mounted(): Promise<void>
     {
       // load schema files
-      this.schemaFiles = await userApi.getDocuments(UserDocumentTypes.SCHEMA, false);
+      this.schemaFiles = await userApi.getDocuments(UserDocumentTypes.SCHEMA, null, false);
     }
 
     // ==========================================================

@@ -9,7 +9,6 @@ import { LoginInfo } from '../models/LoginInfo';
 import { SignupInfo } from '../models/SignupInfo';
 import { ObservablePublicApi } from './ObservableAPI';
 
-
 import { PublicApiRequestFactory, PublicApiResponseProcessor} from "../apis/PublicApi";
 export class PromisePublicApi {
     private api: ObservablePublicApi
@@ -27,26 +26,25 @@ export class PromisePublicApi {
      * @param signupInfo Signup Info
      */
     public signup(signupInfo: SignupInfo, options?: Configuration): Promise<void> {
-    	const result = this.api.signup(signupInfo, options);
+        const result = this.api.signup(signupInfo, options);
         return result.toPromise();
     }
-	
+
     /**
      * Login to the RBTgen
      * @param loginCredentials Login Credentials
      */
     public userLogin(loginCredentials: LoginCredentials, options?: Configuration): Promise<LoginInfo> {
-    	const result = this.api.userLogin(loginCredentials, options);
+        const result = this.api.userLogin(loginCredentials, options);
         return result.toPromise();
     }
-	
+
 
 }
 
 
 
 import { ObservableUserApi } from './ObservableAPI';
-
 
 import { UserApiRequestFactory, UserApiResponseProcessor} from "../apis/UserApi";
 export class PromiseUserApi {
@@ -65,49 +63,50 @@ export class PromiseUserApi {
      * @param document schema document upload
      */
     public addDocument(document: Document, options?: Configuration): Promise<Document> {
-    	const result = this.api.addDocument(document, options);
+        const result = this.api.addDocument(document, options);
         return result.toPromise();
     }
-	
+
     /**
      * Delete the specified document
      * @param documentId The id of the document to delete
      */
     public deleteDocument(documentId: string, options?: Configuration): Promise<void> {
-    	const result = this.api.deleteDocument(documentId, options);
+        const result = this.api.deleteDocument(documentId, options);
         return result.toPromise();
     }
-	
+
     /**
      * Get the specified document
      * @param documentId The id of the document to get
      * @param includeData if true returned file will contain data.
      */
     public getDocument(documentId: string, includeData?: boolean, options?: Configuration): Promise<Document> {
-    	const result = this.api.getDocument(documentId, includeData, options);
+        const result = this.api.getDocument(documentId, includeData, options);
         return result.toPromise();
     }
-	
+
     /**
      * Get all the schema documents for a user.
      * @param fileType the document type to fetch
+     * @param fileName If provided only files matching this name will be returned
      * @param includeData if true returned files will contain data.
      */
-    public getDocuments(fileType: string, includeData?: boolean, options?: Configuration): Promise<Array<Document>> {
-    	const result = this.api.getDocuments(fileType, includeData, options);
+    public getDocuments(fileType: string, fileName?: string, includeData?: boolean, options?: Configuration): Promise<Array<Document>> {
+        const result = this.api.getDocuments(fileType, fileName, includeData, options);
         return result.toPromise();
     }
-	
+
     /**
      * update a document
      * @param documentId The id of the document to get
      * @param document document data to update with
      */
     public updateDocument(documentId: string, document: Document, options?: Configuration): Promise<Document> {
-    	const result = this.api.updateDocument(documentId, document, options);
+        const result = this.api.updateDocument(documentId, document, options);
         return result.toPromise();
     }
-	
+
 
 }
 

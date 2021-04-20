@@ -8,15 +8,31 @@ module ::Rest::V1::Authenticated::User
     # GET /user/self/documents/
     def get_documents
       params.require([:file_type])
+      file_name = params[:file_name]&.to_s
 
       include_data = true
       unless params[:include_data].nil?
         include_data = ::ActiveModel::Type::Boolean.new.cast(params[:include_data]);
       end
 
+      documents = []
+
+      if file_name.present?
+        Rails.logger.info(">>>>>>>>>>>>>>>>>>> file_name #{params[:file_name]} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        case params[:file_type].to_s
+        when ::Rbt::User::Document::DocumentService::DOCUMENT_TYPE::SCHEMA
+          documents = @logged_in_user.get_schema_documents_by_name(file_name);
+        when ::Rbt::User::Document::DocumentService::DOCUMENT_TYPE::RBT
+          documents = @logged_in_user.get_report_documents_by_name(file_name);
+        end
+      else
+        documents = @logged_in_user.get_documents_by_type(params[:file_type].to_s).blobs
+      end
+
+
       render(
         json: ::Transfer::User::Document.from_blobs(
-          @logged_in_user.get_documents_by_type(params[:file_type].to_s).blobs,
+          documents,
           type: ::Rbt::User::Document::DocumentService::DOCUMENT_TYPE::SCHEMA,
           include_data: include_data), status: @stats)
     end

@@ -3,7 +3,6 @@ import * as models from '../models/all';
 import { Configuration} from '../configuration'
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
-
 import { ApiError } from '../models/ApiError';
 import { Document } from '../models/Document';
 import { LoginCredentials } from '../models/LoginCredentials';
@@ -31,52 +30,48 @@ export class ObservablePublicApi {
      * @param signupInfo Signup Info
      */
     public signup(signupInfo: SignupInfo, options?: Configuration): Observable<void> {
-    	const requestContextPromise = this.requestFactory.signup(signupInfo, options);
+        const requestContextPromise = this.requestFactory.signup(signupInfo, options);
 
-		// build promise chain
-    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-    	for (let middleware of this.configuration.middleware) {
-    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-    	}
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
 
-    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-	    	pipe(mergeMap((response: ResponseContext) => {
-	    		let middlewarePostObservable = of(response);
-	    		for (let middleware of this.configuration.middleware) {
-	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.signup(rsp)));
-	    	}));
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.signup(rsp)));
+            }));
     }
-	
+ 
     /**
      * Login to the RBTgen
      * @param loginCredentials Login Credentials
      */
     public userLogin(loginCredentials: LoginCredentials, options?: Configuration): Observable<LoginInfo> {
-    	const requestContextPromise = this.requestFactory.userLogin(loginCredentials, options);
+        const requestContextPromise = this.requestFactory.userLogin(loginCredentials, options);
 
-		// build promise chain
-    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-    	for (let middleware of this.configuration.middleware) {
-    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-    	}
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
 
-    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-	    	pipe(mergeMap((response: ResponseContext) => {
-	    		let middlewarePostObservable = of(response);
-	    		for (let middleware of this.configuration.middleware) {
-	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.userLogin(rsp)));
-	    	}));
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.userLogin(rsp)));
+            }));
     }
-	
-
+ 
 }
-
-
-
 
 import { UserApiRequestFactory, UserApiResponseProcessor} from "../apis/UserApi";
 export class ObservableUserApi {
@@ -99,121 +94,118 @@ export class ObservableUserApi {
      * @param document schema document upload
      */
     public addDocument(document: Document, options?: Configuration): Observable<Document> {
-    	const requestContextPromise = this.requestFactory.addDocument(document, options);
+        const requestContextPromise = this.requestFactory.addDocument(document, options);
 
-		// build promise chain
-    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-    	for (let middleware of this.configuration.middleware) {
-    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-    	}
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
 
-    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-	    	pipe(mergeMap((response: ResponseContext) => {
-	    		let middlewarePostObservable = of(response);
-	    		for (let middleware of this.configuration.middleware) {
-	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.addDocument(rsp)));
-	    	}));
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.addDocument(rsp)));
+            }));
     }
-	
+ 
     /**
      * Delete the specified document
      * @param documentId The id of the document to delete
      */
     public deleteDocument(documentId: string, options?: Configuration): Observable<void> {
-    	const requestContextPromise = this.requestFactory.deleteDocument(documentId, options);
+        const requestContextPromise = this.requestFactory.deleteDocument(documentId, options);
 
-		// build promise chain
-    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-    	for (let middleware of this.configuration.middleware) {
-    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-    	}
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
 
-    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-	    	pipe(mergeMap((response: ResponseContext) => {
-	    		let middlewarePostObservable = of(response);
-	    		for (let middleware of this.configuration.middleware) {
-	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteDocument(rsp)));
-	    	}));
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteDocument(rsp)));
+            }));
     }
-	
+ 
     /**
      * Get the specified document
      * @param documentId The id of the document to get
      * @param includeData if true returned file will contain data.
      */
     public getDocument(documentId: string, includeData?: boolean, options?: Configuration): Observable<Document> {
-    	const requestContextPromise = this.requestFactory.getDocument(documentId, includeData, options);
+        const requestContextPromise = this.requestFactory.getDocument(documentId, includeData, options);
 
-		// build promise chain
-    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-    	for (let middleware of this.configuration.middleware) {
-    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-    	}
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
 
-    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-	    	pipe(mergeMap((response: ResponseContext) => {
-	    		let middlewarePostObservable = of(response);
-	    		for (let middleware of this.configuration.middleware) {
-	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDocument(rsp)));
-	    	}));
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDocument(rsp)));
+            }));
     }
-	
+ 
     /**
      * Get all the schema documents for a user.
      * @param fileType the document type to fetch
+     * @param fileName If provided only files matching this name will be returned
      * @param includeData if true returned files will contain data.
      */
-    public getDocuments(fileType: string, includeData?: boolean, options?: Configuration): Observable<Array<Document>> {
-    	const requestContextPromise = this.requestFactory.getDocuments(fileType, includeData, options);
+    public getDocuments(fileType: string, fileName?: string, includeData?: boolean, options?: Configuration): Observable<Array<Document>> {
+        const requestContextPromise = this.requestFactory.getDocuments(fileType, fileName, includeData, options);
 
-		// build promise chain
-    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-    	for (let middleware of this.configuration.middleware) {
-    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-    	}
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
 
-    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-	    	pipe(mergeMap((response: ResponseContext) => {
-	    		let middlewarePostObservable = of(response);
-	    		for (let middleware of this.configuration.middleware) {
-	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDocuments(rsp)));
-	    	}));
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDocuments(rsp)));
+            }));
     }
-	
+ 
     /**
      * update a document
      * @param documentId The id of the document to get
      * @param document document data to update with
      */
     public updateDocument(documentId: string, document: Document, options?: Configuration): Observable<Document> {
-    	const requestContextPromise = this.requestFactory.updateDocument(documentId, document, options);
+        const requestContextPromise = this.requestFactory.updateDocument(documentId, document, options);
 
-		// build promise chain
-    let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-    	for (let middleware of this.configuration.middleware) {
-    		middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-    	}
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
 
-    	return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-	    	pipe(mergeMap((response: ResponseContext) => {
-	    		let middlewarePostObservable = of(response);
-	    		for (let middleware of this.configuration.middleware) {
-	    			middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-	    		}
-	    		return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateDocument(rsp)));
-	    	}));
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateDocument(rsp)));
+            }));
     }
-	
-
+ 
 }
-
-
-

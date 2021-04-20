@@ -52,6 +52,13 @@ class User < ApplicationRecord
     end
   end
 
+  # get a user documents by name
+  # @param [String] document_name - the document name to get
+  # @return [Array<ActiveStorage::Blobs>] documents with the given name
+  def get_documents_by_name(document_name)
+    return self.get_schema_documents_by_name(document_name) + self.get_report_documents_by_name(document_name);
+  end
+
   # get a document that is attached to this user by id
   # @param [String] document_id - the id of the document to get
   # @return [ActiveStorage::Attachment]
@@ -65,6 +72,13 @@ class User < ApplicationRecord
     return doc
   end
 
+  # get a user schema documents by name
+  # @param [String] document_name - the document name to get
+  # @return [Array<ActiveStorage::Blobs>] schema documents with the given name
+  def get_schema_documents_by_name(document_name)
+    return self.schema_files.blobs.where(filename: document_name).to_a
+  end
+
   # get a schema document that is attached to this user by id
   # @param [String] document_id - the id of the schema document to get
   # @return [ActiveStorage::Attachment]
@@ -75,6 +89,14 @@ class User < ApplicationRecord
       return self.schema_files.attachments.where({blob_id: blob.id}).first
     end
     return nil
+  end
+
+
+  # get a user report documents by name
+  # @param [String] document_name - the document name to get
+  # @return [Array<ActiveStorage::Blobs>] report documents with the given name
+  def get_report_documents_by_name(document_name)
+    return self.report_files.blobs.where(filename: document_name).to_a
   end
 
   # get a report document that is attached to this user by id
